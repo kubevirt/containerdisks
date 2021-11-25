@@ -32,3 +32,4 @@ function build() {
 
 build rhcos 4.9
 build fedora 35
+build centos 8
