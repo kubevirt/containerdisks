@@ -12,11 +12,10 @@ import (
 )
 
 type rhcos struct {
-	Version     string
-	Variant     string
-	getter      http.Getter
-	Arch        string
-	Compression string
+	Version string
+	Variant string
+	getter  http.Getter
+	Arch    string
 }
 
 func (r *rhcos) Metadata() *api.Metadata {

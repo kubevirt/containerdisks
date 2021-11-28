@@ -14,6 +14,7 @@ import (
 	"github.com/containers/image/v5/pkg/compression/types"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/ulikunitz/xz"
 	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/rhcos"
@@ -133,6 +134,11 @@ func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Tim
 		reader, err = gzip.NewReader(artifactReader)
 		if err != nil {
 			return fmt.Errorf("error creating a gunzip reader for the specified download location: %v", err)
+		}
+	} else if artifactInfo.Compression == types.XzAlgorithmName {
+		reader, err = xz.NewReader(artifactReader)
+		if err != nil {
+			return fmt.Errorf("error creating a lzma reader for the specified download location: %v", err)
 		}
 	}
 
