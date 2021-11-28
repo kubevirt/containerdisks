@@ -1,10 +1,13 @@
 package api
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type ArtifactDetails struct {
 	SHA256Sum   string
 	DownloadURL string
+	Compression string
 }
 
 type Metadata struct {

@@ -1,0 +1,46 @@
+# CentOS-8-Vagrant-8.0.1905-1.x86_64.vagrant-libvirt.box: 448968K
+SHA256 (CentOS-8-Vagrant-8.0.1905-1.x86_64.vagrant-libvirt.box) = 0b93b761fcaca720920095bdf606d3c4b87daf56ecd4e6213e5a51b90f4fe284
+# CentOS-8-Vagrant-8.0.1905-1.x86_64.vagrant-virtualbox.box: 466124K
+SHA256 (CentOS-8-Vagrant-8.0.1905-1.x86_64.vagrant-virtualbox.box) = a0823c8c1d48024e44627e5fbfc55cb2c14bd8997aa002fc037202e7ec543e2b
+# CentOS-8-Container-8.1.1911-20200113.3-layer.x86_64.tar.xz: 43076K
+SHA256 (CentOS-8-Container-8.1.1911-20200113.3-layer.x86_64.tar.xz) = 81f75692e369b8759a25ab58b836f7ed7f7339df21e3fbbe39abc0e5f71ed001
+# CentOS-8-Container-8.1.1911-20200113.3.x86_64.tar.xz: 46108K
+SHA256 (CentOS-8-Container-8.1.1911-20200113.3.x86_64.tar.xz) = 6e2c208e29b29f0c7a2b29ecae9cbcff28c0bd2b178041b59c2e0763a08504ca
+# CentOS-8-ec2-8.1.1911-20200113.3.x86_64.qcow2: 724300K
+SHA256 (CentOS-8-ec2-8.1.1911-20200113.3.x86_64.qcow2) = 1d14d3f52a24e174fa273fac5cb99a573deca8351cde0847cabefb1a8bb93a02
+# CentOS-8-GenericCloud-8.1.1911-20200113.3.x86_64.qcow2: 699396K
+SHA256 (CentOS-8-GenericCloud-8.1.1911-20200113.3.x86_64.qcow2) = e2cf1081645b1089f574918fb808b32d247169ec4ec1a13bca9e14a74df6530e
+# CentOS-8-Vagrant-8.1.1911-20200113.3.x86_64.vagrant-libvirt.box: 476156K
+SHA256 (CentOS-8-Vagrant-8.1.1911-20200113.3.x86_64.vagrant-libvirt.box) = aeafc5ad5cdb2c0ae5daa996384e4ee284c9e7b0a3b39f48efe92b2ea8e39aaa
+# CentOS-8-Vagrant-8.1.1911-20200113.3.x86_64.vagrant-virtualbox.box: 493904K
+SHA256 (CentOS-8-Vagrant-8.1.1911-20200113.3.x86_64.vagrant-virtualbox.box) = 88b225f61abda0c59db7d7b8dd980e3e45cd08ab8bac5ab2ae872dbb35bd80e4
+# CentOS-8-Container-8.2.2004-20200611.2.x86_64.tar.xz: 45372K
+SHA256 (CentOS-8-Container-8.2.2004-20200611.2.x86_64.tar.xz) = 9f4b3d3ed01917e4d16f1e6c218f6b904bbd5714b38f147f4ff46657810c7555
+# CentOS-8-ec2-8.2.2004-20200611.2.x86_64.qcow2: 1163628K
+SHA256 (CentOS-8-ec2-8.2.2004-20200611.2.x86_64.qcow2) = 74d8e7cdc62b3ac5a1719c642a8aa4c9915ca65d86e4dff9a446be44acf13c37
+# CentOS-8-GenericCloud-8.2.2004-20200611.2.x86_64.qcow2: 1138032K
+SHA256 (CentOS-8-GenericCloud-8.2.2004-20200611.2.x86_64.qcow2) = d8984b9baee57b127abce310def0f4c3c9d5b3cea7ea8451fc4ffcbc9935b640
+# CentOS-8-Vagrant-8.2.2004-20200611.2.x86_64.vagrant-libvirt.box: 782884K
+SHA256 (CentOS-8-Vagrant-8.2.2004-20200611.2.x86_64.vagrant-libvirt.box) = e91d44d96c64f015ae943d66525f4c9d763c28b91440d5741d79226c44c45f86
+# CentOS-8-Vagrant-8.2.2004-20200611.2.x86_64.vagrant-virtualbox.box: 802984K
+SHA256 (CentOS-8-Vagrant-8.2.2004-20200611.2.x86_64.vagrant-virtualbox.box) = 698b0d9c6c3f31a4fd1c655196a5f7fc224434112753ab6cb3218493a86202de
+# CentOS-8-Container-8.3.2011-20201204.2.x86_64.tar.xz: 45628K
+SHA256 (CentOS-8-Container-8.3.2011-20201204.2.x86_64.tar.xz) = 5b141656a073acf7ada9a6e809cc54b5202a8cff9acaef879522a0dfb8273676
+# CentOS-8-ec2-8.3.2011-20201204.2.x86_64.qcow2: 1302172K
+SHA256 (CentOS-8-ec2-8.3.2011-20201204.2.x86_64.qcow2) = f5cc7165940e991b0b7fa6f5bf866bcb941ecbb9a9942afb043b3f31940e88d9
+# CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2: 1245820K
+SHA256 (CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2) = 7ec97062618dc0a7ebf211864abf63629da1f325578868579ee70c495bed3ba0
+# CentOS-8-Vagrant-8.3.2011-20201204.2.x86_64.vagrant-libvirt.box: 888552K
+SHA256 (CentOS-8-Vagrant-8.3.2011-20201204.2.x86_64.vagrant-libvirt.box) = 9f26496a13bb560ae55d21c4e4b6f93bfb994a7b56923e6fc858845ac4c69e30
+# CentOS-8-Vagrant-8.3.2011-20201204.2.x86_64.vagrant-virtualbox.box: 909896K
+SHA256 (CentOS-8-Vagrant-8.3.2011-20201204.2.x86_64.vagrant-virtualbox.box) = fee51a026c1caa9d88a8c74f09352ef4b7606952285cdf2888ea062a8eee499f
+# CentOS-8-Container-8.4.2105-20210603.0.x86_64.tar.xz: 53344K
+SHA256 (CentOS-8-Container-8.4.2105-20210603.0.x86_64.tar.xz) = 029d18736e3c6fbc65fd4ffe79a8beefd945fb4d9bd1c909aa8909b91ad39ed3
+# CentOS-8-ec2-8.4.2105-20210603.0.x86_64.qcow2: 1296536K
+SHA256 (CentOS-8-ec2-8.4.2105-20210603.0.x86_64.qcow2) = da9c4abe7009954f8b54339c6d671b24b1b2df7350b5d3e9a0aed0e127b74ca1
+# CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2: 1278964K
+SHA256 (CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2) = 3510fc7deb3e1939dbf3fe6f65a02ab1efcc763480bc352e4c06eca2e4f7c2a2
+# CentOS-8-Vagrant-8.4.2105-20210603.0.x86_64.vagrant-libvirt.box: 953472K
+SHA256 (CentOS-8-Vagrant-8.4.2105-20210603.0.x86_64.vagrant-libvirt.box) = 37cc017738bf12cafce3a97c4de73526452da6332cc5c0516723988644e62620
+# CentOS-8-Vagrant-8.4.2105-20210603.0.x86_64.vagrant-virtualbox.box: 975636K
+SHA256 (CentOS-8-Vagrant-8.4.2105-20210603.0.x86_64.vagrant-virtualbox.box) = dfe4a34e59eb3056a6fe67625454c3607cbc52ae941aeba0498c29ee7cb9ac22

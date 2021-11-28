@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	"context"
 	"fmt"
 	"io"
@@ -10,19 +11,20 @@ import (
 	"sync"
 	"time"
 
+	"github.com/containers/image/v5/pkg/compression/types"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"kubevirt.io/containerdisks/artifacts/fedora"
+	"kubevirt.io/containerdisks/artifacts/rhcos"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/build"
 	"kubevirt.io/containerdisks/pkg/http"
 	"kubevirt.io/containerdisks/pkg/repository"
 )
 
-var registry = map[string]api.Artifact{
-	fedora.NewFedora("35").Metadata().Describe(): fedora.NewFedora("35"),
-	//fedora.NewFedora("34").Metadata().Describe(): fedora.NewFedora("34"), # example
-	//fedora.NewFedora("33").Metadata().Describe(): fedora.NewFedora("33"), # example
+var registry = []api.Artifact{
+	fedora.New("35"),
+	rhcos.New("4.9"),
 }
 
 type PublishOptions struct {
@@ -51,11 +53,11 @@ func NewPublishCommand(options *Options) *cobra.Command {
 				go worker(wg, jobChan, options, errChan)
 			}
 
-			for desc := range registry {
-				if options.PublishOptions.Focus != "" && options.PublishOptions.Focus != desc {
+			for i, desc := range registry {
+				if options.PublishOptions.Focus != "" && options.PublishOptions.Focus != desc.Metadata().Describe() {
 					continue
 				}
-				jobChan <- registry[desc]
+				jobChan <- registry[i]
 			}
 			close(jobChan)
 
@@ -117,11 +119,19 @@ func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Tim
 	}
 	log.Infof("Rebuild needed, downloading %q ...", artifactInfo.DownloadURL)
 	getter := &http.HTTPGetter{}
-	reader, err := getter.GetWithChecksum(artifactInfo.DownloadURL)
+	artifactReader, err := getter.GetWithChecksum(artifactInfo.DownloadURL)
 	if err != nil {
 		return fmt.Errorf("error opening a connection to the specified download location: %v", err)
 	}
-	defer reader.Close()
+	defer artifactReader.Close()
+
+	var reader io.Reader = artifactReader
+	if artifactInfo.Compression == types.GzipAlgorithmName {
+		reader, err = gzip.NewReader(artifactReader)
+		if err != nil {
+			return fmt.Errorf("error creating a gunzip reader for the specified download location: %v", err)
+		}
+	}
 
 	file, err := ioutil.TempFile("", "containerdisks")
 	if err != nil {
@@ -132,7 +142,7 @@ func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Tim
 		return fmt.Errorf("error writing the image to the destination file: %v", err)
 	}
 	file.Close()
-	checksum := reader.Checksum()
+	checksum := artifactReader.Checksum()
 
 	if checksum != artifactInfo.SHA256Sum {
 		return fmt.Errorf("expected checksum %q but got %q", artifactInfo.SHA256Sum, checksum)

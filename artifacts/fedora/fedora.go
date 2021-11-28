@@ -62,7 +62,7 @@ func (f *fedora) releaseMatches(release *Release) bool {
 		strings.HasSuffix(release.Link, "qcow2")
 }
 
-func NewFedora(release string) api.Artifact {
+func New(release string) api.Artifact {
 	return &fedora{
 		Version: release,
 		Arch:    "x86_64",
