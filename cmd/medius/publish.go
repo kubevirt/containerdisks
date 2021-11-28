@@ -14,6 +14,7 @@ import (
 	"github.com/containers/image/v5/pkg/compression/types"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/rhcos"
 	"kubevirt.io/containerdisks/pkg/api"
@@ -25,6 +26,8 @@ import (
 var registry = []api.Artifact{
 	fedora.New("35"),
 	rhcos.New("4.9"),
+	centos.New("8.4"),
+	centos.New("7-2009"),
 }
 
 type PublishOptions struct {
