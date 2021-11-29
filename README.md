@@ -27,7 +27,7 @@ Its main tasks for all onboarded containerdisks are:
 
 To add a new containerdisk the interface [api.Artifact](pkg/api/artifacts.go)
 interface needs to be implemented. The resulting implementation needs to
-be [registered](cmd/medius/publish.sh). That's it.
+be [registered](cmd/medius/registry.go). That's it.
 The [fedora](artifacts/fedora/fedora.go) is a good example to check out.
 
 ### Criterias for onboarding
