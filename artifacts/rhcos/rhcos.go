@@ -47,7 +47,7 @@ func (r *rhcos) Inspect() (*api.ArtifactDetails, error) {
 
 }
 
-func New(release string) api.Artifact {
+func New(release string) *rhcos {
 	return &rhcos{
 		Version:     release,
 		Arch:        "x86_64",

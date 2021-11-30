@@ -90,6 +90,19 @@ func TestParse(t *testing.T) {
 				"rhcos-vmware.x86_64.ova":                      "6c8bfdee5930f12368b9f46a11aea736a068208262f7747f3bac54eb581531f5",
 			},
 		},
+		{
+			args: struct {
+				fileName       string
+				checksumFormat ChecksumFormat
+			}{fileName: "testdata/broken.checksum", checksumFormat: ChecksumFormatBSD},
+			want: map[string]string{
+				"CentOS-Stream-Container-Base-9-20211119.0.x86_64.tar.xz":          "bd329142ec8e7455cbfb641d286cc74baaf0fac54e8b0bdbc873fc01c61bf19d",
+				"CentOS-Stream-GenericCloud-9-20211119.0.x86_64.qcow2":             "84e67ec05f085bbf2fe42d3a341bfff4a4800ef1957655443638522c4c73e02c",
+				"CentOS-Stream-Vagrant-9-20211119.0.x86_64.vagrant-libvirt.box":    "6e732563b0997996415cfee3f4b7aa722750134e0c0b6eeb9572a23888de6ad3",
+				"CentOS-Stream-Vagrant-9-20211119.0.x86_64.vagrant-virtualbox.box": "203e2ecad207632cd6866e9971febc1265801e6cb53acf1e37592693809ea8a1",
+				"CentOS-Stream-ec2-9-20211119.0.x86_64.raw.xz":                     "b5fadd02e18a1e65134cc33eb6843820d4b7be57f0531f7a243717fc8887b456",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

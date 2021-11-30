@@ -1,0 +1,20 @@
+# CentOS-Stream-Container-Base-9-20211119.0.x86_64.tar.xz: 37630000 bytes
+SHA256 (CentOS-Stream-Container-Base-9-20211119.0.x86_64.tar.xz) = bd329142ec8e7455cbfb641d286cc74baaf0fac54e8b0bdbc873fc01c61bf19d
+# CentOS-Stream-GenericCloud-9-20211119.0.x86_64.qcow2: 746657280 bytes
+SHA256 (CentOS-Stream-GenericCloud-9-20211119.0.x86_64.qcow2) = 84e67ec05f085bbf2fe42d3a341bfff4a4800ef1957655443638522c4c73e02c
+# CentOS-Stream-Vagrant-9-20211119.0.x86_64.vagrant-libvirt.box: 604677032 bytes
+SHA256 (CentOS-Stream-Vagrant-9-20211119.0.x86_64.vagrant-libvirt.box) = 6e732563b0997996415cfee3f4b7aa722750134e0c0b6eeb9572a23888de6ad3
+# CentOS-Stream-Vagrant-9-20211119.0.x86_64.vagrant-virtualbox.box: 616581120 bytes
+SHA256 (CentOS-Stream-Vagrant-9-20211119.0.x86_64.vagrant-virtualbox.box) = 203e2ecad207632cd6866e9971febc1265801e6cb53acf1e37592693809ea8a1
+# CentOS-Stream-ec2-9-20211119.0.x86_64.raw.xz: 677087576 bytes
+SHA256 (CentOS-Stream-ec2-9-20211119.0.x86_64.raw.xz) = b5fadd02e18a1e65134cc33eb6843820d4b7be57f0531f7a243717fc8887b456
+--2021-11-19 18:16:53--  https://cloud.centos.org/centos/9-stream/x86_64/images/CHECKSUM
+Resolving cloud.centos.org (cloud.centos.org)... 18.188.140.33, 2600:1f16:c1:5e02:ec1b:2c09:2525:64e0
+Connecting to cloud.centos.org (cloud.centos.org)|18.188.140.33|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1553 (1.5K)
+Saving to: â€˜CHECKSUM.3â€™
+
+     0K .                                                     100% 82.3M=0s
+
+2021-11-19 18:16:53 (82.3 MB/s) - â€˜CHECKSUM.3â€™ saved [1553/1553]
