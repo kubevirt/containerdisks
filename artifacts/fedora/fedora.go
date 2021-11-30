@@ -46,9 +46,14 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 	}
 	for _, release := range releases {
 		if f.releaseMatches(&release) {
+			components := strings.Split(release.Link, "/")
+			fileName := components[len(components)-1]
+			additionalTag := strings.TrimSuffix(strings.TrimPrefix(fileName, "Fedora-Cloud-Base-"), ".x86_64.qcow2")
+
 			return &api.ArtifactDetails{
-				SHA256Sum:   release.Sha256,
-				DownloadURL: release.Link,
+				SHA256Sum:            release.Sha256,
+				DownloadURL:          release.Link,
+				AdditionalUniqueTags: []string{additionalTag},
 			}, nil
 		}
 	}

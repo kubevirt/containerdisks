@@ -29,9 +29,10 @@ func Test_Inspect(t *testing.T) {
 			mockFile:      "testdata/centos8.checksum",
 		}, want: want{
 			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:   "3510fc7deb3e1939dbf3fe6f65a02ab1efcc763480bc352e4c06eca2e4f7c2a2",
-				DownloadURL: "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2",
-				Compression: "",
+				SHA256Sum:            "3510fc7deb3e1939dbf3fe6f65a02ab1efcc763480bc352e4c06eca2e4f7c2a2",
+				DownloadURL:          "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2",
+				Compression:          "",
+				AdditionalUniqueTags: []string{"8.4.2105-20210603.0", "8.4.2105"},
 			},
 			metadata: &api.Metadata{
 				Name:    "centos",
@@ -45,9 +46,10 @@ func Test_Inspect(t *testing.T) {
 			mockFile:      "testdata/centos8.checksum",
 		}, want: want{
 			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:   "7ec97062618dc0a7ebf211864abf63629da1f325578868579ee70c495bed3ba0",
-				DownloadURL: "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2",
-				Compression: "",
+				SHA256Sum:            "7ec97062618dc0a7ebf211864abf63629da1f325578868579ee70c495bed3ba0",
+				DownloadURL:          "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2",
+				Compression:          "",
+				AdditionalUniqueTags: []string{"8.3.2011-20201204.2", "8.3.2011"},
 			},
 			metadata: &api.Metadata{
 				Name:    "centos",

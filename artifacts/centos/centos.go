@@ -71,10 +71,21 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	sort.Strings(candidates)
 	candidate := candidates[len(candidates)-1]
 
+	var additionalTags []string
+	if strings.HasPrefix(c.Version, "8.") {
+		additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-8-%s-", c.Variant)), ".x86_64.qcow2")
+		additionalTags = append(additionalTags, additionalTag)
+		split := strings.Split(additionalTag, "-")
+		if len(split) == 2 {
+			additionalTags = append(additionalTags, split[0])
+		}
+	}
+
 	if checksum, exists := checksums[candidate]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:   checksum,
-			DownloadURL: baseURL + candidate,
+			SHA256Sum:            checksum,
+			DownloadURL:          baseURL + candidate,
+			AdditionalUniqueTags: additionalTags,
 		}, nil
 	}
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)

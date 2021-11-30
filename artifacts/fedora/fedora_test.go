@@ -29,9 +29,10 @@ func Test_Inspect(t *testing.T) {
 			mockFile:      "testdata/release.json",
 		}, want: want{
 			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:   "fe84502779b3477284a8d4c86731f642ca10dd3984d2b5eccdf82630a9ca2de6",
-				DownloadURL: "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2",
-				Compression: "",
+				SHA256Sum:            "fe84502779b3477284a8d4c86731f642ca10dd3984d2b5eccdf82630a9ca2de6",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2",
+				Compression:          "",
+				AdditionalUniqueTags: []string{"35-1.2"},
 			},
 			metadata: &api.Metadata{
 				Name:    "fedora",
@@ -45,9 +46,10 @@ func Test_Inspect(t *testing.T) {
 			mockFile:      "testdata/release.json",
 		}, want: want{
 			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:   "b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea",
-				DownloadURL: "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2",
-				Compression: "",
+				SHA256Sum:            "b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2",
+				Compression:          "",
+				AdditionalUniqueTags: []string{"34-1.2"},
 			},
 			metadata: &api.Metadata{
 				Name:    "fedora",

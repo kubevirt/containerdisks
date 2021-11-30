@@ -151,7 +151,7 @@ func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Tim
 	if err != nil {
 		return fmt.Errorf("error creating the containerdisk : %v", err)
 	}
-	names := []string{fmt.Sprintf("%s-%s", imageName, timestamp.Format("0601021504")), imageName}
+	names := prepareTags(timestamp, options.Registry, metadata, artifactInfo)
 	for _, name := range names {
 		logrus.Infof("Pushing %q", name)
 		if !options.DryRun {
@@ -162,6 +162,20 @@ func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Tim
 	}
 
 	return nil
+}
+
+func prepareTags(timestamp time.Time, registry string, metadata *api.Metadata, artifactDetails *api.ArtifactDetails) []string {
+	imageName := path.Join(registry, metadata.Describe())
+	names := []string{fmt.Sprintf("%s-%s", imageName, timestamp.Format("0601021504"))}
+	for _, tag := range artifactDetails.AdditionalUniqueTags {
+		if tag == "" {
+			continue
+		}
+		names = append(names, fmt.Sprintf("%s:%s", path.Join(registry, metadata.Name), tag))
+	}
+	// the least specific tag is last
+	names = append(names, imageName)
+	return names
 }
 
 func logger(artifact api.Artifact) *logrus.Entry {
