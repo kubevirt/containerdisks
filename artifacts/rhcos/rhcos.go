@@ -6,6 +6,7 @@ import (
 
 	"github.com/containers/image/v5/pkg/compression/types"
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"
 	"kubevirt.io/containerdisks/pkg/http"
 )
@@ -18,10 +19,17 @@ type rhcos struct {
 	Compression string
 }
 
+var description string = `RHCOS images for KubeVirt.
+<br />
+<br />
+Visit [https://docs.openshift.com/container-platform/latest/architecture/architecture-rhcos.html) to learn more about Red Hat Enterprise Linux CoreOS.`
+
 func (r *rhcos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:    "rhcos",
-		Version: r.Version,
+		Name:                    "rhcos",
+		Version:                 r.Version,
+		Description:             description,
+		ExampleCloudInitPayload: docs.Ignition(),
 	}
 }
 

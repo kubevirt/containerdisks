@@ -23,6 +23,12 @@ type Metadata struct {
 	Name string
 	// Version is the moving tag on the container image. For example "35".
 	Version string
+
+	// Description of the project in Markdown format
+	Description string
+
+	// CloudInit Payload example
+	ExampleCloudInitPayload string
 }
 
 func (m Metadata) Describe() string {

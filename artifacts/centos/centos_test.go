@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
 
 	. "github.com/onsi/gomega"
@@ -35,8 +36,10 @@ func Test_Inspect(t *testing.T) {
 				AdditionalUniqueTags: []string{"8.4.2105-20210603.0", "8.4.2105"},
 			},
 			metadata: &api.Metadata{
-				Name:    "centos",
-				Version: "8.4",
+				Name:                    "centos",
+				Version:                 "8.4",
+				ExampleCloudInitPayload: docs.CloudInit(),
+				Description:             description,
 			},
 		},
 			wantErr: false,
@@ -52,8 +55,10 @@ func Test_Inspect(t *testing.T) {
 				AdditionalUniqueTags: []string{"8.3.2011-20201204.2", "8.3.2011"},
 			},
 			metadata: &api.Metadata{
-				Name:    "centos",
-				Version: "8.3",
+				Name:                    "centos",
+				Version:                 "8.3",
+				ExampleCloudInitPayload: docs.CloudInit(),
+				Description:             description,
 			},
 		},
 			wantErr: false,
@@ -68,8 +73,10 @@ func Test_Inspect(t *testing.T) {
 				Compression: "",
 			},
 			metadata: &api.Metadata{
-				Name:    "centos",
-				Version: "7-2009",
+				Name:                    "centos",
+				Version:                 "7-2009",
+				ExampleCloudInitPayload: docs.CloudInit(),
+				Description:             description,
 			},
 		},
 			wantErr: false,
@@ -84,8 +91,10 @@ func Test_Inspect(t *testing.T) {
 				Compression: "",
 			},
 			metadata: &api.Metadata{
-				Name:    "centos",
-				Version: "7-1809",
+				Name:                    "centos",
+				Version:                 "7-1809",
+				ExampleCloudInitPayload: docs.CloudInit(),
+				Description:             description,
 			},
 		},
 			wantErr: false,

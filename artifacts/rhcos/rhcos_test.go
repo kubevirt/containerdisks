@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
 
 	. "github.com/onsi/gomega"
@@ -34,8 +35,10 @@ func Test_Inspect(t *testing.T) {
 				Compression: "gzip",
 			},
 			metadata: &api.Metadata{
-				Name:    "rhcos",
-				Version: "4.9",
+				Name:                    "rhcos",
+				Version:                 "4.9",
+				ExampleCloudInitPayload: docs.Ignition(),
+				Description:             description,
 			},
 		},
 			wantErr: false,
@@ -50,8 +53,10 @@ func Test_Inspect(t *testing.T) {
 				Compression: "gzip",
 			},
 			metadata: &api.Metadata{
-				Name:    "rhcos",
-				Version: "4.8",
+				Name:                    "rhcos",
+				Version:                 "4.8",
+				ExampleCloudInitPayload: docs.Ignition(),
+				Description:             description,
 			},
 		},
 			wantErr: false,

@@ -5,18 +5,14 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"kubevirt.io/containerdisks/cmd/medius/common"
+	"kubevirt.io/containerdisks/cmd/medius/docs"
+	"kubevirt.io/containerdisks/cmd/medius/images"
 )
-
-type Options struct {
-	AllowInsecureRegistry bool
-	Registry              string
-	DryRun                bool
-	PublishOptions        PublishOptions
-}
 
 func main() {
 
-	options := &Options{
+	options := &common.Options{
 		AllowInsecureRegistry: false,
 		Registry:              "quay.io/containerdisks",
 		DryRun:                true,
@@ -28,7 +24,23 @@ func main() {
 		Run:   func(cmd *cobra.Command, args []string) {},
 	}
 
-	rootCmd.AddCommand(NewPublishCommand(options))
+	imagesCmd := &cobra.Command{
+		Use: "images",
+		Run: func(cmd *cobra.Command, args []string) {
+			os.Exit(1)
+		},
+	}
+	docsCmd := &cobra.Command{
+		Use: "docs",
+		Run: func(cmd *cobra.Command, args []string) {
+			os.Exit(1)
+		},
+	}
+	rootCmd.AddCommand(imagesCmd)
+	rootCmd.AddCommand(docsCmd)
+
+	imagesCmd.AddCommand(images.NewPublishImagesCommand(options))
+	docsCmd.AddCommand(docs.NewPublishDocsCommand(options))
 
 	rootCmd.PersistentFlags().StringVar(&options.Registry, "registry", options.Registry, "target registry for the containerdisks")
 	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls", options.AllowInsecureRegistry, "allow connecting to insecure registries")
