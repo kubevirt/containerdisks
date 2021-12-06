@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/containers/image/v5/image"
@@ -107,6 +108,17 @@ func IsRepositoryUnknownError(err error) bool {
 	default:
 		return false
 	}
+}
+
+func IsTagUnknownError(err error) bool {
+	e := getErrorCode(err)
+	if e.ErrorCode().Error() == "unknown" {
+		// errors like this have no explicit error handling: "unknown: Tag 5.2 was deleted or has expired. To pull, revive via time machine"
+		if strings.Contains(err.Error(), "was deleted or has expired. To pull, revive via time machine") {
+			return true
+		}
+	}
+	return false
 }
 
 func getErrorCode(err error) errcode.ErrorCoder {
