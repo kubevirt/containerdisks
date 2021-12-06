@@ -100,6 +100,8 @@ func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Tim
 			log.Info("Repository does not yet exist, it will be created")
 		} else if repository.IsManifestUnknownError(err) {
 			log.Info("Tag does not yet exist, it will be created")
+		} else if repository.IsTagUnknownError(err) {
+			log.Info("Tag is gone but seems to have existed already, it will be created")
 		} else {
 			return fmt.Errorf("error introspecting image %q: %v", imageName, err)
 		}
