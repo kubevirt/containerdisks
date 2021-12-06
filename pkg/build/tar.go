@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 )
 
 func StreamLayer(imagePath string) (tarReader io.ReadCloser, errChan chan error) {
@@ -39,8 +40,13 @@ func addFileToTarWriter(filePath string, tarWriter *tar.Writer) error {
 
 	header := &tar.Header{
 		Typeflag: tar.TypeDir,
-		Name:     "disk",
+		Name:     "disk/",
 		Mode:     0555,
+		Uid:      107,
+		Gid:      107,
+		Uname:    "qemu",
+		Gname:    "qemu",
+		ModTime:  time.Now(),
 	}
 
 	err = tarWriter.WriteHeader(header)
