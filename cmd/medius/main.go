@@ -16,6 +16,7 @@ func main() {
 		AllowInsecureRegistry: false,
 		Registry:              "quay.io/containerdisks",
 		DryRun:                true,
+		Focus:                 "",
 	}
 
 	rootCmd := &cobra.Command{
@@ -45,6 +46,7 @@ func main() {
 	rootCmd.PersistentFlags().StringVar(&options.Registry, "registry", options.Registry, "target registry for the containerdisks")
 	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls", options.AllowInsecureRegistry, "allow connecting to insecure registries")
 	rootCmd.PersistentFlags().BoolVar(&options.DryRun, "dry-run", options.DryRun, "don't publish anything")
+	rootCmd.PersistentFlags().StringVar(&options.Focus, "focus", options.Focus, "Focus on a specific containerdisk")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)

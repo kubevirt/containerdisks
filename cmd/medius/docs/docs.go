@@ -34,6 +34,12 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 
 			client := quay.NewQuayClient(options.PublishDocsOptions.TokenFile, elements[1])
 			for _, p := range common.Registry {
+				if options.Focus == "" && p.SkipWhenNotFocused {
+					continue
+				}
+				if options.Focus != "" && options.Focus != p.Artifact.Metadata().Describe() {
+					continue
+				}
 				if !p.UseForDocs {
 					continue
 				}

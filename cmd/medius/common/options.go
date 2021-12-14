@@ -6,11 +6,11 @@ type Options struct {
 	DryRun                bool
 	PublishImagesOptions  PublishImageOptions
 	PublishDocsOptions    PublishDocsOptions
+	Focus                 string
 }
 
 type PublishImageOptions struct {
 	ForceBuild bool
-	Focus      string
 	Workers    int
 }
 

@@ -25,7 +25,6 @@ import (
 func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 	options.PublishImagesOptions = common.PublishImageOptions{
 		ForceBuild: false,
-		Focus:      "",
 		Workers:    1,
 	}
 
@@ -43,7 +42,10 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 			}
 
 			for i, desc := range common.Registry {
-				if options.PublishImagesOptions.Focus != "" && options.PublishImagesOptions.Focus != desc.Artifact.Metadata().Describe() {
+				if options.Focus == "" && desc.SkipWhenNotFocused {
+					continue
+				}
+				if options.Focus != "" && options.Focus != desc.Artifact.Metadata().Describe() {
 					continue
 				}
 				jobChan <- common.Registry[i].Artifact
@@ -61,7 +63,6 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 		},
 	}
 	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.ForceBuild, "force", options.PublishImagesOptions.ForceBuild, "Force a rebuild and push")
-	publishCmd.Flags().StringVar(&options.PublishImagesOptions.Focus, "focus", options.PublishImagesOptions.Focus, "Only build a specific containerdisk")
 	publishCmd.Flags().IntVar(&options.PublishImagesOptions.Workers, "workers", options.PublishImagesOptions.Workers, "Number of parallel workers")
 
 	return publishCmd
