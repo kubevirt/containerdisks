@@ -11,7 +11,7 @@ To run it in dry-run mode (the default), run:
 
 ```bash
 make medius
-bin/medius publish
+bin/medius images push
 ```
 
 Its main tasks for all onboarded containerdisks are:
@@ -27,7 +27,7 @@ Its main tasks for all onboarded containerdisks are:
 
 To add a new containerdisk the interface [api.Artifact](pkg/api/artifacts.go)
 interface needs to be implemented. The resulting implementation needs to
-be [registered](cmd/medius/registry.go). That's it.
+be [registered](cmd/medius/common/registry.go). That's it.
 The [fedora](artifacts/fedora/fedora.go) is a good example to check out.
 
 ### Criterias for onboarding
@@ -50,13 +50,13 @@ for kubevirt will not be published anymore.
 To publish all images to a custom local registry call `medius` like this:
 
 ```bash
-publish --registry=localhost:49501 --dry-run=false --insecure-skip-tls --workers=3
+bin/medius images push --registry=localhost:49501 --dry-run=false --insecure-skip-tls --workers=3
 ```
 
 To publish a specific image run, make use of `--focus`:
 
 ```bash
-publish --registry=localhost:49501 --dry-run=false --insecure-skip-tls --focus=fedore:35
+bin/medius images push --registry=localhost:49501 --dry-run=false --insecure-skip-tls --focus=fedore:35
 ```
 
 ### Scaling considerations
@@ -78,3 +78,9 @@ still trying to publish as many healthy images as possible:
 * The command will not abort completely when a containerdisk can't be pushed, it
   will only proceed to the next one
 * It will not re-upload containerdisks when the artifcts did not change
+
+## Publishing the containerdisk documentation to quay.io
+
+```bash
+bin/medius docs publish --dry-run=false --quay-token-file=oaut_token.txt
+```

@@ -14,7 +14,8 @@ done
 
 opts=""
 if [ -z "${BUILD_ONLY}" ]; then
+  make test
   opts="--dry-run=false"
 fi
 make medius
-./bin/medius publish ${opts} --workers 3
+./bin/medius images push ${opts} --workers 3

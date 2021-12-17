@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
 
 	. "github.com/onsi/gomega"
@@ -35,8 +36,10 @@ func Test_Inspect(t *testing.T) {
 				AdditionalUniqueTags: []string{"35-1.2"},
 			},
 			metadata: &api.Metadata{
-				Name:    "fedora",
-				Version: "35",
+				Name:                    "fedora",
+				Version:                 "35",
+				ExampleCloudInitPayload: docs.CloudInit(),
+				Description:             description,
 			},
 		},
 			wantErr: false,
@@ -52,8 +55,10 @@ func Test_Inspect(t *testing.T) {
 				AdditionalUniqueTags: []string{"34-1.2"},
 			},
 			metadata: &api.Metadata{
-				Name:    "fedora",
-				Version: "34",
+				Name:                    "fedora",
+				Version:                 "34",
+				ExampleCloudInitPayload: docs.CloudInit(),
+				Description:             description,
 			},
 		},
 			wantErr: false,

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
 )
 
@@ -28,10 +29,17 @@ type fedora struct {
 	Variant string
 }
 
+var description string = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/240px-Fedora_logo.svg.png" alt="drawing" width="15"/> Fedora [Cloud](https://alt.fedoraproject.org/cloud/) images for KubeVirt.
+<br />
+<br />
+Visit [getfedora.org](https://getfedora.org/) to learn more about the Fedora project.`
+
 func (f *fedora) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:    "fedora",
-		Version: f.Version,
+		Name:                    "fedora",
+		Version:                 f.Version,
+		Description:             description,
+		ExampleCloudInitPayload: docs.CloudInit(),
 	}
 }
 

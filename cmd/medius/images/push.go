@@ -1,4 +1,4 @@
-package main
+package images
 
 import (
 	"compress/gzip"
@@ -15,43 +15,40 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/ulikunitz/xz"
+	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/build"
 	"kubevirt.io/containerdisks/pkg/http"
 	"kubevirt.io/containerdisks/pkg/repository"
 )
 
-type PublishOptions struct {
-	ForceBuild bool
-	Focus      string
-	Workers    int
-}
-
-func NewPublishCommand(options *Options) *cobra.Command {
-	options.PublishOptions = PublishOptions{
+func NewPublishImagesCommand(options *common.Options) *cobra.Command {
+	options.PublishImagesOptions = common.PublishImageOptions{
 		ForceBuild: false,
-		Focus:      "",
 		Workers:    1,
 	}
 
 	publishCmd := &cobra.Command{
-		Use:   "publish",
-		Short: "Determine if containerdisks need an update and publish all which need one",
+		Use:   "push",
+		Short: "Determine if containerdisks need an update and push an update to the target registry if needed",
 		Run: func(cmd *cobra.Command, args []string) {
-			errChan := make(chan error, options.PublishOptions.Workers)
-			jobChan := make(chan api.Artifact, options.PublishOptions.Workers)
+			errChan := make(chan error, options.PublishImagesOptions.Workers)
+			jobChan := make(chan api.Artifact, options.PublishImagesOptions.Workers)
 
 			wg := &sync.WaitGroup{}
-			wg.Add(options.PublishOptions.Workers)
-			for x := 0; x < options.PublishOptions.Workers; x++ {
+			wg.Add(options.PublishImagesOptions.Workers)
+			for x := 0; x < options.PublishImagesOptions.Workers; x++ {
 				go worker(wg, jobChan, options, errChan)
 			}
 
-			for i, desc := range registry {
-				if options.PublishOptions.Focus != "" && options.PublishOptions.Focus != desc.Metadata().Describe() {
+			for i, desc := range common.Registry {
+				if options.Focus == "" && desc.SkipWhenNotFocused {
 					continue
 				}
-				jobChan <- registry[i]
+				if options.Focus != "" && options.Focus != desc.Artifact.Metadata().Describe() {
+					continue
+				}
+				jobChan <- common.Registry[i].Artifact
 			}
 			close(jobChan)
 
@@ -65,26 +62,25 @@ func NewPublishCommand(options *Options) *cobra.Command {
 			}
 		},
 	}
-	publishCmd.Flags().BoolVar(&options.PublishOptions.ForceBuild, "force", options.PublishOptions.ForceBuild, "Force a rebuild and push")
-	publishCmd.Flags().StringVar(&options.PublishOptions.Focus, "focus", options.PublishOptions.Focus, "Only build a specific containerdisk")
-	publishCmd.Flags().IntVar(&options.PublishOptions.Workers, "workers", options.PublishOptions.Workers, "Number of parallel workers")
+	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.ForceBuild, "force", options.PublishImagesOptions.ForceBuild, "Force a rebuild and push")
+	publishCmd.Flags().IntVar(&options.PublishImagesOptions.Workers, "workers", options.PublishImagesOptions.Workers, "Number of parallel workers")
 
 	return publishCmd
 }
 
-func worker(wg *sync.WaitGroup, job chan api.Artifact, options *Options, errChan chan error) {
+func worker(wg *sync.WaitGroup, job chan api.Artifact, options *common.Options, errChan chan error) {
 	defer wg.Done()
 	for a := range job {
 		if err := buildAndPublish(a, options, time.Now()); err != nil {
-			logger(a).Error(err)
+			common.Logger(a).Error(err)
 			errChan <- err
 		}
 	}
 }
 
-func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Time) error {
+func buildAndPublish(artifact api.Artifact, options *common.Options, timestamp time.Time) error {
 	metadata := artifact.Metadata()
-	log := logger(artifact)
+	log := common.Logger(artifact)
 
 	imageName := path.Join(options.Registry, metadata.Describe())
 	artifactInfo, err := artifact.Inspect()
@@ -109,7 +105,7 @@ func buildAndPublish(artifact api.Artifact, options *Options, timestamp time.Tim
 		log.Infof("Latest containerdisk checksum: %q", imageInfo.Labels["shasum"])
 		imageSha = imageInfo.Labels["shasum"]
 	}
-	if artifactInfo.SHA256Sum == imageSha && !options.PublishOptions.ForceBuild {
+	if artifactInfo.SHA256Sum == imageSha && !options.PublishImagesOptions.ForceBuild {
 		log.Info("Nothing to do.")
 		return nil
 	}
@@ -178,14 +174,4 @@ func prepareTags(timestamp time.Time, registry string, metadata *api.Metadata, a
 	// the least specific tag is last
 	names = append(names, imageName)
 	return names
-}
-
-func logger(artifact api.Artifact) *logrus.Entry {
-	metadata := artifact.Metadata()
-	return logrus.WithFields(
-		logrus.Fields{
-			"name":    metadata.Name,
-			"version": metadata.Version,
-		},
-	)
 }
