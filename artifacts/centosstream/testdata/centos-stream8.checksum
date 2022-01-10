@@ -1,0 +1,40 @@
+# CentOS-Stream-ec2-8-20200113.0.x86_64.qcow2: 713256K 
+SHA256 (CentOS-Stream-ec2-8-20200113.0.x86_64.qcow2) = 8546f047b1a08f5f9ea4339fc46b1ccd6ced5046f2e4aac3feb1929663a23abe
+# CentOS-Stream-GenericCloud-8-20200113.0.x86_64.qcow2: 722624K 
+SHA256 (CentOS-Stream-GenericCloud-8-20200113.0.x86_64.qcow2) = b80ca9ccad8715aa1aeee582906096d3190b91cebe05fcb3ac7cb197fd68a7fe
+# CentOS-Stream-Vagrant-8-20200113.0.x86_64.vagrant-libvirt.box: 476188K 
+SHA256 (CentOS-Stream-Vagrant-8-20200113.0.x86_64.vagrant-libvirt.box) = b7368505471951391dc7b22363a5bb04da5706e90c0a731b653597707219e151
+# CentOS-Stream-Vagrant-8-20200113.0.x86_64.vagrant-virtualbox.box: 493996K 
+SHA256 (CentOS-Stream-Vagrant-8-20200113.0.x86_64.vagrant-virtualbox.box) = 168007a2185044c29f3019a8e054de1c0a778fee4046bee654a8ed2d09b26239
+# CentOS-Stream-ec2-8-20201019.1.x86_64.qcow2: 1304612K 
+SHA256 (CentOS-Stream-ec2-8-20201019.1.x86_64.qcow2) = d927f675f653a7f7a1bd3ea1ca41591d1e7658c875a92c2e9db64c681ddd26a0
+# CentOS-Stream-GenericCloud-8-20201019.1.x86_64.qcow2: 1272164K 
+SHA256 (CentOS-Stream-GenericCloud-8-20201019.1.x86_64.qcow2) = 68e5d217f8777789cbe5c47cda8776f4acfefa3968b7cef751ba08f651d0cf5a
+# CentOS-Stream-Vagrant-8-20201019.1.x86_64.vagrant-libvirt.box: 888580K 
+SHA256 (CentOS-Stream-Vagrant-8-20201019.1.x86_64.vagrant-libvirt.box) = a333278f15d685b827898150ed8688bbb94954fce42cc732fcfcf0bf4e409619
+# CentOS-Stream-Vagrant-8-20201019.1.x86_64.vagrant-virtualbox.box: 909904K 
+SHA256 (CentOS-Stream-Vagrant-8-20201019.1.x86_64.vagrant-virtualbox.box) = 96d388ff2170430f032149323ffbba20309b8e0da924e1ad6ec5f024936c2648
+# CentOS-Stream-ec2-8-20201217.0.x86_64.qcow2: 1355388K 
+SHA256 (CentOS-Stream-ec2-8-20201217.0.x86_64.qcow2) = f0c42947c2c5fd97ac18f02f8d307cfba23246a1ba7eca05d422aa03135b4139
+# CentOS-Stream-GenericCloud-8-20201217.0.x86_64.qcow2: 1311888K 
+SHA256 (CentOS-Stream-GenericCloud-8-20201217.0.x86_64.qcow2) = 9711ac5c7aa97c7132e9f6da66a9f9ebc278d7f45d8c10cfadf277503e384003
+# CentOS-Stream-Vagrant-8-20201217.0.x86_64.vagrant-libvirt.box: 945084K 
+SHA256 (CentOS-Stream-Vagrant-8-20201217.0.x86_64.vagrant-libvirt.box) = 58aac9f8fe0712b80a4fb415114e1d5c9777633c9dfa5c0333441cd7da830c0f
+# CentOS-Stream-Vagrant-8-20201217.0.x86_64.vagrant-virtualbox.box: 967804K 
+SHA256 (CentOS-Stream-Vagrant-8-20201217.0.x86_64.vagrant-virtualbox.box) = 9e4d9b9dadad431b1234249e3d68bb24a03ae64dc55146751dc70760db2b5856
+# CentOS-Stream-ec2-8-20210210.0.x86_64.qcow2: 1347728K 
+SHA256 (CentOS-Stream-ec2-8-20210210.0.x86_64.qcow2) = c7a1212940e177d95cc24599e1a7a04b6195b4d71bf9549dfda7d39035155411
+# CentOS-Stream-GenericCloud-8-20210210.0.x86_64.qcow2: 1323720K 
+SHA256 (CentOS-Stream-GenericCloud-8-20210210.0.x86_64.qcow2) = c02b29ffc014761895d67a5294f1957b246f8dbcf33b6e26520bba05d7f627ad
+# CentOS-Stream-Vagrant-8-20210210.0.x86_64.vagrant-libvirt.box: 924216K 
+SHA256 (CentOS-Stream-Vagrant-8-20210210.0.x86_64.vagrant-libvirt.box) = 39812e8ac8ba486459ac1af599e4038b20c1638ccae44d9f8a97dae2c9f13bc3
+# CentOS-Stream-Vagrant-8-20210210.0.x86_64.vagrant-virtualbox.box: 946224K 
+SHA256 (CentOS-Stream-Vagrant-8-20210210.0.x86_64.vagrant-virtualbox.box) = 4ba18cc4bde5f634580b0a6142f328c84d594d75c4775e87f9a4cb26714ad423
+# CentOS-Stream-ec2-8-20210603.0.x86_64.qcow2: 1357236K 
+SHA256 (CentOS-Stream-ec2-8-20210603.0.x86_64.qcow2) = 18787be94d5a7be03b97c7653d618f7d27f1101dd13e217e7231c4d3dda5ab2c
+# CentOS-Stream-GenericCloud-8-20210603.0.x86_64.qcow2: 1323112K 
+SHA256 (CentOS-Stream-GenericCloud-8-20210603.0.x86_64.qcow2) = 8e22e67687b81e38c7212fc30c47cb24cbc4935c0f2459ed139f498397d1e7cd
+# CentOS-Stream-Vagrant-8-20210603.0.x86_64.vagrant-libvirt.box: 925704K 
+SHA256 (CentOS-Stream-Vagrant-8-20210603.0.x86_64.vagrant-libvirt.box) = faeef8493ffd05644e86a9dbf94df240391e33ae68388aa07d0364b83ecb4db0
+# CentOS-Stream-Vagrant-8-20210603.0.x86_64.vagrant-virtualbox.box: 947556K 
+SHA256 (CentOS-Stream-Vagrant-8-20210603.0.x86_64.vagrant-virtualbox.box) = 8b6c65957b55bc3d54d8e2b0cefe1e3ec2e01d7f8ae3adecf9162f8629d22857

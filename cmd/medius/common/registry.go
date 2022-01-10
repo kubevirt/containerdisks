@@ -2,6 +2,7 @@ package common
 
 import (
 	"kubevirt.io/containerdisks/artifacts/centos"
+	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
 	"kubevirt.io/containerdisks/artifacts/rhcos"
@@ -30,6 +31,13 @@ var Registry = []Entry{
 	{
 		Artifact:   centos.New("7-2009"),
 		UseForDocs: false,
+	},
+	{
+		Artifact: centosstream.New("9"),
+	},
+	{
+		Artifact:   centosstream.New("8"),
+		UseForDocs: true,
 	},
 	//for testing only
 	{
