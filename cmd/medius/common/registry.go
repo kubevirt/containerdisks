@@ -6,6 +6,7 @@ import (
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
 	"kubevirt.io/containerdisks/artifacts/rhcos"
+	"kubevirt.io/containerdisks/artifacts/rhcosprerelease"
 	"kubevirt.io/containerdisks/pkg/api"
 )
 
@@ -23,6 +24,18 @@ var Registry = []Entry{
 	{
 		Artifact:   rhcos.New("4.9"),
 		UseForDocs: true,
+	},
+	{
+		Artifact:   rhcosprerelease.New("latest-4.9"),
+		UseForDocs: true,
+	},
+	{
+		Artifact:   rhcosprerelease.New("latest-4.10"),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   rhcosprerelease.New("latest"),
+		UseForDocs: false,
 	},
 	{
 		Artifact:   centos.New("8.4"),
