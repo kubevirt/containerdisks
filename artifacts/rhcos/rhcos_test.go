@@ -30,9 +30,10 @@ func Test_Inspect(t *testing.T) {
 			mockFile:      "testdata/rhcos-4.9.checksum",
 		}, want: want{
 			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:   "3466690807fb710102559ea57daac0484c59ed4d914996882d601b8bb7a7ada8",
-				DownloadURL: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.9/latest/rhcos-openstack.x86_64.qcow2.gz",
-				Compression: "gzip",
+				SHA256Sum:            "3466690807fb710102559ea57daac0484c59ed4d914996882d601b8bb7a7ada8",
+				DownloadURL:          "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.9/latest/rhcos-openstack.x86_64.qcow2.gz",
+				Compression:          "gzip",
+				AdditionalUniqueTags: []string{"3466690807fb710102559ea57daac0484c59ed4d914996882d601b8bb7a7ada8"},
 			},
 			metadata: &api.Metadata{
 				Name:                    "rhcos",
@@ -48,9 +49,10 @@ func Test_Inspect(t *testing.T) {
 			mockFile:      "testdata/rhcos-4.8.checksum",
 		}, want: want{
 			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:   "99da4ed945b391d452e55a3a7809c799e4c74f69acbee1ecaec78f368c4e369e",
-				DownloadURL: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/latest/rhcos-openstack.x86_64.qcow2.gz",
-				Compression: "gzip",
+				SHA256Sum:            "99da4ed945b391d452e55a3a7809c799e4c74f69acbee1ecaec78f368c4e369e",
+				DownloadURL:          "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/latest/rhcos-openstack.x86_64.qcow2.gz",
+				Compression:          "gzip",
+				AdditionalUniqueTags: []string{"99da4ed945b391d452e55a3a7809c799e4c74f69acbee1ecaec78f368c4e369e"},
 			},
 			metadata: &api.Metadata{
 				Name:                    "rhcos",

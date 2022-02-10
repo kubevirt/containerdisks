@@ -46,9 +46,10 @@ func (r *rhcos) Inspect() (*api.ArtifactDetails, error) {
 	}
 	if checksum, exists := checksums[r.Variant]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:   checksum,
-			DownloadURL: baseURL + r.Variant,
-			Compression: r.Compression,
+			SHA256Sum:            checksum,
+			DownloadURL:          baseURL + r.Variant,
+			Compression:          r.Compression,
+			AdditionalUniqueTags: []string{checksum},
 		}, nil
 	}
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", r.Variant, err)
