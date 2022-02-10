@@ -27,8 +27,8 @@ Visit [https://docs.openshift.com/container-platform/latest/architecture/archite
 
 func (r *rhcos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                    "rhcos-pre-release",
-		Version:                 strings.TrimPrefix(r.Version, "latest-"),
+		Name:                    "rhcos",
+		Version:                 strings.TrimPrefix(r.Version, "latest-") + "-pre-release",
 		Description:             description,
 		ExampleCloudInitPayload: docs.Ignition(),
 	}
@@ -64,9 +64,13 @@ func (r *rhcos) Inspect() (*api.ArtifactDetails, error) {
 
 		if checksum == artifact.SHA256Sum {
 			additionalTag := strings.TrimSuffix(strings.TrimPrefix(variant, "rhcos-"), "-x86_64-openstack.x86_64.qcow2.gz")
+			if !strings.Contains(additionalTag, "rc.") {
+				continue
+			}
 			artifact.AdditionalUniqueTags = append(artifact.AdditionalUniqueTags, additionalTag)
 		}
 	}
+	artifact.AdditionalUniqueTags = append(artifact.AdditionalUniqueTags, artifact.SHA256Sum)
 	return artifact, nil
 }
 
