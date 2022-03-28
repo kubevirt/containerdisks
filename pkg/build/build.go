@@ -11,6 +11,10 @@ import (
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
 )
 
+const (
+	LabelShaSum = "shasum"
+)
+
 func BuildContainerDisk(imgPath string, checksum string) (v1.Image, error) {
 	img := empty.Image
 	layerStream, errChan := StreamLayer(imgPath)
@@ -23,7 +27,8 @@ func BuildContainerDisk(imgPath string, checksum string) (v1.Image, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error appending the image layer: %v", err)
 	}
-	img, err = mutate.Config(img, v1.Config{Labels: map[string]string{"shasum": checksum}})
+
+	img, err = mutate.Config(img, v1.Config{Labels: map[string]string{LabelShaSum: checksum}})
 	if err != nil {
 		return nil, fmt.Errorf("error appending labels to the image: %v", err)
 	}

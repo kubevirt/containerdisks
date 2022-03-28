@@ -68,8 +68,8 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 			return fmt.Errorf("error introspecting image %q: %v", imageName, err)
 		}
 	} else {
-		log.Infof("Latest containerdisk checksum: %q", imageInfo.Labels["shasum"])
-		imageSha = imageInfo.Labels["shasum"]
+		log.Infof("Latest containerdisk checksum: %q", imageInfo.Labels[build.LabelShaSum])
+		imageSha = imageInfo.Labels[build.LabelShaSum]
 	}
 	if artifactInfo.SHA256Sum == imageSha && !options.PublishImagesOptions.ForceBuild {
 		log.Info("Nothing to do.")
