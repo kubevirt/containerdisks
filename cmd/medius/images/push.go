@@ -130,7 +130,7 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 	for _, name := range names {
 		if !options.DryRun {
 			log.Infof("Pushing %s", name)
-			if err := build.PushImage(context.Background(), containerDisk, name); err != nil {
+			if err := repo.PushImage(containerDisk, name); err != nil {
 				return err
 			}
 		} else {

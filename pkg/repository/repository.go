@@ -11,6 +11,8 @@ import (
 	"github.com/containers/image/v5/types"
 	"github.com/docker/distribution/registry/api/errcode"
 	v2 "github.com/docker/distribution/registry/api/v2"
+	"github.com/google/go-containerregistry/pkg/crane"
+	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/pkg/errors"
 )
 
@@ -26,13 +28,14 @@ type ImageInfo struct {
 }
 
 type Repository interface {
-	ImageMetadata(imageRef string) (*ImageInfo, error)
+	ImageMetadata(imgRef string) (*ImageInfo, error)
+	PushImage(img v1.Image, imgRef string) error
 }
 
 type RepositoryImpl struct {
 }
 
-func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo *ImageInfo, retErr error) {
+func (r RepositoryImpl) ImageMetadata(imgRef string, insecure bool) (imageInfo *ImageInfo, retErr error) {
 	sys := &types.SystemContext{
 		OCIInsecureSkipTLSVerify: insecure,
 	}
@@ -40,7 +43,7 @@ func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo
 		sys.DockerInsecureSkipTLSVerify = types.OptionalBoolTrue
 	}
 	ctx := context.Background()
-	src, err := parseImageSource(ctx, sys, fmt.Sprintf("docker://%s", imageRef))
+	src, err := parseImageSource(ctx, sys, fmt.Sprintf("docker://%s", imgRef))
 	if err != nil {
 		return nil, errors.Wrapf(err, "error parsing image")
 	}
@@ -72,6 +75,14 @@ func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo
 	}
 
 	return imageInfo, nil
+}
+
+func (r RepositoryImpl) PushImage(img v1.Image, imgRef string) error {
+	if err := crane.Push(img, imgRef, crane.WithContext(context.Background())); err != nil {
+		return fmt.Errorf("error pushing image %q: %v", img, err)
+	}
+
+	return nil
 }
 
 func parseImageSource(ctx context.Context, sys *types.SystemContext, name string) (types.ImageSource, error) {

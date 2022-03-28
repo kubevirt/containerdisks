@@ -1,10 +1,8 @@
 package build
 
 import (
-	"context"
 	"fmt"
 
-	"github.com/google/go-containerregistry/pkg/crane"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
@@ -36,12 +34,6 @@ func BuildContainerDisk(imgPath string, checksum string) (v1.Image, error) {
 	if err := <-errChan; err != nil {
 		return nil, fmt.Errorf("error creating the tar file with the disk: %v", err)
 	}
-	return img, nil
-}
 
-func PushImage(ctx context.Context, img v1.Image, name string) error {
-	if err := crane.Push(img, name, crane.WithContext(ctx)); err != nil {
-		return fmt.Errorf("error pushing image %q: %v", img, err)
-	}
-	return nil
+	return img, nil
 }
