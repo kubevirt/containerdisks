@@ -151,11 +151,13 @@ func buildAndPublish(artifact api.Artifact, options *common.Options, timestamp t
 	}
 	names := prepareTags(timestamp, options.Registry, metadata, artifactInfo)
 	for _, name := range names {
-		logrus.Infof("Pushing %q", name)
 		if !options.DryRun {
+			log.Infof("Pushing %s", name)
 			if err := build.PushImage(context.Background(), containerDisk, name); err != nil {
 				return err
 			}
+		} else {
+			log.Infof("Dry run enabled, not pushing %s", name)
 		}
 	}
 
