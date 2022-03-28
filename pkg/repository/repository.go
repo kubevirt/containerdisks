@@ -57,7 +57,7 @@ func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo
 	}
 	imgInspect, err := img.Inspect(ctx)
 	if err != nil {
-		return nil, errors.Wrapf(err, "Error inpspecting image")
+		return nil, errors.Wrapf(err, "Error inspecting image")
 	}
 	imageInfo = &ImageInfo{
 		Tag: imgInspect.Tag,
