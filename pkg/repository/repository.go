@@ -88,6 +88,7 @@ func IsManifestUnknownError(err error) bool {
 	if ec == nil {
 		return false
 	}
+
 	switch ec.ErrorCode() {
 	case v2.ErrorCodeManifestUnknown:
 		return true
@@ -111,8 +112,12 @@ func IsRepositoryUnknownError(err error) bool {
 }
 
 func IsTagUnknownError(err error) bool {
-	e := getErrorCode(err)
-	if e.ErrorCode().Error() == "unknown" {
+	ec := getErrorCode(err)
+	if ec == nil {
+		return false
+	}
+
+	if ec.ErrorCode().Error() == "unknown" {
 		// errors like this have no explicit error handling: "unknown: Tag 5.2 was deleted or has expired. To pull, revive via time machine"
 		if strings.Contains(err.Error(), "was deleted or has expired. To pull, revive via time machine") {
 			return true
