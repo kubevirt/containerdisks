@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"os"
+	"os/signal"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/cmd/medius/docs"
@@ -11,12 +13,12 @@ import (
 )
 
 func main() {
-
 	options := &common.Options{
 		AllowInsecureRegistry: false,
 		Registry:              "quay.io/containerdisks",
 		DryRun:                true,
 		Focus:                 "",
+		Workers:               1,
 	}
 
 	rootCmd := &cobra.Command{
@@ -47,10 +49,35 @@ func main() {
 	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls", options.AllowInsecureRegistry, "allow connecting to insecure registries")
 	rootCmd.PersistentFlags().BoolVar(&options.DryRun, "dry-run", options.DryRun, "don't publish anything")
 	rootCmd.PersistentFlags().StringVar(&options.Focus, "focus", options.Focus, "Focus on a specific containerdisk")
+	rootCmd.PersistentFlags().IntVar(&options.Workers, "workers", options.Workers, "Number of parallel workers")
 
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+	ctx, cancel := getInterruptibleContext()
+	defer cancel()
+
+	if err := rootCmd.ExecuteContext(ctx); err != nil {
+		logrus.Fatal(err)
+	}
+}
+
+func getInterruptibleContext() (context.Context, func()) {
+	ctx := context.Background()
+	ctx, cancelCtx := context.WithCancel(ctx)
+
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, os.Interrupt)
+
+	cancel := func() {
+		signal.Stop(signalChan)
+		cancelCtx()
 	}
 
+	go func() {
+		select {
+		case <-signalChan:
+			cancelCtx()
+		case <-ctx.Done():
+		}
+	}()
+
+	return ctx, cancel
 }

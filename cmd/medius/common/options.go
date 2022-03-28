@@ -7,11 +7,11 @@ type Options struct {
 	PublishImagesOptions  PublishImageOptions
 	PublishDocsOptions    PublishDocsOptions
 	Focus                 string
+	Workers               int
 }
 
 type PublishImageOptions struct {
 	ForceBuild bool
-	Workers    int
 }
 
 type PublishDocsOptions struct {
