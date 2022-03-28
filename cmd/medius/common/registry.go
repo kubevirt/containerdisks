@@ -23,6 +23,10 @@ var Registry = []Entry{
 	},
 	{
 		Artifact:   rhcos.New("4.9"),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   rhcos.New("4.10"),
 		UseForDocs: true,
 	},
 	{
