@@ -2,6 +2,9 @@ package api
 
 import (
 	"fmt"
+
+	v1 "kubevirt.io/api/core/v1"
+	"kubevirt.io/containerdisks/pkg/docs"
 )
 
 type ArtifactDetails struct {
@@ -23,12 +26,10 @@ type Metadata struct {
 	Name string
 	// Version is the moving tag on the container image. For example "35".
 	Version string
-
 	// Description of the project in Markdown format
 	Description string
-
-	// CloudInit Payload example
-	ExampleCloudInitPayload string
+	// CloudInit/Ignition Payload example
+	ExampleUserDataPayload string
 }
 
 func (m Metadata) Describe() string {
@@ -38,4 +39,6 @@ func (m Metadata) Describe() string {
 type Artifact interface {
 	Inspect() (*ArtifactDetails, error)
 	Metadata() *Metadata
+	VM(name, imgRef, userData string) *v1.VirtualMachine
+	UserData(data *docs.UserData) string
 }

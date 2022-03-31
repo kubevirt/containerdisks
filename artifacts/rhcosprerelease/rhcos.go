@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/containers/image/v5/pkg/compression/types"
+	v1 "kubevirt.io/api/core/v1"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"
@@ -27,10 +28,10 @@ Visit [https://docs.openshift.com/container-platform/latest/architecture/archite
 
 func (r *rhcos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                    "rhcos",
-		Version:                 strings.TrimPrefix(r.Version, "latest-") + "-pre-release",
-		Description:             description,
-		ExampleCloudInitPayload: docs.Ignition(),
+		Name:                   "rhcos",
+		Version:                strings.TrimPrefix(r.Version, "latest-") + "-pre-release",
+		Description:            description,
+		ExampleUserDataPayload: r.UserData(&docs.UserData{}),
 	}
 }
 
@@ -72,6 +73,19 @@ func (r *rhcos) Inspect() (*api.ArtifactDetails, error) {
 	}
 	artifact.AdditionalUniqueTags = append(artifact.AdditionalUniqueTags, artifact.SHA256Sum)
 	return artifact, nil
+}
+
+func (r *rhcos) VM(name, imgRef, userData string) *v1.VirtualMachine {
+	return docs.NewVM(
+		name,
+		imgRef,
+		docs.WithRng(),
+		docs.WithCloudInitConfigDrive(userData),
+	)
+}
+
+func (r *rhcos) UserData(data *docs.UserData) string {
+	return docs.Ignition(data)
 }
 
 func New(release string) *rhcos {

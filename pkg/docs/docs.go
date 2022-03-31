@@ -2,6 +2,7 @@ package docs
 
 import (
 	_ "embed"
+	"strconv"
 	"strings"
 	"text/template"
 
@@ -12,16 +13,39 @@ import (
 	v1 "kubevirt.io/api/core/v1"
 )
 
-//go:embed data/cloudinit.txt
-var cloudinitFixture string
+type TemplateData struct {
+	Name        string
+	Description string
+	Example     string
+}
 
-//go:embed data/ignition.txt
-var ignitionFixture string
+type UserData struct {
+	Username       string
+	AuthorizedKeys []string
+}
 
-//go:embed data/descripiton.tpl
-var defaultTemplate string
+type Option func(vm *v1.VirtualMachine)
 
-func BasicVirtualMachine(name, image, userData string) *v1.VirtualMachine {
+//go:embed data/cloudinit.tpl
+var cloudinitTemplate string
+
+//go:embed data/ignition.tpl
+var ignitionTemplate string
+
+//go:embed data/description.tpl
+var descriptionTemplate string
+
+func NewVM(name, image string, opts ...Option) *v1.VirtualMachine {
+	vm := BasicVM(name, image)
+
+	for _, opt := range opts {
+		opt(vm)
+	}
+
+	return vm
+}
+
+func BasicVM(name, image string) *v1.VirtualMachine {
 	always := v1.RunStrategyAlways
 	return &v1.VirtualMachine{
 		TypeMeta: metav1.TypeMeta{
@@ -40,21 +64,12 @@ func BasicVirtualMachine(name, image, userData string) *v1.VirtualMachine {
 						Resources: v1.ResourceRequirements{
 							Requests: map[k8sv1.ResourceName]resource.Quantity{
 								k8sv1.ResourceMemory: resource.MustParse("1Gi"),
-								k8sv1.ResourceCPU:    resource.MustParse("2"),
 							},
 						},
 						Devices: v1.Devices{
 							Disks: []v1.Disk{
 								{
 									Name: "containerdisk",
-									DiskDevice: v1.DiskDevice{
-										Disk: &v1.DiskTarget{
-											Bus: "virtio",
-										},
-									},
-								},
-								{
-									Name: "cloudinit",
 									DiskDevice: v1.DiskDevice{
 										Disk: &v1.DiskTarget{
 											Bus: "virtio",
@@ -73,14 +88,6 @@ func BasicVirtualMachine(name, image, userData string) *v1.VirtualMachine {
 								},
 							},
 						},
-						{
-							Name: "cloudinit",
-							VolumeSource: v1.VolumeSource{
-								CloudInitNoCloud: &v1.CloudInitNoCloudSource{
-									UserData: userData,
-								},
-							},
-						},
 					},
 				},
 			},
@@ -88,27 +95,125 @@ func BasicVirtualMachine(name, image, userData string) *v1.VirtualMachine {
 	}
 }
 
-func CloudInit() string {
-	return cloudinitFixture
+func WithRng() Option {
+	return func(vm *v1.VirtualMachine) {
+		vm.Spec.Template.Spec.Domain.Devices.Rng = &v1.Rng{}
+	}
 }
 
-func Ignition() string {
-	return ignitionFixture
+func WithCloudInitNoCloud(userData string) Option {
+	return func(vm *v1.VirtualMachine) {
+		vm.Spec.Template.Spec.Domain.Devices.Disks = append(
+			vm.Spec.Template.Spec.Domain.Devices.Disks,
+			v1.Disk{
+				Name: "cloudinit",
+				DiskDevice: v1.DiskDevice{
+					Disk: &v1.DiskTarget{
+						Bus: "virtio",
+					},
+				},
+			},
+		)
+		vm.Spec.Template.Spec.Volumes = append(
+			vm.Spec.Template.Spec.Volumes,
+			v1.Volume{
+				Name: "cloudinit",
+				VolumeSource: v1.VolumeSource{
+					CloudInitNoCloud: &v1.CloudInitNoCloudSource{
+						UserData: userData,
+					},
+				},
+			},
+		)
+	}
+}
+
+func WithCloudInitConfigDrive(userData string) Option {
+	return func(vm *v1.VirtualMachine) {
+		vm.Spec.Template.Spec.Domain.Devices.Disks = append(
+			vm.Spec.Template.Spec.Domain.Devices.Disks,
+			v1.Disk{
+				Name: "cloudinit",
+				DiskDevice: v1.DiskDevice{
+					Disk: &v1.DiskTarget{
+						Bus: "virtio",
+					},
+				},
+			},
+		)
+		vm.Spec.Template.Spec.Volumes = append(
+			vm.Spec.Template.Spec.Volumes,
+			v1.Volume{
+				Name: "cloudinit",
+				VolumeSource: v1.VolumeSource{
+					CloudInitConfigDrive: &v1.CloudInitConfigDriveSource{
+						UserData: userData,
+					},
+				},
+			},
+		)
+	}
+}
+
+func WithSecureBoot() Option {
+	return func(vm *v1.VirtualMachine) {
+		vm.Spec.Template.Spec.Domain.Features = &v1.Features{
+			SMM: &v1.FeatureState{
+				Enabled: pointer.Bool(true),
+			},
+		}
+		vm.Spec.Template.Spec.Domain.Firmware = &v1.Firmware{
+			Bootloader: &v1.Bootloader{
+				EFI: &v1.EFI{
+					SecureBoot: pointer.Bool(true),
+				},
+			},
+		}
+	}
 }
 
 func Template() *template.Template {
 	funcMap := template.FuncMap{
 		"ToTitle": strings.Title,
 	}
-	tpl, err := template.New("description").Funcs(funcMap).Parse(defaultTemplate)
-	if err != nil {
-		panic(err)
-	}
-	return tpl
+
+	return template.Must(
+		template.New("description").Funcs(funcMap).Parse(descriptionTemplate),
+	)
 }
 
-type TemplateData struct {
-	Name        string
-	Description string
-	Example     string
+func CloudInit(data *UserData) string {
+	tpl := template.Must(
+		template.New("cloudinit").Parse(cloudinitTemplate),
+	)
+
+	return mustExecute(tpl, data)
+}
+
+func Ignition(data *UserData) string {
+	funcMap := template.FuncMap{
+		"Quote": func(items []string) []string {
+			for i, item := range items {
+				items[i] = strconv.Quote(item)
+			}
+			return items
+		},
+		"Join": strings.Join,
+	}
+
+	tpl := template.Must(
+		template.New("ignition").Funcs(funcMap).Parse(ignitionTemplate),
+	)
+
+	return mustExecute(tpl, data)
+}
+
+func mustExecute(tpl *template.Template, data interface{}) string {
+	res := strings.Builder{}
+
+	if err := tpl.Execute(&res, data); err != nil {
+		panic(err)
+	}
+
+	return res.String()
 }

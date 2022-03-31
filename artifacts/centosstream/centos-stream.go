@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strings"
 
+	v1 "kubevirt.io/api/core/v1"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"
@@ -26,10 +27,10 @@ type centos struct {
 
 func (c *centos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                    "centos-stream",
-		Version:                 c.Version,
-		Description:             description,
-		ExampleCloudInitPayload: docs.CloudInit(),
+		Name:                   "centos-stream",
+		Version:                c.Version,
+		Description:            description,
+		ExampleUserDataPayload: c.UserData(&docs.UserData{}),
 	}
 }
 
@@ -85,7 +86,19 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	}
 
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)
+}
 
+func (c *centos) VM(name, imgRef, userData string) *v1.VirtualMachine {
+	return docs.NewVM(
+		name,
+		imgRef,
+		docs.WithRng(),
+		docs.WithCloudInitNoCloud(userData),
+	)
+}
+
+func (c *centos) UserData(data *docs.UserData) string {
+	return docs.CloudInit(data)
 }
 
 // New accepts CentOS Stream 8 and 9 versions.

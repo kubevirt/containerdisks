@@ -45,7 +45,12 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 				}
 				log := common.Logger(p.Artifact)
 				metadata := p.Artifact.Metadata()
-				vm := docs.BasicVirtualMachine(metadata.Name, path.Join(options.Registry, metadata.Name)+":"+metadata.Version, metadata.ExampleCloudInitPayload)
+				vm := p.Artifact.VM(
+					metadata.Name,
+					path.Join(options.Registry, p.Artifact.Metadata().Describe()),
+					metadata.ExampleUserDataPayload,
+				)
+
 				example, err := yaml.Marshal(&vm)
 				if err != nil {
 					return fmt.Errorf("error marshaling example for for %q: %v", metadata.Name, err)
