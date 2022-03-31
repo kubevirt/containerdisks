@@ -92,6 +92,7 @@ func (r *rhcos) UserData(data *docs.UserData) string {
 func (r *rhcos) Tests() []api.ArtifactTest {
 	return []api.ArtifactTest{
 		tests.GuestOsInfo,
+		tests.SSH,
 	}
 }
 

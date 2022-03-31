@@ -87,6 +87,7 @@ func (f *fedora) UserData(data *docs.UserData) string {
 func (f *fedora) Tests() []api.ArtifactTest {
 	return []api.ArtifactTest{
 		tests.GuestOsInfo,
+		tests.SSH,
 	}
 }
 

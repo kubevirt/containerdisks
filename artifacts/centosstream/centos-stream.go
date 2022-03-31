@@ -101,6 +101,7 @@ func (c *centos) UserData(data *docs.UserData) string {
 func (c *centos) Tests() []api.ArtifactTest {
 	return []api.ArtifactTest{
 		tests.GuestOsInfo,
+		tests.SSH,
 	}
 }
 
