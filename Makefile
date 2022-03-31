@@ -12,3 +12,10 @@ medius:
 fmt:
 	go mod tidy
 	gofmt -s -w .
+
+.PHONY: cluster-up
+cluster-up:
+	hack/kubevirtci.sh up
+
+cluster-down:
+	hack/kubevirtci.sh down
