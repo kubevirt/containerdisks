@@ -11,6 +11,7 @@ import (
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"
 	"kubevirt.io/containerdisks/pkg/http"
+	"kubevirt.io/containerdisks/pkg/tests"
 )
 
 type rhcos struct {
@@ -89,7 +90,9 @@ func (r *rhcos) UserData(data *docs.UserData) string {
 }
 
 func (r *rhcos) Tests() []api.ArtifactTest {
-	return []api.ArtifactTest{}
+	return []api.ArtifactTest{
+		tests.GuestOsInfo,
+	}
 }
 
 func New(release string) *rhcos {

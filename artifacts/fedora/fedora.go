@@ -9,6 +9,7 @@ import (
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
+	"kubevirt.io/containerdisks/pkg/tests"
 )
 
 type Releases []Release
@@ -84,7 +85,9 @@ func (f *fedora) UserData(data *docs.UserData) string {
 }
 
 func (f *fedora) Tests() []api.ArtifactTest {
-	return []api.ArtifactTest{}
+	return []api.ArtifactTest{
+		tests.GuestOsInfo,
+	}
 }
 
 func (f *fedora) releaseMatches(release *Release) bool {
