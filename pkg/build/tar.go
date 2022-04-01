@@ -8,36 +8,54 @@ import (
 	"time"
 )
 
-func StreamLayer(imagePath string) (tarReader io.ReadCloser, errChan chan error) {
-	errChan = make(chan error, 1)
-	reader, writer := io.Pipe()
-	tarWriter := tar.NewWriter(writer)
+func StreamLayerOpener(imagePath string) func() (io.ReadCloser, error) {
+	modTime := time.Now()
 
-	go func() {
-		defer writer.Close()
-		defer tarWriter.Close()
-		err := addFileToTarWriter(imagePath, tarWriter)
-		if err != nil {
-			errChan <- fmt.Errorf("error adding file '%s', to tarball: %v", imagePath, err)
+	return func() (io.ReadCloser, error) {
+		fileErrorChan := make(chan error)
+		pipeReader, pipeWriter := io.Pipe()
+
+		go func() {
+			defer pipeWriter.Close()
+
+			file, err := os.Open(imagePath)
+			if err != nil {
+				fileErrorChan <- fmt.Errorf("error opening file: %w", err)
+				return
+			}
+			defer file.Close()
+
+			stat, err := file.Stat()
+			if err != nil {
+				fileErrorChan <- fmt.Errorf("error getting file information with stat: %w", err)
+				return
+			}
+
+			// Close channel after successfully opening file to avoid deadlock
+			close(fileErrorChan)
+
+			tarWriter := tar.NewWriter(pipeWriter)
+			err = addFileToTarWriter(file, stat, modTime, tarWriter)
+			if err != nil {
+				// Move the error to the PipeReader side. It is ok to call close on PipeWriter multiple times.
+				pipeWriter.CloseWithError(fmt.Errorf("error adding file '%s', to tarball: %w", imagePath, err))
+			}
+			err = tarWriter.Close()
+			if err != nil {
+				pipeWriter.CloseWithError(fmt.Errorf("error writing footer of tarball: %w", err))
+			}
+		}()
+
+		// Wait until file is opened or immediately return any errors
+		if err, ok := <-fileErrorChan; ok {
+			return nil, err
 		}
-		close(errChan)
-	}()
 
-	return reader, errChan
+		return pipeReader, nil
+	}
 }
 
-func addFileToTarWriter(filePath string, tarWriter *tar.Writer) error {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return fmt.Errorf("error opening file: %v", err)
-	}
-	defer file.Close()
-
-	stat, err := file.Stat()
-	if err != nil {
-		return fmt.Errorf("error getting file information with stat: %v", err)
-	}
-
+func addFileToTarWriter(file io.Reader, stat os.FileInfo, modTime time.Time, tarWriter *tar.Writer) error {
 	header := &tar.Header{
 		Typeflag: tar.TypeDir,
 		Name:     "disk/",
@@ -46,12 +64,12 @@ func addFileToTarWriter(filePath string, tarWriter *tar.Writer) error {
 		Gid:      107,
 		Uname:    "qemu",
 		Gname:    "qemu",
-		ModTime:  time.Now(),
+		ModTime:  modTime,
 	}
 
-	err = tarWriter.WriteHeader(header)
+	err := tarWriter.WriteHeader(header)
 	if err != nil {
-		return fmt.Errorf("error writing disks directory tar header: %v", err)
+		return fmt.Errorf("error writing disks directory tar header: %w", err)
 	}
 
 	header = &tar.Header{
@@ -68,12 +86,12 @@ func addFileToTarWriter(filePath string, tarWriter *tar.Writer) error {
 
 	err = tarWriter.WriteHeader(header)
 	if err != nil {
-		return fmt.Errorf("error writing image file tar header: %v", err)
+		return fmt.Errorf("error writing image file tar header: %w", err)
 	}
 
 	_, err = io.Copy(tarWriter, file)
 	if err != nil {
-		return fmt.Errorf("error writingfile into tarball: %v", err)
+		return fmt.Errorf("error writingfile into tarball: %w", err)
 	}
 
 	return nil
