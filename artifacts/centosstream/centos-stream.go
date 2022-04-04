@@ -72,10 +72,6 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	var additionalTags []string
 	additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-Stream-%s-", c.Variant)), ".x86_64.qcow2")
 	additionalTags = append(additionalTags, additionalTag)
-	split := strings.Split(additionalTag, "-")
-	if len(split) == 2 {
-		additionalTags = append(additionalTags, split[0])
-	}
 
 	if checksum, exists := checksums[candidate]; exists {
 		return &api.ArtifactDetails{
