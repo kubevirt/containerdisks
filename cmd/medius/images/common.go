@@ -2,13 +2,20 @@ package images
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"os"
 	"sync"
 
 	"github.com/sirupsen/logrus"
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
 )
+
+type workerResult struct {
+	Key   string
+	Value api.ArtifactResult
+}
 
 func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(api.Artifact) error) error {
 	count := len(common.Registry)
@@ -62,4 +69,20 @@ func fillJobChan(jobChan chan api.Artifact, focus string) {
 
 		jobChan <- common.Registry[i].Artifact
 	}
+}
+
+func writeResultsFile(fileName string, results map[string]api.ArtifactResult) error {
+	logrus.Info("Writing results file")
+
+	data, err := json.MarshalIndent(results, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(fileName, data, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

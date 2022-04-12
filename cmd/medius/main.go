@@ -17,7 +17,8 @@ func main() {
 		DryRun:   true,
 		Registry: "quay.io/containerdisks",
 		ImagesOptions: common.ImagesOptions{
-			Workers: 1,
+			ResultsFile: "results.json",
+			Workers:     1,
 		},
 	}
 
@@ -49,6 +50,7 @@ func main() {
 	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls", options.AllowInsecureRegistry, "allow connecting to insecure registries")
 	rootCmd.PersistentFlags().BoolVar(&options.DryRun, "dry-run", options.DryRun, "don't publish anything")
 	rootCmd.PersistentFlags().StringVar(&options.Focus, "focus", options.Focus, "Focus on a specific containerdisk")
+	imagesCmd.PersistentFlags().StringVar(&options.ImagesOptions.ResultsFile, "results-file", options.ImagesOptions.ResultsFile, "File to store/read results of operations")
 	imagesCmd.PersistentFlags().IntVar(&options.ImagesOptions.Workers, "workers", options.ImagesOptions.Workers, "Number of parallel workers")
 
 	ctx, cancel := getInterruptibleContext()

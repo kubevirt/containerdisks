@@ -11,7 +11,8 @@ type Options struct {
 }
 
 type ImagesOptions struct {
-	Workers int
+	ResultsFile string
+	Workers     int
 }
 
 type PublishDocsOptions struct {

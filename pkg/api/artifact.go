@@ -7,6 +7,13 @@ import (
 	"kubevirt.io/containerdisks/pkg/docs"
 )
 
+type ArtifactResult struct {
+	// Tags contains all tags the built containerdisk was tagged with.
+	Tags []string
+	// Verified indicates if the containerdisk was verified to be bootable and that the guest is working.
+	Verified bool
+}
+
 type ArtifactDetails struct {
 	// SHA256Sum is the checksum of the image to download.
 	SHA256Sum string
