@@ -86,3 +86,17 @@ func writeResultsFile(fileName string, results map[string]api.ArtifactResult) er
 
 	return nil
 }
+
+func readResultsFile(fileName string) (map[string]api.ArtifactResult, error) {
+	data, err := os.ReadFile(fileName)
+	if err != nil {
+		return nil, err
+	}
+
+	results := map[string]api.ArtifactResult{}
+	if err := json.Unmarshal(data, &results); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}

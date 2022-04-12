@@ -97,6 +97,10 @@ func (c *centos) UserData(data *docs.UserData) string {
 	return docs.CloudInit(data)
 }
 
+func (c *centos) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{}
+}
+
 // New accepts CentOS Stream 8 and 9 versions.
 func New(release string) *centos {
 	return &centos{

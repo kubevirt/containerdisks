@@ -44,6 +44,7 @@ func main() {
 	rootCmd.AddCommand(docsCmd)
 
 	imagesCmd.AddCommand(images.NewPublishImagesCommand(options))
+	imagesCmd.AddCommand(images.NewVerifyImagesCommand(options))
 	docsCmd.AddCommand(docs.NewPublishDocsCommand(options))
 
 	rootCmd.PersistentFlags().StringVar(&options.Registry, "registry", options.Registry, "target registry for the containerdisks")

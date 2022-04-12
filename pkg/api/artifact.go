@@ -1,11 +1,21 @@
 package api
 
 import (
+	"context"
 	"fmt"
 
 	v1 "kubevirt.io/api/core/v1"
 	"kubevirt.io/containerdisks/pkg/docs"
 )
+
+type ArtifactTest func(ctx context.Context, vmi *v1.VirtualMachineInstance, params *ArtifactTestParams) error
+
+type ArtifactTestParams struct {
+	// Username is the username used to login into the VM
+	Username string
+	// PrivateKey is the private key used to login into the VM
+	PrivateKey interface{}
+}
 
 type ArtifactResult struct {
 	// Tags contains all tags the built containerdisk was tagged with.
@@ -48,4 +58,5 @@ type Artifact interface {
 	Metadata() *Metadata
 	VM(name, imgRef, userData string) *v1.VirtualMachine
 	UserData(data *docs.UserData) string
+	Tests() []ArtifactTest
 }

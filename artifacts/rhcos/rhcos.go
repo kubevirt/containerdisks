@@ -69,6 +69,10 @@ func (r *rhcos) UserData(data *docs.UserData) string {
 	return docs.Ignition(data)
 }
 
+func (r *rhcos) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{}
+}
+
 func New(release string) *rhcos {
 	return &rhcos{
 		Version:     release,

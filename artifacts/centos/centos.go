@@ -113,6 +113,10 @@ func (c *centos) UserData(data *docs.UserData) string {
 	return docs.CloudInit(data)
 }
 
+func (c *centos) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{}
+}
+
 // New accepts CentOS 7 and 8 versions. Example patterns are 7-2111, 7-2009, 8.3, 8.4, ...
 func New(release string) *centos {
 	return &centos{

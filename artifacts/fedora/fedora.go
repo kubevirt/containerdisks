@@ -83,6 +83,10 @@ func (f *fedora) UserData(data *docs.UserData) string {
 	return docs.CloudInit(data)
 }
 
+func (f *fedora) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{}
+}
+
 func (f *fedora) releaseMatches(release *Release) bool {
 	return release.Version == f.Version &&
 		release.Arch == f.Arch &&

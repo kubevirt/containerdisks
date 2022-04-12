@@ -30,6 +30,10 @@ func (c *generic) UserData(_ *docs.UserData) string {
 	return ""
 }
 
+func (c *generic) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{}
+}
+
 func New(artifactDetails *api.ArtifactDetails, metadata *api.Metadata) *generic {
 	return &generic{artifactDetails: artifactDetails, metadata: metadata}
 }

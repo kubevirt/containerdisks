@@ -8,6 +8,7 @@ type Options struct {
 	ImagesOptions         ImagesOptions
 	PublishDocsOptions    PublishDocsOptions
 	PublishImagesOptions  PublishImageOptions
+	VerifyImagesOptions   VerifyImageOptions
 }
 
 type ImagesOptions struct {
@@ -21,4 +22,9 @@ type PublishDocsOptions struct {
 
 type PublishImageOptions struct {
 	ForceBuild bool
+}
+
+type VerifyImageOptions struct {
+	Namespace string
+	Timeout   int
 }
