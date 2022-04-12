@@ -29,7 +29,8 @@ type ImageInfo struct {
 
 type Repository interface {
 	ImageMetadata(imgRef string) (*ImageInfo, error)
-	PushImage(img v1.Image, imgRef string) error
+	PushImage(ctx context.Context, img v1.Image, imgRef string) error
+	CopyImage(ctx context.Context, srcRef, dstRef string, insecure bool) error
 }
 
 type RepositoryImpl struct {
@@ -77,12 +78,20 @@ func (r RepositoryImpl) ImageMetadata(imgRef string, insecure bool) (imageInfo *
 	return imageInfo, nil
 }
 
-func (r RepositoryImpl) PushImage(img v1.Image, imgRef string) error {
-	if err := crane.Push(img, imgRef, crane.WithContext(context.Background())); err != nil {
-		return fmt.Errorf("error pushing image %q: %v", img, err)
+func (r RepositoryImpl) PushImage(ctx context.Context, img v1.Image, imgRef string) error {
+	return crane.Push(img, imgRef, crane.WithContext(ctx))
+}
+
+func (r RepositoryImpl) CopyImage(ctx context.Context, srcRef, dstRef string, insecure bool) error {
+	options := []crane.Option{
+		crane.WithContext(ctx),
 	}
 
-	return nil
+	if insecure {
+		options = append(options, crane.Insecure)
+	}
+
+	return crane.Copy(srcRef, dstRef, options...)
 }
 
 func parseImageSource(ctx context.Context, sys *types.SystemContext, name string) (types.ImageSource, error) {
