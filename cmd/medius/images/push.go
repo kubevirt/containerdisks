@@ -23,10 +23,18 @@ import (
 )
 
 func NewPublishImagesCommand(options *common.Options) *cobra.Command {
+	options.PublishImagesOptions = common.PublishImageOptions{
+		SourceRegistry: "quay.io/containerdisks",
+	}
+
 	publishCmd := &cobra.Command{
 		Use:   "push",
 		Short: "Determine if containerdisks need an update and push an update to the target registry if needed",
 		Run: func(cmd *cobra.Command, args []string) {
+			if options.PublishImagesOptions.TargetRegistry == "" {
+				options.PublishImagesOptions.TargetRegistry = options.PublishImagesOptions.SourceRegistry
+			}
+
 			resultsChan, err := spawnWorkers(cmd.Context(), options, func(a api.Artifact) (*api.ArtifactResult, error) {
 				errString := ""
 				tags, err := buildAndPublish(cmd.Context(), a, options, time.Now())
@@ -62,6 +70,8 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 		},
 	}
 	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.ForceBuild, "force", options.PublishImagesOptions.ForceBuild, "Force a rebuild and push")
+	publishCmd.Flags().StringVar(&options.PublishImagesOptions.SourceRegistry, "source-registry", options.PublishImagesOptions.SourceRegistry, "Registry to check if updates are needed")
+	publishCmd.Flags().StringVar(&options.PublishImagesOptions.TargetRegistry, "target-registry", options.PublishImagesOptions.TargetRegistry, "Registry to push built containerdisks to")
 
 	return publishCmd
 }
@@ -70,7 +80,7 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 	metadata := artifact.Metadata()
 	log := common.Logger(artifact)
 
-	imageName := path.Join(options.Registry, metadata.Describe())
+	imageName := path.Join(options.PublishImagesOptions.SourceRegistry, metadata.Describe())
 	artifactInfo, err := artifact.Inspect()
 	if err != nil {
 		return nil, fmt.Errorf("error introspecting artifact %q: %v", metadata.Describe(), err)
@@ -148,7 +158,7 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 		return nil, ctx.Err()
 	}
 
-	names := prepareTags(timestamp, options.Registry, metadata, artifactInfo)
+	names := prepareTags(timestamp, options.PublishImagesOptions.TargetRegistry, metadata, artifactInfo)
 	for _, name := range names {
 		if !options.DryRun {
 			log.Infof("Pushing %s", name)

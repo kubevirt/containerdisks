@@ -8,17 +8,17 @@ import (
 	"path"
 	"strings"
 
-	"github.com/spf13/cobra"
-	"kubevirt.io/containerdisks/pkg/quay"
-
 	"github.com/ghodss/yaml"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/docs"
+	"kubevirt.io/containerdisks/pkg/quay"
 )
 
 func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 	options.PublishDocsOptions = common.PublishDocsOptions{
-		TokenFile: "",
+		Registry: "quay.io/containerdisks",
 	}
 
 	publishCmd := &cobra.Command{
@@ -27,9 +27,9 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			success := true
 
-			elements := strings.Split(options.Registry, "/")
+			elements := strings.Split(options.PublishDocsOptions.Registry, "/")
 			if len(elements) != 2 || elements[0] != "quay.io" || elements[1] == "" {
-				return fmt.Errorf("error determining quay.io organiation from %v, this command only works with quay.io", options.Registry)
+				return fmt.Errorf("error determining quay.io organiation from %v, this command only works with quay.io", options.PublishDocsOptions.Registry)
 			}
 
 			client := quay.NewQuayClient(options.PublishDocsOptions.TokenFile, elements[1])
@@ -47,7 +47,7 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 				metadata := p.Artifact.Metadata()
 				vm := p.Artifact.VM(
 					metadata.Name,
-					path.Join(options.Registry, p.Artifact.Metadata().Describe()),
+					path.Join(options.PublishDocsOptions.Registry, p.Artifact.Metadata().Describe()),
 					metadata.ExampleUserDataPayload,
 				)
 
@@ -79,8 +79,13 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 			return nil
 		},
 	}
-
+	publishCmd.Flags().StringVar(&options.PublishDocsOptions.Registry, "registry", options.PublishDocsOptions.Registry, "target registry for the containerdisks")
 	publishCmd.Flags().StringVar(&options.PublishDocsOptions.TokenFile, "quay-token-file", options.PublishDocsOptions.TokenFile, "quay.io oauth token file")
-	publishCmd.MarkFlagRequired("quay-token-file")
+
+	err := publishCmd.MarkFlagRequired("quay-token-file")
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
 	return publishCmd
 }

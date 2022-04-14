@@ -4,7 +4,6 @@ type Options struct {
 	AllowInsecureRegistry bool
 	DryRun                bool
 	Focus                 string
-	Registry              string
 	ImagesOptions         ImagesOptions
 	PublishDocsOptions    PublishDocsOptions
 	PublishImagesOptions  PublishImageOptions
@@ -23,14 +22,18 @@ type PromoteImageOptions struct {
 }
 
 type PublishDocsOptions struct {
+	Registry  string
 	TokenFile string
 }
 
 type PublishImageOptions struct {
-	ForceBuild bool
+	ForceBuild     bool
+	SourceRegistry string
+	TargetRegistry string
 }
 
 type VerifyImageOptions struct {
+	Registry  string
 	Namespace string
 	Timeout   int
 }

@@ -88,9 +88,15 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 			}
 		},
 	}
+	verifyCmd.Flags().StringVar(&options.VerifyImagesOptions.Registry, "registry", options.VerifyImagesOptions.Registry, "Registry that contains containerdisks to verify")
 	verifyCmd.Flags().StringVar(&options.VerifyImagesOptions.Namespace, "namespace", options.VerifyImagesOptions.Namespace, "Namespace to run verify in")
 	verifyCmd.Flags().IntVar(&options.VerifyImagesOptions.Timeout, "timeout", options.VerifyImagesOptions.Timeout, "Maximum seconds to wait for VM to be running")
 	verifyCmd.Flags().AddGoFlagSet(kvirtcli.FlagSet())
+
+	err := verifyCmd.MarkFlagRequired("registry")
+	if err != nil {
+		logrus.Fatal(err)
+	}
 
 	return verifyCmd
 }
@@ -104,7 +110,7 @@ func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.Artif
 		return err
 	}
 
-	imgRef := path.Join(options.Registry, result.Tags[0])
+	imgRef := path.Join(options.VerifyImagesOptions.Registry, result.Tags[0])
 	vm, privateKey, err := createVM(artifact, imgRef)
 	if err != nil {
 		log.WithError(err).Error("Failed to create VM object")

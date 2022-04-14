@@ -14,8 +14,7 @@ import (
 
 func main() {
 	options := &common.Options{
-		DryRun:   true,
-		Registry: "quay.io/containerdisks",
+		DryRun: true,
 		ImagesOptions: common.ImagesOptions{
 			ResultsFile: "results.json",
 			Workers:     1,
@@ -48,7 +47,6 @@ func main() {
 	imagesCmd.AddCommand(images.NewVerifyImagesCommand(options))
 	docsCmd.AddCommand(docs.NewPublishDocsCommand(options))
 
-	rootCmd.PersistentFlags().StringVar(&options.Registry, "registry", options.Registry, "target registry for the containerdisks")
 	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls", options.AllowInsecureRegistry, "allow connecting to insecure registries")
 	rootCmd.PersistentFlags().BoolVar(&options.DryRun, "dry-run", options.DryRun, "don't publish anything")
 	rootCmd.PersistentFlags().StringVar(&options.Focus, "focus", options.Focus, "Focus on a specific containerdisk")
