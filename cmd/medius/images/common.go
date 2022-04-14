@@ -15,14 +15,14 @@ func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(ap
 	errChan := make(chan error, count)
 	jobChan := make(chan api.Artifact, count)
 
-	if options.Workers > count {
+	if options.ImagesOptions.Workers > count {
 		logrus.Warnf("Limiting workers to number of artifacts: %d", count)
-		options.Workers = count
+		options.ImagesOptions.Workers = count
 	}
 
 	wg := &sync.WaitGroup{}
-	wg.Add(options.Workers)
-	for x := 0; x < options.Workers; x++ {
+	wg.Add(options.ImagesOptions.Workers)
+	for x := 0; x < options.ImagesOptions.Workers; x++ {
 		go func() {
 			defer wg.Done()
 			for a := range jobChan {

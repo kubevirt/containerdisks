@@ -23,10 +23,6 @@ import (
 )
 
 func NewPublishImagesCommand(options *common.Options) *cobra.Command {
-	options.PublishImagesOptions = common.PublishImageOptions{
-		ForceBuild: false,
-	}
-
 	publishCmd := &cobra.Command{
 		Use:   "push",
 		Short: "Determine if containerdisks need an update and push an update to the target registry if needed",

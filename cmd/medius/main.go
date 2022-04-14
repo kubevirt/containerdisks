@@ -14,11 +14,11 @@ import (
 
 func main() {
 	options := &common.Options{
-		AllowInsecureRegistry: false,
-		Registry:              "quay.io/containerdisks",
-		DryRun:                true,
-		Focus:                 "",
-		Workers:               1,
+		DryRun:   true,
+		Registry: "quay.io/containerdisks",
+		ImagesOptions: common.ImagesOptions{
+			Workers: 1,
+		},
 	}
 
 	rootCmd := &cobra.Command{
@@ -49,7 +49,7 @@ func main() {
 	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls", options.AllowInsecureRegistry, "allow connecting to insecure registries")
 	rootCmd.PersistentFlags().BoolVar(&options.DryRun, "dry-run", options.DryRun, "don't publish anything")
 	rootCmd.PersistentFlags().StringVar(&options.Focus, "focus", options.Focus, "Focus on a specific containerdisk")
-	rootCmd.PersistentFlags().IntVar(&options.Workers, "workers", options.Workers, "Number of parallel workers")
+	imagesCmd.PersistentFlags().IntVar(&options.ImagesOptions.Workers, "workers", options.ImagesOptions.Workers, "Number of parallel workers")
 
 	ctx, cancel := getInterruptibleContext()
 	defer cancel()
