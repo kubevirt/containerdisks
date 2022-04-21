@@ -11,6 +11,8 @@ import (
 	"github.com/containers/image/v5/types"
 	"github.com/docker/distribution/registry/api/errcode"
 	v2 "github.com/docker/distribution/registry/api/v2"
+	"github.com/google/go-containerregistry/pkg/crane"
+	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/pkg/errors"
 )
 
@@ -26,13 +28,14 @@ type ImageInfo struct {
 }
 
 type Repository interface {
-	ImageMetadata(imageRef string) (*ImageInfo, error)
+	ImageMetadata(imgRef string) (*ImageInfo, error)
+	PushImage(img v1.Image, imgRef string) error
 }
 
 type RepositoryImpl struct {
 }
 
-func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo *ImageInfo, retErr error) {
+func (r RepositoryImpl) ImageMetadata(imgRef string, insecure bool) (imageInfo *ImageInfo, retErr error) {
 	sys := &types.SystemContext{
 		OCIInsecureSkipTLSVerify: insecure,
 	}
@@ -40,7 +43,7 @@ func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo
 		sys.DockerInsecureSkipTLSVerify = types.OptionalBoolTrue
 	}
 	ctx := context.Background()
-	src, err := parseImageSource(ctx, sys, fmt.Sprintf("docker://%s", imageRef))
+	src, err := parseImageSource(ctx, sys, fmt.Sprintf("docker://%s", imgRef))
 	if err != nil {
 		return nil, errors.Wrapf(err, "error parsing image")
 	}
@@ -57,7 +60,7 @@ func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo
 	}
 	imgInspect, err := img.Inspect(ctx)
 	if err != nil {
-		return nil, errors.Wrapf(err, "Error inpspecting image")
+		return nil, errors.Wrapf(err, "Error inspecting image")
 	}
 	imageInfo = &ImageInfo{
 		Tag: imgInspect.Tag,
@@ -74,6 +77,14 @@ func (r RepositoryImpl) ImageMetadata(imageRef string, insecure bool) (imageInfo
 	return imageInfo, nil
 }
 
+func (r RepositoryImpl) PushImage(img v1.Image, imgRef string) error {
+	if err := crane.Push(img, imgRef, crane.WithContext(context.Background())); err != nil {
+		return fmt.Errorf("error pushing image %q: %v", img, err)
+	}
+
+	return nil
+}
+
 func parseImageSource(ctx context.Context, sys *types.SystemContext, name string) (types.ImageSource, error) {
 	ref, err := alltransports.ParseImageName(name)
 	if err != nil {
@@ -88,6 +99,7 @@ func IsManifestUnknownError(err error) bool {
 	if ec == nil {
 		return false
 	}
+
 	switch ec.ErrorCode() {
 	case v2.ErrorCodeManifestUnknown:
 		return true
@@ -111,8 +123,12 @@ func IsRepositoryUnknownError(err error) bool {
 }
 
 func IsTagUnknownError(err error) bool {
-	e := getErrorCode(err)
-	if e.ErrorCode().Error() == "unknown" {
+	ec := getErrorCode(err)
+	if ec == nil {
+		return false
+	}
+
+	if ec.ErrorCode().Error() == "unknown" {
 		// errors like this have no explicit error handling: "unknown: Tag 5.2 was deleted or has expired. To pull, revive via time machine"
 		if strings.Contains(err.Error(), "was deleted or has expired. To pull, revive via time machine") {
 			return true
@@ -130,11 +146,11 @@ func getErrorCode(err error) errcode.ErrorCoder {
 		}
 	}
 
-	errors, ok := err.(errcode.Errors)
-	if !ok || len(errors) == 0 {
+	errs, ok := err.(errcode.Errors)
+	if !ok || len(errs) == 0 {
 		return nil
 	}
-	err = errors[0]
+	err = errs[0]
 	ec, ok := err.(errcode.ErrorCoder)
 	if !ok {
 		return nil

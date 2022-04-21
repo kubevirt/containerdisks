@@ -34,7 +34,8 @@ func TestStreamLayer(t *testing.T) {
 			imageStat, err := os.Stat(imageName)
 			g.Expect(err).ToNot(HaveOccurred())
 
-			reader, errChan := StreamLayer(imageName)
+			reader, err := StreamLayerOpener(imageName)()
+			g.Expect(err).ToNot(HaveOccurred())
 
 			tarReader := tar.NewReader(reader)
 
@@ -55,8 +56,6 @@ func TestStreamLayer(t *testing.T) {
 			data, err := ioutil.ReadAll(tarReader)
 			g.Expect(err).ToNot(HaveOccurred())
 			g.Expect(string(data)).To(Equal(tt.args.imageContent))
-
-			g.Expect(errChan).ToNot(Receive())
 		})
 	}
 }

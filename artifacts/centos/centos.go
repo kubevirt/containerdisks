@@ -6,10 +6,12 @@ import (
 	"sort"
 	"strings"
 
+	v1 "kubevirt.io/api/core/v1"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"
 	"kubevirt.io/containerdisks/pkg/http"
+	"kubevirt.io/containerdisks/pkg/tests"
 )
 
 var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Generic Cloud images for KubeVirt.
@@ -26,10 +28,10 @@ type centos struct {
 
 func (c *centos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                    "centos",
-		Version:                 c.Version,
-		Description:             description,
-		ExampleCloudInitPayload: docs.CloudInit(),
+		Name:                   "centos",
+		Version:                c.Version,
+		Description:            description,
+		ExampleUserDataPayload: c.UserData(&docs.UserData{}),
 	}
 }
 
@@ -97,7 +99,26 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 		}, nil
 	}
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)
+}
 
+func (c *centos) VM(name, imgRef, userData string) *v1.VirtualMachine {
+	return docs.NewVM(
+		name,
+		imgRef,
+		docs.WithRng(),
+		docs.WithCloudInitNoCloud(userData),
+	)
+}
+
+func (c *centos) UserData(data *docs.UserData) string {
+	return docs.CloudInit(data)
+}
+
+func (c *centos) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{
+		tests.GuestOsInfo,
+		tests.SSH,
+	}
 }
 
 // New accepts CentOS 7 and 8 versions. Example patterns are 7-2111, 7-2009, 8.3, 8.4, ...

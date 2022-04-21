@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"strings"
 
+	v1 "kubevirt.io/api/core/v1"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
+	"kubevirt.io/containerdisks/pkg/tests"
 )
 
 type Releases []Release
@@ -36,10 +38,10 @@ Visit [getfedora.org](https://getfedora.org/) to learn more about the Fedora pro
 
 func (f *fedora) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                    "fedora",
-		Version:                 f.Version,
-		Description:             description,
-		ExampleCloudInitPayload: docs.CloudInit(),
+		Name:                   "fedora",
+		Version:                f.Version,
+		Description:            description,
+		ExampleUserDataPayload: f.UserData(&docs.UserData{}),
 	}
 }
 
@@ -66,6 +68,27 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 		}
 	}
 	return nil, fmt.Errorf("no release information in releases.json for fedora:%q found", f.Version)
+}
+
+func (f *fedora) VM(name, imgRef, userData string) *v1.VirtualMachine {
+	return docs.NewVM(
+		name,
+		imgRef,
+		docs.WithRng(),
+		docs.WithCloudInitNoCloud(userData),
+		docs.WithSecureBoot(),
+	)
+}
+
+func (f *fedora) UserData(data *docs.UserData) string {
+	return docs.CloudInit(data)
+}
+
+func (f *fedora) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{
+		tests.GuestOsInfo,
+		tests.SSH,
+	}
 }
 
 func (f *fedora) releaseMatches(release *Release) bool {

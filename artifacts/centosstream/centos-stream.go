@@ -6,10 +6,12 @@ import (
 	"sort"
 	"strings"
 
+	v1 "kubevirt.io/api/core/v1"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"
 	"kubevirt.io/containerdisks/pkg/http"
+	"kubevirt.io/containerdisks/pkg/tests"
 )
 
 var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Stream Generic Cloud images for KubeVirt.
@@ -26,10 +28,10 @@ type centos struct {
 
 func (c *centos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                    "centos-stream",
-		Version:                 c.Version,
-		Description:             description,
-		ExampleCloudInitPayload: docs.CloudInit(),
+		Name:                   "centos-stream",
+		Version:                c.Version,
+		Description:            description,
+		ExampleUserDataPayload: c.UserData(&docs.UserData{}),
 	}
 }
 
@@ -71,10 +73,6 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	var additionalTags []string
 	additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-Stream-%s-", c.Variant)), ".x86_64.qcow2")
 	additionalTags = append(additionalTags, additionalTag)
-	split := strings.Split(additionalTag, "-")
-	if len(split) == 2 {
-		additionalTags = append(additionalTags, split[0])
-	}
 
 	if checksum, exists := checksums[candidate]; exists {
 		return &api.ArtifactDetails{
@@ -85,7 +83,26 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	}
 
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)
+}
 
+func (c *centos) VM(name, imgRef, userData string) *v1.VirtualMachine {
+	return docs.NewVM(
+		name,
+		imgRef,
+		docs.WithRng(),
+		docs.WithCloudInitNoCloud(userData),
+	)
+}
+
+func (c *centos) UserData(data *docs.UserData) string {
+	return docs.CloudInit(data)
+}
+
+func (c *centos) Tests() []api.ArtifactTest {
+	return []api.ArtifactTest{
+		tests.GuestOsInfo,
+		tests.SSH,
+	}
 }
 
 // New accepts CentOS Stream 8 and 9 versions.

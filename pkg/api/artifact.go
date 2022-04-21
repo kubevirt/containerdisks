@@ -1,8 +1,28 @@
 package api
 
 import (
+	"context"
 	"fmt"
+
+	v1 "kubevirt.io/api/core/v1"
+	"kubevirt.io/containerdisks/pkg/docs"
 )
+
+type ArtifactTest func(ctx context.Context, vmi *v1.VirtualMachineInstance, params *ArtifactTestParams) error
+
+type ArtifactTestParams struct {
+	// Username is the username used to login into the VM
+	Username string
+	// PrivateKey is the private key used to login into the VM
+	PrivateKey interface{}
+}
+
+type ArtifactResult struct {
+	// Tags contains all tags the built containerdisk was tagged with.
+	Tags []string
+	// Verified indicates if the containerdisk was verified to be bootable and that the guest is working.
+	Verified bool
+}
 
 type ArtifactDetails struct {
 	// SHA256Sum is the checksum of the image to download.
@@ -23,12 +43,10 @@ type Metadata struct {
 	Name string
 	// Version is the moving tag on the container image. For example "35".
 	Version string
-
 	// Description of the project in Markdown format
 	Description string
-
-	// CloudInit Payload example
-	ExampleCloudInitPayload string
+	// CloudInit/Ignition Payload example
+	ExampleUserDataPayload string
 }
 
 func (m Metadata) Describe() string {
@@ -38,4 +56,7 @@ func (m Metadata) Describe() string {
 type Artifact interface {
 	Inspect() (*ArtifactDetails, error)
 	Metadata() *Metadata
+	VM(name, imgRef, userData string) *v1.VirtualMachine
+	UserData(data *docs.UserData) string
+	Tests() []ArtifactTest
 }

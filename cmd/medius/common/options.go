@@ -2,18 +2,29 @@ package common
 
 type Options struct {
 	AllowInsecureRegistry bool
-	Registry              string
 	DryRun                bool
-	PublishImagesOptions  PublishImageOptions
-	PublishDocsOptions    PublishDocsOptions
 	Focus                 string
+	Registry              string
+	ImagesOptions         ImagesOptions
+	PublishDocsOptions    PublishDocsOptions
+	PublishImagesOptions  PublishImageOptions
+	VerifyImagesOptions   VerifyImageOptions
 }
 
-type PublishImageOptions struct {
-	ForceBuild bool
-	Workers    int
+type ImagesOptions struct {
+	ResultsFile string
+	Workers     int
 }
 
 type PublishDocsOptions struct {
 	TokenFile string
+}
+
+type PublishImageOptions struct {
+	ForceBuild bool
+}
+
+type VerifyImageOptions struct {
+	Namespace string
+	Timeout   int
 }
