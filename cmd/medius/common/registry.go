@@ -31,11 +31,15 @@ var Registry = []Entry{
 	},
 	{
 		Artifact:   rhcosprerelease.New("latest-4.9"),
-		UseForDocs: true,
+		UseForDocs: false,
 	},
 	{
 		Artifact:   rhcosprerelease.New("latest-4.10"),
 		UseForDocs: false,
+	},
+	{
+		Artifact:   rhcosprerelease.New("latest-4.11"),
+		UseForDocs: true,
 	},
 	{
 		Artifact:   rhcosprerelease.New("latest"),
