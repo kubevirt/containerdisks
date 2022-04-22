@@ -27,27 +27,33 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 		Use:   "push",
 		Short: "Determine if containerdisks need an update and push an update to the target registry if needed",
 		Run: func(cmd *cobra.Command, args []string) {
-			resultsChan := make(chan workerResult, len(common.Registry))
-			err := spawnWorkers(cmd.Context(), options, func(a api.Artifact) error {
-				result, err := buildAndPublish(cmd.Context(), a, options, time.Now())
-				if result != nil {
-					resultsChan <- workerResult{
-						Key:   a.Metadata().Describe(),
-						Value: *result,
-					}
+			resultsChan, err := spawnWorkers(cmd.Context(), options, func(a api.Artifact) (*api.ArtifactResult, error) {
+				errString := ""
+				tags, err := buildAndPublish(cmd.Context(), a, options, time.Now())
+				if err != nil {
+					errString = err.Error()
 				}
 
-				return err
+				if tags == nil && err == nil {
+					return nil, nil
+				}
+
+				return &api.ArtifactResult{
+					Tags:  tags,
+					Stage: StagePush,
+					Err:   errString,
+				}, err
 			})
-			close(resultsChan)
 
 			results := map[string]api.ArtifactResult{}
 			for result := range resultsChan {
 				results[result.Key] = result.Value
 			}
 
-			if err := writeResultsFile(options.ImagesOptions.ResultsFile, results); err != nil {
-				logrus.Fatal(err)
+			if !options.DryRun {
+				if err := writeResultsFile(options.ImagesOptions.ResultsFile, results); err != nil {
+					logrus.Fatal(err)
+				}
 			}
 
 			if err != nil {
@@ -60,7 +66,7 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 	return publishCmd
 }
 
-func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common.Options, timestamp time.Time) (*api.ArtifactResult, error) {
+func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common.Options, timestamp time.Time) ([]string, error) {
 	metadata := artifact.Metadata()
 	log := common.Logger(artifact)
 
@@ -92,7 +98,7 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 		return nil, nil
 	}
 	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, nil
+		return nil, ctx.Err()
 	}
 
 	log.Infof("Rebuild needed, downloading %q ...", artifactInfo.DownloadURL)
@@ -126,7 +132,7 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 	}
 	file.Close()
 	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, nil
+		return nil, ctx.Err()
 	}
 
 	checksum := artifactReader.Checksum()
@@ -139,25 +145,27 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 		return nil, fmt.Errorf("error creating the containerdisk : %v", err)
 	}
 	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, nil
+		return nil, ctx.Err()
 	}
 
 	names := prepareTags(timestamp, options.Registry, metadata, artifactInfo)
 	for _, name := range names {
 		if !options.DryRun {
 			log.Infof("Pushing %s", name)
-			if err := repo.PushImage(containerDisk, name); err != nil {
+			if err := repo.PushImage(ctx, containerDisk, name); err != nil {
+				log.WithError(err).Error("Failed to push image")
 				return nil, err
 			}
 		} else {
 			log.Infof("Dry run enabled, not pushing %s", name)
 		}
+
+		if errors.Is(ctx.Err(), context.Canceled) {
+			return nil, ctx.Err()
+		}
 	}
 
-	result := &api.ArtifactResult{
-		Tags: prepareTags(timestamp, "", metadata, artifactInfo),
-	}
-	return result, nil
+	return prepareTags(timestamp, "", metadata, artifactInfo), nil
 }
 
 func prepareTags(timestamp time.Time, registry string, metadata *api.Metadata, artifactDetails *api.ArtifactDetails) []string {

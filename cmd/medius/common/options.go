@@ -8,12 +8,18 @@ type Options struct {
 	ImagesOptions         ImagesOptions
 	PublishDocsOptions    PublishDocsOptions
 	PublishImagesOptions  PublishImageOptions
+	PromoteImageOptions   PromoteImageOptions
 	VerifyImagesOptions   VerifyImageOptions
 }
 
 type ImagesOptions struct {
 	ResultsFile string
 	Workers     int
+}
+
+type PromoteImageOptions struct {
+	SourceRegistry string
+	TargetRegistry string
 }
 
 type PublishDocsOptions struct {

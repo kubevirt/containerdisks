@@ -43,6 +43,7 @@ func main() {
 	rootCmd.AddCommand(imagesCmd)
 	rootCmd.AddCommand(docsCmd)
 
+	imagesCmd.AddCommand(images.NewPromoteImagesCommand(options))
 	imagesCmd.AddCommand(images.NewPublishImagesCommand(options))
 	imagesCmd.AddCommand(images.NewVerifyImagesCommand(options))
 	docsCmd.AddCommand(docs.NewPublishDocsCommand(options))

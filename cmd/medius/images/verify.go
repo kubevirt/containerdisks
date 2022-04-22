@@ -5,6 +5,7 @@ import (
 	"crypto/ed25519"
 	"crypto/rand"
 	"errors"
+	"fmt"
 	"path"
 	"time"
 
@@ -49,24 +50,30 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			resultsChan := make(chan workerResult, len(common.Registry))
-			err = spawnWorkers(cmd.Context(), options, func(a api.Artifact) error {
+			resultsChan, err := spawnWorkers(cmd.Context(), options, func(a api.Artifact) (*api.ArtifactResult, error) {
 				r, ok := results[a.Metadata().Describe()]
-				if !ok || r.Verified {
-					return nil
+				if !ok {
+					return nil, nil
+				}
+				if r.Err != "" {
+					return nil, fmt.Errorf("Artifact %s failed in stage %s: %s", a.Metadata().Describe(), r.Stage, r.Err)
+				}
+				if r.Stage != StagePush {
+					return nil, nil
 				}
 
-				result, err := verifyArtifact(cmd.Context(), a, r, options, client)
-				if result != nil {
-					resultsChan <- workerResult{
-						Key:   a.Metadata().Describe(),
-						Value: *result,
-					}
+				errString := ""
+				err := verifyArtifact(cmd.Context(), a, r, options, client)
+				if err != nil {
+					errString = err.Error()
 				}
 
-				return err
+				return &api.ArtifactResult{
+					Tags:  r.Tags,
+					Stage: StageVerify,
+					Err:   errString,
+				}, err
 			})
-			close(resultsChan)
 
 			for result := range resultsChan {
 				results[result.Key] = result.Value
@@ -88,29 +95,30 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 	return verifyCmd
 }
 
-func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.ArtifactResult, options *common.Options, client kvirtcli.KubevirtClient) (*api.ArtifactResult, error) {
+func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.ArtifactResult, options *common.Options, client kvirtcli.KubevirtClient) error {
 	log := common.Logger(artifact)
 
 	if len(result.Tags) == 0 {
-		log.Infof("No containerdisks to verify")
-		return nil, nil
+		err := errors.New("No containerdisks to verify")
+		log.Error(err)
+		return err
 	}
 
 	imgRef := path.Join(options.Registry, result.Tags[0])
 	vm, privateKey, err := createVM(artifact, imgRef)
 	if err != nil {
 		log.WithError(err).Error("Failed to create VM object")
-		return nil, err
+		return err
 	}
 	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, nil
+		return ctx.Err()
 	}
 
 	vmClient := client.VirtualMachine(options.VerifyImagesOptions.Namespace)
 	log.Info("Creating VM")
 	if vm, err = vmClient.Create(vm); err != nil {
 		log.WithError(err).Error("Failed to create VM")
-		return nil, err
+		return err
 	}
 
 	defer func() {
@@ -120,44 +128,41 @@ func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.Artif
 	}()
 
 	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, nil
+		return ctx.Err()
 	}
 
 	log.Info("Waiting for VM to be ready")
 	if err = waitVMReady(ctx, vm.Name, vmClient, options.VerifyImagesOptions.Timeout); err != nil {
 		if errors.Is(ctx.Err(), context.Canceled) {
-			return nil, nil
+			return ctx.Err()
 		}
 
 		log.WithError(err).Error("VM not ready")
-		return nil, err
+		return err
 	}
 
 	vmi, err := client.VirtualMachineInstance(options.VerifyImagesOptions.Namespace).Get(vm.Name, &metav1.GetOptions{})
 	if err != nil {
 		log.WithError(err).Error("Failed to get VMI")
-		return nil, err
+		return err
 	}
 	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, nil
+		return ctx.Err()
 	}
 
 	log.Info("Running tests on VMI")
 	for _, testFn := range artifact.Tests() {
 		if err = testFn(ctx, vmi, &api.ArtifactTestParams{Username: VerifyUsername, PrivateKey: privateKey}); err != nil {
 			log.WithError(err).Error("Failed to verify containerdisk")
-			return nil, err
+			return err
 		}
 		if errors.Is(ctx.Err(), context.Canceled) {
-			return nil, nil
+			return ctx.Err()
 		}
 	}
 
 	log.Info("Tests successful")
-	return &api.ArtifactResult{
-		Tags:     result.Tags,
-		Verified: true,
-	}, nil
+	return nil
 }
 
 func createVM(artifact api.Artifact, imgRef string) (*v1.VirtualMachine, ed25519.PrivateKey, error) {

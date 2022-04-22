@@ -12,15 +12,23 @@ import (
 	"kubevirt.io/containerdisks/pkg/api"
 )
 
+const (
+	StagePush    = "push"
+	StageVerify  = "verify"
+	StagePromote = "promote"
+)
+
 type workerResult struct {
 	Key   string
 	Value api.ArtifactResult
 }
 
-func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(api.Artifact) error) error {
+func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(api.Artifact) (*api.ArtifactResult, error)) (chan workerResult, error) {
 	count := len(common.Registry)
 	errChan := make(chan error, count)
 	jobChan := make(chan api.Artifact, count)
+	resultsChan := make(chan workerResult, count)
+	defer close(resultsChan)
 
 	if options.ImagesOptions.Workers > count {
 		logrus.Warnf("Limiting workers to number of artifacts: %d", count)
@@ -33,7 +41,14 @@ func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(ap
 		go func() {
 			defer wg.Done()
 			for a := range jobChan {
-				if err := workerFn(a); err != nil {
+				result, err := workerFn(a)
+				if result != nil {
+					resultsChan <- workerResult{
+						Key:   a.Metadata().Describe(),
+						Value: *result,
+					}
+				}
+				if err != nil && !errors.Is(err, context.Canceled) {
 					common.Logger(a).Error(err)
 					errChan <- err
 				}
@@ -51,9 +66,9 @@ func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(ap
 
 	select {
 	case err := <-errChan:
-		return err
+		return resultsChan, err
 	default:
-		return nil
+		return resultsChan, nil
 	}
 }
 
