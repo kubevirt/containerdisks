@@ -28,6 +28,7 @@ type PublishDocsOptions struct {
 
 type PublishImageOptions struct {
 	ForceBuild     bool
+	NoFail         bool
 	SourceRegistry string
 	TargetRegistry string
 }
@@ -35,5 +36,6 @@ type PublishImageOptions struct {
 type VerifyImageOptions struct {
 	Registry  string
 	Namespace string
+	NoFail    bool
 	Timeout   int
 }
