@@ -7,6 +7,7 @@ import (
 	"kubevirt.io/containerdisks/artifacts/generic"
 	"kubevirt.io/containerdisks/artifacts/rhcos"
 	"kubevirt.io/containerdisks/artifacts/rhcosprerelease"
+	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
 )
 
@@ -59,6 +60,18 @@ var Registry = []Entry{
 	{
 		Artifact:   centosstream.New("8"),
 		UseForDocs: true,
+	},
+	{
+		Artifact:   ubuntu.New("22.04"),
+		UseForDocs: true,
+	},
+	{
+		Artifact:   ubuntu.New("20.04"),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   ubuntu.New("18.04"),
+		UseForDocs: false,
 	},
 	//for testing only
 	{
