@@ -15,7 +15,7 @@ const (
 )
 
 var bsdLineRex = regexp.MustCompile(`^SHA256[ ]+\((?P<name>[^)]+)\)[ ]+=[ ]+(?P<checksum>[a-z0-9]+)$`)
-var gnuLineRex = regexp.MustCompile(`^(?P<checksum>[0-9a-z]+)  (?P<name>\S+)$`)
+var gnuLineRex = regexp.MustCompile(`^(?P<checksum>[0-9a-z]+)[ ]+(?P<name>\S+)$`)
 
 func Parse(stream io.Reader, format ChecksumFormat) (map[string]string, error) {
 
@@ -39,6 +39,9 @@ func Parse(stream io.Reader, format ChecksumFormat) (map[string]string, error) {
 			for i, groupName := range lineRex.SubexpNames() {
 				if groupName == "name" {
 					name = matches[i]
+					if format == ChecksumFormatGNU && strings.HasPrefix(name, "*") {
+						name = name[1:]
+					}
 				} else if groupName == "checksum" {
 					checksum = matches[i]
 				}
