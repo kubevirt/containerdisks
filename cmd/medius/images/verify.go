@@ -12,6 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	urand "k8s.io/apimachinery/pkg/util/rand"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -195,7 +196,9 @@ func createVM(artifact api.Artifact, imgRef string) (*v1.VirtualMachine, ed25519
 	)
 
 	name := randName(artifact.Metadata().Name)
-	return artifact.VM(name, imgRef, userData), privateKey, nil
+	vm := artifact.VM(name, imgRef, userData)
+	vm.Spec.Template.Spec.TerminationGracePeriodSeconds = pointer.Int64(0)
+	return vm, privateKey, nil
 }
 
 func marshallPublicKey(key *ed25519.PrivateKey) (string, error) {
