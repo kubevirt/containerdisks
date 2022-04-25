@@ -25,18 +25,18 @@ Its main tasks for all onboarded containerdisks are:
 
 ### Technical considerations
 
-To add a new containerdisk the interface [api.Artifact](pkg/api/artifacts.go)
+To add a new containerdisk the [api.Artifact](pkg/api/artifact.go)
 interface needs to be implemented. The resulting implementation needs to
 be [registered](cmd/medius/common/registry.go). That's it.
-The [fedora](artifacts/fedora/fedora.go) is a good example to check out.
+The [fedora artifact](artifacts/fedora/fedora.go) is a good example to check out.
 
 ### Criterias for onboarding
 
 * The image should have a reasonable adoption rate in the virtualization
-  ecosystem
+  ecosystem or a strong new use-case.
 * The image to onboard needs to be publicly available
 * The image must be usable in kubevirt without additional modifications
-* The images should be hosted by a well known (and owning) parties (no hacky
+* The images should be hosted by a well known (and owning) party (no hacky
   re-publishing)
 
 ### Image Verification
@@ -62,7 +62,7 @@ bin/medius images push --registry=localhost:49501 --dry-run=false --insecure-ski
 ### Scaling considerations
 
 At this stage `medius` only allows parallelization at the binary level. In the
-future it should get support for sharding to allow scaling on a CI job level.
+future it may get support for sharding to allow scaling on a CI job level.
 
 To scale on the command level make use of the `--workers` flag on the `publish`
 command.
