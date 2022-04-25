@@ -33,7 +33,7 @@ function kubevirtci::up() {
   ${_kubectl} apply -f "https://github.com/kubevirt/kubevirt/releases/download/${LATEST}/kubevirt-operator.yaml"
   ${_kubectl} apply -f "https://github.com/kubevirt/kubevirt/releases/download/${LATEST}/kubevirt-cr.yaml"
   echo "waiting for kubevirt to become ready, this can take a few minutes..."
-  ${_kubectl} -n kubevirt wait kv kubevirt --for condition=Available --timeout=5m
+  ${_kubectl} -n kubevirt wait kv kubevirt --for condition=Available --timeout=15m
 }
 
 function kubevirtci::down() {
