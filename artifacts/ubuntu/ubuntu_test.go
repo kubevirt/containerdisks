@@ -30,9 +30,8 @@ func Test_Inspect(t *testing.T) {
 			mockFile:      "testdata/SHA256SUM",
 		}, want: want{
 			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:            "de5e632e17b8965f2baf4ea6d2b824788e154d9a65df4fd419ec4019898e15cd",
-				DownloadURL:          "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img",
-				AdditionalUniqueTags: []string{"de5e632e17b8965f2baf4ea6d2b824788e154d9a65df4fd419ec4019898e15cd"},
+				SHA256Sum:   "de5e632e17b8965f2baf4ea6d2b824788e154d9a65df4fd419ec4019898e15cd",
+				DownloadURL: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img",
 			},
 			metadata: &api.Metadata{
 				Name:                   "ubuntu",
