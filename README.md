@@ -4,7 +4,7 @@
 
 The go tool [medius](cmd/medius) is the core of the syncrhonization process. It
 understands the origin of all containerdisks and what version is currently
-published in [quay.io/containerdisks](https://quay.io/repository/containerdisks)
+published in [quay.io/containerdisks](https://quay.io/containerdisks)
 .
 
 To run it in dry-run mode (the default), run:
