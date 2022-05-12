@@ -40,7 +40,7 @@ var Registry = []Entry{
 	},
 	{
 		Artifact:   rhcosprerelease.New("latest-4.11"),
-		UseForDocs: true,
+		UseForDocs: false,
 	},
 	{
 		Artifact:   rhcosprerelease.New("latest"),
@@ -48,18 +48,19 @@ var Registry = []Entry{
 	},
 	{
 		Artifact:   centos.New("8.4"),
-		UseForDocs: true,
-	},
-	{
-		Artifact:   centos.New("7-2009"),
 		UseForDocs: false,
 	},
 	{
-		Artifact: centosstream.New("9"),
+		Artifact:   centos.New("7-2009"),
+		UseForDocs: true,
+	},
+	{
+		Artifact:   centosstream.New("9"),
+		UseForDocs: true,
 	},
 	{
 		Artifact:   centosstream.New("8"),
-		UseForDocs: true,
+		UseForDocs: false,
 	},
 	{
 		Artifact:   ubuntu.New("22.04"),
