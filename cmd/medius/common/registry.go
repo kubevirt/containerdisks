@@ -20,6 +20,10 @@ type Entry struct {
 var Registry = []Entry{
 	{
 		Artifact:   fedora.New("35"),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   fedora.New("36"),
 		UseForDocs: true,
 	},
 	{
