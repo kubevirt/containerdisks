@@ -5,6 +5,7 @@ import (
 
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
+	"kubevirt.io/containerdisks/pkg/http"
 	"kubevirt.io/containerdisks/testutil"
 
 	. "github.com/onsi/gomega"
@@ -25,42 +26,48 @@ func Test_Inspect(t *testing.T) {
 		want    want
 		wantErr bool
 	}{
-		{name: "fedora:35", fields: fields{
-			releaseString: "35",
-			mockFile:      "testdata/release.json",
-		}, want: want{
-			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:            "fe84502779b3477284a8d4c86731f642ca10dd3984d2b5eccdf82630a9ca2de6",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2",
-				Compression:          "",
-				AdditionalUniqueTags: []string{"35-1.2"},
+		{
+			name: "fedora:35",
+			fields: fields{
+				releaseString: "35",
+				mockFile:      "testdata/releases.json",
 			},
-			metadata: &api.Metadata{
-				Name:                   "fedora",
-				Version:                "35",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+			want: want{
+				artifactDetails: &api.ArtifactDetails{
+					SHA256Sum:            "fe84502779b3477284a8d4c86731f642ca10dd3984d2b5eccdf82630a9ca2de6",
+					DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2",
+					Compression:          "",
+					AdditionalUniqueTags: []string{"35-1.2"},
+				},
+				metadata: &api.Metadata{
+					Name:                   "fedora",
+					Version:                "35",
+					Description:            description,
+					ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				},
 			},
-		},
 			wantErr: false,
 		},
-		{name: "fedora:34", fields: fields{
-			releaseString: "34",
-			mockFile:      "testdata/release.json",
-		}, want: want{
-			artifactDetails: &api.ArtifactDetails{
-				SHA256Sum:            "b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2",
-				Compression:          "",
-				AdditionalUniqueTags: []string{"34-1.2"},
+		{
+			name: "fedora:34",
+			fields: fields{
+				releaseString: "34",
+				mockFile:      "testdata/releases.json",
 			},
-			metadata: &api.Metadata{
-				Name:                   "fedora",
-				Version:                "34",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+			want: want{
+				artifactDetails: &api.ArtifactDetails{
+					SHA256Sum:            "b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea",
+					DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2",
+					Compression:          "",
+					AdditionalUniqueTags: []string{"34-1.2"},
+				},
+				metadata: &api.Metadata{
+					Name:                   "fedora",
+					Version:                "34",
+					Description:            description,
+					ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				},
 			},
-		},
 			wantErr: false,
 		},
 	}
@@ -77,6 +84,71 @@ func Test_Inspect(t *testing.T) {
 			}
 			g.Expect(got).To(Equal(tt.want.artifactDetails))
 			g.Expect(c.Metadata()).To(Equal(tt.want.metadata))
+		})
+	}
+}
+
+func Test_Gather(t *testing.T) {
+	type fields struct {
+		mockFile string
+	}
+	type want struct {
+		artifacts []api.Artifact
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		want    want
+		wantErr bool
+	}{
+		{
+			name: "fedora",
+			fields: fields{
+				mockFile: "testdata/releases.json",
+			},
+			want: want{
+				artifacts: []api.Artifact{
+					&fedora{
+						Version: "36",
+						Arch:    "x86_64",
+						Variant: "Cloud",
+						getter:  &http.HTTPGetter{},
+					},
+					&fedora{
+						Version: "35",
+						Arch:    "x86_64",
+						Variant: "Cloud",
+						getter:  &http.HTTPGetter{},
+					},
+					&fedora{
+						Version: "34",
+						Arch:    "x86_64",
+						Variant: "Cloud",
+						getter:  &http.HTTPGetter{},
+					},
+					&fedora{
+						Version: "33",
+						Arch:    "x86_64",
+						Variant: "Cloud",
+						getter:  &http.HTTPGetter{},
+					},
+				},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := NewGomegaWithT(t)
+			c := NewGatherer()
+			c.getter = testutil.NewMockGetter(tt.fields.mockFile)
+			got, err := c.Gather()
+			if tt.wantErr {
+				g.Expect(err).To(HaveOccurred())
+			} else {
+				g.Expect(err).NotTo(HaveOccurred())
+			}
+			g.Expect(got).To(Equal(tt.want.artifacts))
 		})
 	}
 }

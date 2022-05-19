@@ -26,9 +26,15 @@ type Release struct {
 
 type fedora struct {
 	Version string
-	getter  http.Getter
 	Arch    string
 	Variant string
+	getter  http.Getter
+}
+
+type fedoraGatherer struct {
+	Arch    string
+	Variant string
+	getter  http.Getter
 }
 
 var description string = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/240px-Fedora_logo.svg.png" alt="drawing" width="15"/> Fedora [Cloud](https://alt.fedoraproject.org/cloud/) images for KubeVirt.
@@ -46,14 +52,11 @@ func (f *fedora) Metadata() *api.Metadata {
 }
 
 func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
-	raw, err := f.getter.GetAll("https://getfedora.org/releases.json")
+	releases, err := getReleases(f.getter)
 	if err != nil {
-		return nil, fmt.Errorf("error downloading the fedora releases.json file: %v", err)
+		return nil, fmt.Errorf("error getting releases: %v", err)
 	}
-	releases := Releases{}
-	if err := json.Unmarshal(raw, &releases); err != nil {
-		return nil, fmt.Errorf("error parsing the releases.json file: %v", err)
-	}
+
 	for _, release := range releases {
 		if f.releaseMatches(&release) {
 			components := strings.Split(release.Link, "/")
@@ -67,6 +70,7 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 			}, nil
 		}
 	}
+
 	return nil, fmt.Errorf("no release information in releases.json for fedora:%q found", f.Version)
 }
 
@@ -91,6 +95,36 @@ func (f *fedora) Tests() []api.ArtifactTest {
 	}
 }
 
+func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
+	releases, err := getReleases(f.getter)
+	if err != nil {
+		return nil, fmt.Errorf("error getting releases: %v", err)
+	}
+
+	artifacts := []api.Artifact{}
+	for _, release := range releases {
+		if f.releaseMatches(&release) {
+			artifacts = append(artifacts, New(release.Version))
+		}
+	}
+
+	return artifacts, nil
+}
+
+func getReleases(getter http.Getter) (Releases, error) {
+	raw, err := getter.GetAll("https://getfedora.org/releases.json")
+	if err != nil {
+		return nil, fmt.Errorf("error downloading the fedora releases.json file: %v", err)
+	}
+
+	releases := Releases{}
+	if err := json.Unmarshal(raw, &releases); err != nil {
+		return nil, fmt.Errorf("error parsing the releases.json file: %v", err)
+	}
+
+	return releases, nil
+}
+
 func (f *fedora) releaseMatches(release *Release) bool {
 	return release.Version == f.Version &&
 		release.Arch == f.Arch &&
@@ -98,9 +132,23 @@ func (f *fedora) releaseMatches(release *Release) bool {
 		strings.HasSuffix(release.Link, "qcow2")
 }
 
+func (f *fedoraGatherer) releaseMatches(release *Release) bool {
+	return release.Arch == f.Arch &&
+		release.Variant == f.Variant &&
+		strings.HasSuffix(release.Link, "qcow2")
+}
+
 func New(release string) *fedora {
 	return &fedora{
 		Version: release,
+		Arch:    "x86_64",
+		Variant: "Cloud",
+		getter:  &http.HTTPGetter{},
+	}
+}
+
+func NewGatherer() *fedoraGatherer {
+	return &fedoraGatherer{
 		Arch:    "x86_64",
 		Variant: "Cloud",
 		getter:  &http.HTTPGetter{},

@@ -62,3 +62,9 @@ type Artifact interface {
 	UserData(data *docs.UserData) string
 	Tests() []ArtifactTest
 }
+
+type ArtifactsGatherer interface {
+	// Gather must return a sorted list of dynamically gathered artifacts.
+	// Artifacts have to be sorted in descending order with the latest release coming first.
+	Gather() ([]Artifact, error)
+}
