@@ -14,6 +14,7 @@ import (
 type Entry struct {
 	Artifact           api.Artifact
 	UseForDocs         bool
+	UseForLatest       bool
 	SkipWhenNotFocused bool
 }
 
@@ -23,8 +24,9 @@ var Registry = []Entry{
 		UseForDocs: false,
 	},
 	{
-		Artifact:   fedora.New("36"),
-		UseForDocs: true,
+		Artifact:     fedora.New("36"),
+		UseForDocs:   true,
+		UseForLatest: true,
 	},
 	{
 		Artifact:   rhcos.New("4.9"),

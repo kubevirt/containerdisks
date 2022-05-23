@@ -35,9 +35,9 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 				options.PublishImagesOptions.TargetRegistry = options.PublishImagesOptions.SourceRegistry
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(a api.Artifact) (*api.ArtifactResult, error) {
+			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				errString := ""
-				tags, err := buildAndPublish(cmd.Context(), a, options, time.Now())
+				tags, err := buildAndPublish(cmd.Context(), e, options, time.Now())
 				if err != nil {
 					errString = err.Error()
 				}
@@ -81,14 +81,14 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 	return publishCmd
 }
 
-func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common.Options, timestamp time.Time) ([]string, error) {
-	metadata := artifact.Metadata()
-	log := common.Logger(artifact)
+func buildAndPublish(ctx context.Context, entry *common.Entry, options *common.Options, timestamp time.Time) ([]string, error) {
+	description := entry.Artifact.Metadata().Describe()
+	log := common.Logger(entry.Artifact)
 
-	imageName := path.Join(options.PublishImagesOptions.SourceRegistry, metadata.Describe())
-	artifactInfo, err := artifact.Inspect()
+	imageName := path.Join(options.PublishImagesOptions.SourceRegistry, description)
+	artifactInfo, err := entry.Artifact.Inspect()
 	if err != nil {
-		return nil, fmt.Errorf("error introspecting artifact %q: %v", metadata.Describe(), err)
+		return nil, fmt.Errorf("error introspecting artifact %q: %v", description, err)
 	}
 	log.Infof("Remote artifact checksum: %q", artifactInfo.SHA256Sum)
 	repo := repository.RepositoryImpl{}
@@ -163,7 +163,7 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 		return nil, ctx.Err()
 	}
 
-	names := prepareTags(timestamp, options.PublishImagesOptions.TargetRegistry, metadata, artifactInfo)
+	names := prepareTags(timestamp, options.PublishImagesOptions.TargetRegistry, entry, artifactInfo)
 	for _, name := range names {
 		if !options.DryRun {
 			log.Infof("Pushing %s", name)
@@ -180,11 +180,13 @@ func buildAndPublish(ctx context.Context, artifact api.Artifact, options *common
 		}
 	}
 
-	return prepareTags(timestamp, "", metadata, artifactInfo), nil
+	return prepareTags(timestamp, "", entry, artifactInfo), nil
 }
 
-func prepareTags(timestamp time.Time, registry string, metadata *api.Metadata, artifactDetails *api.ArtifactDetails) []string {
+func prepareTags(timestamp time.Time, registry string, entry *common.Entry, artifactDetails *api.ArtifactDetails) []string {
+	metadata := entry.Artifact.Metadata()
 	imageName := path.Join(registry, metadata.Describe())
+
 	names := []string{fmt.Sprintf("%s-%s", imageName, timestamp.Format("0601021504"))}
 	for _, tag := range artifactDetails.AdditionalUniqueTags {
 		if tag == "" {
@@ -194,5 +196,10 @@ func prepareTags(timestamp time.Time, registry string, metadata *api.Metadata, a
 	}
 	// the least specific tag is last
 	names = append(names, imageName)
+
+	if entry.UseForLatest {
+		names = append(names, fmt.Sprintf("%s:%s", path.Join(registry, metadata.Name), "latest"))
+	}
+
 	return names
 }

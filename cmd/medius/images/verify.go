@@ -51,20 +51,21 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(a api.Artifact) (*api.ArtifactResult, error) {
-				r, ok := results[a.Metadata().Describe()]
+			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+				description := e.Artifact.Metadata().Describe()
+				r, ok := results[description]
 				if !ok {
 					return nil, nil
 				}
 				if r.Err != "" {
-					return nil, fmt.Errorf("Artifact %s failed in stage %s: %s", a.Metadata().Describe(), r.Stage, r.Err)
+					return nil, fmt.Errorf("Artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
 				}
 				if r.Stage != StagePush {
 					return nil, nil
 				}
 
 				errString := ""
-				err := verifyArtifact(cmd.Context(), a, r, options, client)
+				err := verifyArtifact(cmd.Context(), e.Artifact, r, options, client)
 				if err != nil {
 					errString = err.Error()
 				}

@@ -23,10 +23,10 @@ type workerResult struct {
 	Value api.ArtifactResult
 }
 
-func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(api.Artifact) (*api.ArtifactResult, error)) (chan workerResult, error) {
+func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(*common.Entry) (*api.ArtifactResult, error)) (chan workerResult, error) {
 	count := len(common.Registry)
 	errChan := make(chan error, count)
-	jobChan := make(chan api.Artifact, count)
+	jobChan := make(chan *common.Entry, count)
 	resultsChan := make(chan workerResult, count)
 	defer close(resultsChan)
 
@@ -40,16 +40,16 @@ func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(ap
 	for x := 0; x < options.ImagesOptions.Workers; x++ {
 		go func() {
 			defer wg.Done()
-			for a := range jobChan {
-				result, err := workerFn(a)
+			for e := range jobChan {
+				result, err := workerFn(e)
 				if result != nil {
 					resultsChan <- workerResult{
-						Key:   a.Metadata().Describe(),
+						Key:   e.Artifact.Metadata().Describe(),
 						Value: *result,
 					}
 				}
 				if err != nil && !errors.Is(err, context.Canceled) {
-					common.Logger(a).Error(err)
+					common.Logger(e.Artifact).Error(err)
 					errChan <- err
 				}
 				if errors.Is(ctx.Err(), context.Canceled) {
@@ -72,7 +72,7 @@ func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(ap
 	}
 }
 
-func fillJobChan(jobChan chan api.Artifact, focus string) {
+func fillJobChan(jobChan chan *common.Entry, focus string) {
 	for i, desc := range common.Registry {
 		if focus == "" && desc.SkipWhenNotFocused {
 			continue
@@ -82,7 +82,7 @@ func fillJobChan(jobChan chan api.Artifact, focus string) {
 			continue
 		}
 
-		jobChan <- common.Registry[i].Artifact
+		jobChan <- &common.Registry[i]
 	}
 }
 
