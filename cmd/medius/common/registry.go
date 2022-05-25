@@ -1,6 +1,7 @@
 package common
 
 import (
+	"github.com/sirupsen/logrus"
 	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/fedora"
@@ -19,15 +20,6 @@ type Entry struct {
 }
 
 var Registry = []Entry{
-	{
-		Artifact:   fedora.New("35"),
-		UseForDocs: false,
-	},
-	{
-		Artifact:     fedora.New("36"),
-		UseForDocs:   true,
-		UseForLatest: true,
-	},
 	{
 		Artifact:   rhcos.New("4.9"),
 		UseForDocs: false,
@@ -95,4 +87,21 @@ var Registry = []Entry{
 		SkipWhenNotFocused: true,
 		UseForDocs:         false,
 	},
+}
+
+func init() {
+	for _, gatherer := range []api.ArtifactsGatherer{fedora.NewGatherer()} {
+		artifacts, err := gatherer.Gather()
+		if err != nil {
+			logrus.Warn("Failed to gather artifacts", err)
+		} else {
+			for i := range artifacts {
+				Registry = append(Registry, Entry{
+					Artifact:     artifacts[i],
+					UseForDocs:   i == 0,
+					UseForLatest: i == 0,
+				})
+			}
+		}
+	}
 }
