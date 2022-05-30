@@ -3,6 +3,7 @@ package fedora
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 
 	v1 "kubevirt.io/api/core/v1"
@@ -36,6 +37,8 @@ type fedoraGatherer struct {
 	Variant string
 	getter  http.Getter
 }
+
+const minimumVersion = 35
 
 var description string = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/240px-Fedora_logo.svg.png" alt="drawing" width="15"/> Fedora [Cloud](https://alt.fedoraproject.org/cloud/) images for KubeVirt.
 <br />
@@ -133,7 +136,9 @@ func (f *fedora) releaseMatches(release *Release) bool {
 }
 
 func (f *fedoraGatherer) releaseMatches(release *Release) bool {
-	return release.Arch == f.Arch &&
+	version, err := strconv.Atoi(release.Version)
+	return err == nil && version >= minimumVersion &&
+		release.Arch == f.Arch &&
 		release.Variant == f.Variant &&
 		strings.HasSuffix(release.Link, "qcow2")
 }

@@ -120,18 +120,6 @@ func Test_Gather(t *testing.T) {
 						Variant: "Cloud",
 						getter:  &http.HTTPGetter{},
 					},
-					&fedora{
-						Version: "34",
-						Arch:    "x86_64",
-						Variant: "Cloud",
-						getter:  &http.HTTPGetter{},
-					},
-					&fedora{
-						Version: "33",
-						Arch:    "x86_64",
-						Variant: "Cloud",
-						getter:  &http.HTTPGetter{},
-					},
 				},
 			},
 			wantErr: false,
