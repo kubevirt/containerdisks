@@ -30,6 +30,9 @@ interface needs to be implemented. The resulting implementation needs to
 be [registered](cmd/medius/common/registry.go). That's it.
 The [fedora artifact](artifacts/fedora/fedora.go) is a good example to check out.
 
+To automatically detect new releases of a distribution implement the
+[api.ArtifactsGatherer](pkg/api/artifact.go) interface.
+
 ### Criterias for onboarding
 
 * The image should have a reasonable adoption rate in the virtualization
@@ -42,21 +45,21 @@ The [fedora artifact](artifacts/fedora/fedora.go) is a good example to check out
 ### Image Verification
 
 Image verification and end-to-end testing, including promotions of working
-images, will follow soon. At this stage images which don't work out of the box
-for kubevirt will not be published anymore.
+images, is possible with the `images` subcommands. Images which don't work out of
+the box for kubevirt will not be published.
 
 ### Local testing
 
 To publish all images to a custom local registry call `medius` like this:
 
 ```bash
-bin/medius images push --registry=localhost:49501 --dry-run=false --insecure-skip-tls --workers=3
+bin/medius images push --target-registry=localhost:49501 --dry-run=false --insecure-skip-tls --workers=3
 ```
 
 To publish a specific image run, make use of `--focus`:
 
 ```bash
-bin/medius images push --registry=localhost:49501 --dry-run=false --insecure-skip-tls --focus=fedore:35
+bin/medius images push --target-registry=localhost:49501 --dry-run=false --insecure-skip-tls --focus=fedora:35
 ```
 
 ### Scaling considerations
