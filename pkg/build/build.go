@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	LabelShaSum = "shasum"
+	LabelShaSum       = "shasum"
+	ImageArchitecture = "amd64"
 )
 
 func BuildContainerDisk(imgPath string, checksum string) (v1.Image, error) {
@@ -25,9 +26,18 @@ func BuildContainerDisk(imgPath string, checksum string) (v1.Image, error) {
 		return nil, fmt.Errorf("error appending the image layer: %v", err)
 	}
 
-	img, err = mutate.Config(img, v1.Config{Labels: map[string]string{LabelShaSum: checksum}})
+	cf, err := img.ConfigFile()
 	if err != nil {
-		return nil, fmt.Errorf("error appending labels to the image: %v", err)
+		return nil, fmt.Errorf("error getting the image config file: %v", err)
+	}
+
+	// Modify the config file
+	cf.Architecture = ImageArchitecture
+	cf.Config = v1.Config{Labels: map[string]string{LabelShaSum: checksum}}
+
+	img, err = mutate.ConfigFile(img, cf)
+	if err != nil {
+		return nil, fmt.Errorf("error setting the image config file: %v", err)
 	}
 
 	return img, nil
