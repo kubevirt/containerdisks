@@ -2,12 +2,7 @@
 
 set -e
 
-KUBEVIRTCI_TAG=${KUBEVIRTCI_TAG:-$(curl -sfL https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirtci/latest)}
-export KUBEVIRTCI_TAG
-
-export KUBEVIRT_PROVIDER=${KUBEVIRT_PROVIDER:-k8s-1.23}
-export KUBEVIRT_NUM_NODES=${KUBEVIRT_NUM_NODES:-1}
-export KUBEVIRT_MEMORY_SIZE=${KUBEVIRT_MEMORY_SIZE:-4096M}
+export KUBEVIRTCI_TAG=${KUBEVIRTCI_TAG:-$(curl -sfL https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirtci/latest)}
 export KUBEVIRT_DEPLOY_CDI="true"
 
 _base_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
