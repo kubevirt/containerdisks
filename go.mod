@@ -12,7 +12,6 @@ replace (
 require (
 	github.com/containers/image/v5 v5.24.1
 	github.com/docker/distribution v2.8.1+incompatible
-	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-containerregistry v0.13.0
 	github.com/onsi/gomega v1.26.0
 	github.com/pkg/errors v0.9.1
@@ -25,6 +24,7 @@ require (
 	k8s.io/utils v0.0.0-20230209194617-a36077c30491
 	kubevirt.io/api v0.58.1
 	kubevirt.io/client-go v0.58.1
+	sigs.k8s.io/yaml v1.3.0
 )
 
 require (
@@ -45,6 +45,7 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/emicklei/go-restful/v3 v3.10.1 // indirect
+	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-kit/kit v0.12.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
@@ -120,5 +121,4 @@ require (
 	kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
-	sigs.k8s.io/yaml v1.3.0 // indirect
 )

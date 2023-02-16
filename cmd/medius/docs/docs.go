@@ -8,12 +8,12 @@ import (
 	"path"
 	"strings"
 
-	"github.com/ghodss/yaml"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/quay"
+	"sigs.k8s.io/yaml"
 )
 
 func NewPublishDocsCommand(options *common.Options) *cobra.Command {
