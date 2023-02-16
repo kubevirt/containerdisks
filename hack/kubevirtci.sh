@@ -2,6 +2,7 @@
 
 set -e
 
+
 export KUBEVIRTCI_TAG=${KUBEVIRTCI_TAG:-$(curl -sfL https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirtci/latest)}
 export KUBEVIRT_DEPLOY_CDI="true"
 
