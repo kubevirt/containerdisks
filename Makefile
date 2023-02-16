@@ -13,6 +13,10 @@ fmt:
 	go mod tidy -compat=1.19
 	gofmt -s -w .
 
+.PHONY: vendor
+vendor:
+	go mod vendor
+
 lint:
 	CGO_ENABLED=0 golangci-lint run
 
