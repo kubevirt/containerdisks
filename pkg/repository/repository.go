@@ -155,14 +155,9 @@ func getErrorCode(err error) errcode.ErrorCoder {
 		}
 	}
 
-	errs, ok := err.(errcode.Errors)
-	if !ok || len(errs) == 0 {
-		return nil
+	if ec, ok := err.(errcode.ErrorCoder); ok {
+		return ec
 	}
-	err = errs[0]
-	ec, ok := err.(errcode.ErrorCoder)
-	if !ok {
-		return nil
-	}
-	return ec
+
+	return nil
 }
