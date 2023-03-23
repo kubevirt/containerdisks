@@ -102,7 +102,7 @@ func WithRng() Option {
 	}
 }
 
-func WithCloudInitNoCloud(userData string) Option {
+func withCloudInit(volumeSource v1.VolumeSource) Option {
 	return func(vm *v1.VirtualMachine) {
 		vm.Spec.Template.Spec.Domain.Devices.Disks = append(
 			vm.Spec.Template.Spec.Domain.Devices.Disks,
@@ -118,42 +118,27 @@ func WithCloudInitNoCloud(userData string) Option {
 		vm.Spec.Template.Spec.Volumes = append(
 			vm.Spec.Template.Spec.Volumes,
 			v1.Volume{
-				Name: "cloudinit",
-				VolumeSource: v1.VolumeSource{
-					CloudInitNoCloud: &v1.CloudInitNoCloudSource{
-						UserData: userData,
-					},
-				},
+				Name:         "cloudinit",
+				VolumeSource: volumeSource,
 			},
 		)
 	}
 }
 
+func WithCloudInitNoCloud(userData string) Option {
+	return withCloudInit(v1.VolumeSource{
+		CloudInitNoCloud: &v1.CloudInitNoCloudSource{
+			UserData: userData,
+		},
+	})
+}
+
 func WithCloudInitConfigDrive(userData string) Option {
-	return func(vm *v1.VirtualMachine) {
-		vm.Spec.Template.Spec.Domain.Devices.Disks = append(
-			vm.Spec.Template.Spec.Domain.Devices.Disks,
-			v1.Disk{
-				Name: "cloudinit",
-				DiskDevice: v1.DiskDevice{
-					Disk: &v1.DiskTarget{
-						Bus: "virtio",
-					},
-				},
-			},
-		)
-		vm.Spec.Template.Spec.Volumes = append(
-			vm.Spec.Template.Spec.Volumes,
-			v1.Volume{
-				Name: "cloudinit",
-				VolumeSource: v1.VolumeSource{
-					CloudInitConfigDrive: &v1.CloudInitConfigDriveSource{
-						UserData: userData,
-					},
-				},
-			},
-		)
-	}
+	return withCloudInit(v1.VolumeSource{
+		CloudInitConfigDrive: &v1.CloudInitConfigDriveSource{
+			UserData: userData,
+		},
+	})
 }
 
 func WithSecureBoot() Option {
