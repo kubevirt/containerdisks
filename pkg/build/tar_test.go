@@ -28,7 +28,7 @@ func TestStreamLayer(t *testing.T) {
 			g := NewGomegaWithT(t)
 			imageName := filepath.Join(t.TempDir(), "image")
 
-			err := os.WriteFile(imageName, []byte(tt.args.imageContent), 0777)
+			err := os.WriteFile(imageName, []byte(tt.args.imageContent), 0600)
 			g.Expect(err).ToNot(HaveOccurred())
 
 			imageStat, err := os.Stat(imageName)

@@ -145,8 +145,17 @@ func buildAndPublish(ctx context.Context, entry *common.Entry, options *common.O
 		log.Fatal(err)
 	}
 	defer os.Remove(file.Name())
-	if _, err := io.Copy(file, reader); err != nil {
-		return nil, fmt.Errorf("error writing the image to the destination file: %v", err)
+
+	// Uncompress disks in chunks up to size defined below
+	const chunkSize = 1024 * 1024 * 50 // MiB
+	for {
+		_, err := io.CopyN(file, reader, chunkSize)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return nil, fmt.Errorf("error writing the image to the destination file: %v", err)
+		}
 	}
 	file.Close()
 	if errors.Is(ctx.Err(), context.Canceled) {

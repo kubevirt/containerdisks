@@ -21,8 +21,9 @@ func SSH(ctx context.Context, vmi *v1.VirtualMachineInstance, params *api.Artifa
 		return err
 	}
 
+	// Test SSH while deliberately ignoring insecure host keys
 	config := &ssh.ClientConfig{
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(), //nolint:gosec
 		User:            params.Username,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),

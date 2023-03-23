@@ -61,8 +61,8 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 		return nil, fmt.Errorf("error getting releases: %v", err)
 	}
 
-	for _, release := range releases {
-		if f.releaseMatches(&release) {
+	for i, release := range releases {
+		if f.releaseMatches(&releases[i]) {
 			components := strings.Split(release.Link, "/")
 			fileName := components[len(components)-1]
 			additionalTag := strings.TrimSuffix(strings.TrimPrefix(fileName, "Fedora-Cloud-Base-"), ".x86_64.qcow2")
@@ -106,8 +106,8 @@ func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
 	}
 
 	artifacts := []api.Artifact{}
-	for _, release := range releases {
-		if f.releaseMatches(&release) {
+	for i, release := range releases {
+		if f.releaseMatches(&releases[i]) {
 			artifacts = append(artifacts, New(release.Version))
 		}
 	}

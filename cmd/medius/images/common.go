@@ -94,7 +94,7 @@ func writeResultsFile(fileName string, results map[string]api.ArtifactResult) er
 		return err
 	}
 
-	err = os.WriteFile(fileName, data, 0644)
+	err = os.WriteFile(fileName, data, 0600)
 	if err != nil {
 		return err
 	}
