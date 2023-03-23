@@ -81,7 +81,7 @@ linters:
  #  - govet
     - ineffassign
  #  - lll
- #  - misspell
+    - misspell
     - nakedret
     - noctx
     - nolintlint

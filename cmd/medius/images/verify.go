@@ -208,8 +208,8 @@ func marshallPublicKey(key *ed25519.PrivateKey) (string, error) {
 		return "", err
 	}
 
-	marshalled := string(ssh.MarshalAuthorizedKey(sshKey))
-	return marshalled[:len(marshalled)-1], nil
+	marshaled := string(ssh.MarshalAuthorizedKey(sshKey))
+	return marshaled[:len(marshaled)-1], nil
 }
 
 func randName(name string) string {
