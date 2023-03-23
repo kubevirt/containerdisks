@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	maxRetries    = 10
+	maxRetries    = 30
 	retryDuration = 10 * time.Second
 )
 
