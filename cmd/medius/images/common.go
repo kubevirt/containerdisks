@@ -24,7 +24,8 @@ type workerResult struct {
 }
 
 func spawnWorkers(ctx context.Context, o *common.Options, fn func(*common.Entry) (*api.ArtifactResult, error)) (chan workerResult, error) {
-	count := len(common.Registry)
+	registry := common.NewRegistry()
+	count := len(registry)
 	errChan := make(chan error, count)
 	jobChan := make(chan *common.Entry, count)
 	resultsChan := make(chan workerResult, count)
@@ -59,7 +60,7 @@ func spawnWorkers(ctx context.Context, o *common.Options, fn func(*common.Entry)
 		}()
 	}
 
-	fillJobChan(jobChan, o.Focus)
+	fillJobChan(jobChan, registry, o.Focus)
 	close(jobChan)
 
 	wg.Wait()
@@ -72,8 +73,8 @@ func spawnWorkers(ctx context.Context, o *common.Options, fn func(*common.Entry)
 	}
 }
 
-func fillJobChan(jobChan chan *common.Entry, focus string) {
-	for i, desc := range common.Registry {
+func fillJobChan(jobChan chan *common.Entry, registry []common.Entry, focus string) {
+	for i, desc := range registry {
 		if focus == "" && desc.SkipWhenNotFocused {
 			continue
 		}
@@ -82,7 +83,7 @@ func fillJobChan(jobChan chan *common.Entry, focus string) {
 			continue
 		}
 
-		jobChan <- &common.Registry[i]
+		jobChan <- &registry[i]
 	}
 }
 

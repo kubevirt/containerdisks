@@ -19,7 +19,7 @@ type Entry struct {
 	SkipWhenNotFocused bool
 }
 
-var Registry = []Entry{
+var staticRegistry = []Entry{
 	{
 		Artifact:   rhcos.New("4.9", true),
 		UseForDocs: false,
@@ -109,14 +109,14 @@ var Registry = []Entry{
 	},
 }
 
-func init() {
-	for _, gatherer := range []api.ArtifactsGatherer{fedora.NewGatherer()} {
+func gatherArtifacts(registry []Entry, gatherers []api.ArtifactsGatherer) {
+	for _, gatherer := range gatherers {
 		artifacts, err := gatherer.Gather()
 		if err != nil {
 			logrus.Warn("Failed to gather artifacts", err)
 		} else {
 			for i := range artifacts {
-				Registry = append(Registry, Entry{
+				registry = append(registry, Entry{
 					Artifact:     artifacts[i],
 					UseForDocs:   i == 0,
 					UseForLatest: i == 0,
@@ -124,4 +124,14 @@ func init() {
 			}
 		}
 	}
+}
+
+func NewRegistry() []Entry {
+	registry := make([]Entry, len(staticRegistry))
+	copy(registry, staticRegistry)
+
+	gatherers := []api.ArtifactsGatherer{fedora.NewGatherer()}
+	gatherArtifacts(registry, gatherers)
+
+	return registry
 }

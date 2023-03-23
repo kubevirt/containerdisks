@@ -36,7 +36,7 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 			}
 
 			client := quay.NewQuayClient(options.PublishDocsOptions.TokenFile, elements[1])
-			for _, p := range common.Registry {
+			for _, p := range common.NewRegistry() {
 				if options.Focus == "" && p.SkipWhenNotFocused {
 					continue
 				}
