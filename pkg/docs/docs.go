@@ -6,6 +6,7 @@ import (
 	"strings"
 	"text/template"
 
+	"golang.org/x/text/cases"
 	k8sv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -59,7 +60,7 @@ func BasicVM(name, image string) *v1.VirtualMachine {
 			RunStrategy: &always,
 			Template: &v1.VirtualMachineInstanceTemplateSpec{
 				Spec: v1.VirtualMachineInstanceSpec{
-					TerminationGracePeriodSeconds: pointer.Int64Ptr(180),
+					TerminationGracePeriodSeconds: pointer.Int64(180),
 					Domain: v1.DomainSpec{
 						Resources: v1.ResourceRequirements{
 							Requests: map[k8sv1.ResourceName]resource.Quantity{
@@ -174,7 +175,7 @@ func WithSecureBoot() Option {
 
 func Template() *template.Template {
 	funcMap := template.FuncMap{
-		"ToTitle": strings.Title,
+		"ToTitle": cases.Title,
 	}
 
 	return template.Must(

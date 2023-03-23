@@ -5,9 +5,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 	"strings"
 )
@@ -28,7 +29,7 @@ func (q *quayClient) base(repository string) url.URL {
 }
 
 func (q *quayClient) header() (http.Header, error) {
-	rawToken, err := ioutil.ReadFile(q.tokenFile)
+	rawToken, err := os.ReadFile(q.tokenFile)
 	if err != nil {
 		return http.Header{}, fmt.Errorf("error reading the quay token file: %v", err)
 	}
@@ -59,7 +60,7 @@ func (q *quayClient) json(ctx context.Context, method string, repo string, subre
 		return fmt.Errorf("error performing rest call: %v", err)
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("failed to download %s: %v: %v ", req.URL.String(), fmt.Errorf("status : %v", resp.StatusCode), string(body))
 	}
 	return nil

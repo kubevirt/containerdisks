@@ -1,7 +1,7 @@
 package testutil
 
 import (
-	"io/ioutil"
+	"os"
 
 	"kubevirt.io/containerdisks/pkg/http"
 )
@@ -11,7 +11,7 @@ type mockGetter struct {
 }
 
 func (m *mockGetter) GetAll(_ string) ([]byte, error) {
-	return ioutil.ReadFile(m.mockFile)
+	return os.ReadFile(m.mockFile)
 }
 
 func (m *mockGetter) GetWithChecksum(_ string) (http.ReadCloserWithChecksum, error) {

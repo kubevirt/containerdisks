@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"time"
@@ -137,7 +136,7 @@ func buildAndPublish(ctx context.Context, entry *common.Entry, options *common.O
 		}
 	}
 
-	file, err := ioutil.TempFile("", "containerdisks")
+	file, err := os.CreateTemp("", "containerdisks")
 	if err != nil {
 		log.Fatal(err)
 	}
