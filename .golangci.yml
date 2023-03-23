@@ -58,7 +58,7 @@ linters-settings:
 linters:
   disable-all: true
   enable:
- #  - bodyclose
+    - bodyclose
     - deadcode
     - depguard
     - dogsled

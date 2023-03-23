@@ -59,6 +59,7 @@ func (q *quayClient) json(ctx context.Context, method string, repo string, subre
 	if err != nil {
 		return fmt.Errorf("error performing rest call: %v", err)
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("failed to download %s: %v: %v ", req.URL.String(), fmt.Errorf("status : %v", resp.StatusCode), string(body))
