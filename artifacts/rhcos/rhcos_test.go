@@ -67,7 +67,7 @@ func Test_Inspect(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			g := NewGomegaWithT(t)
-			c := New(tt.fields.releaseString)
+			c := New(tt.fields.releaseString, true)
 			c.getter = testutil.NewMockGetter(tt.fields.mockFile)
 			got, err := c.Inspect()
 			if tt.wantErr {
