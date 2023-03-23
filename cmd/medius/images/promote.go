@@ -34,7 +34,7 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 					return nil, nil
 				}
 				if r.Err != "" {
-					return nil, fmt.Errorf("Artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
+					return nil, fmt.Errorf("artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
 				}
 				if r.Stage != StageVerify {
 					return nil, nil
@@ -83,7 +83,7 @@ func promoteArtifact(ctx context.Context, artifact api.Artifact, tags []string, 
 	log := common.Logger(artifact)
 
 	if len(tags) == 0 {
-		err := errors.New("No containerdisks to promote")
+		err := errors.New("no containerdisks to promote")
 		log.Error(err)
 		return err
 	}

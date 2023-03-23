@@ -26,11 +26,11 @@ type HTTPGetter struct {
 func (H *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
 	resp, err := http.Get(fileURL)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to load primary repository file from %s: %v", fileURL, err)
+		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		return nil, fmt.Errorf("Failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
+		return nil, fmt.Errorf("failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
 	}
 	return ioutil.ReadAll(resp.Body)
 }
@@ -38,11 +38,11 @@ func (H *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
 func (H *HTTPGetter) GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error) {
 	resp, err := http.Get(fileURL)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to load primary repository file from %s: %v", fileURL, err)
+		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		resp.Body.Close()
-		return nil, fmt.Errorf("Failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
+		return nil, fmt.Errorf("failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
 	}
 	return newReadCloserWithChecksum(resp.Body), nil
 }

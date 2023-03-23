@@ -58,7 +58,7 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 					return nil, nil
 				}
 				if r.Err != "" {
-					return nil, fmt.Errorf("Artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
+					return nil, fmt.Errorf("artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
 				}
 				if r.Stage != StagePush {
 					return nil, nil
@@ -112,7 +112,7 @@ func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.Artif
 	log := common.Logger(artifact)
 
 	if len(result.Tags) == 0 {
-		err := errors.New("No containerdisks to verify")
+		err := errors.New("no containerdisks to verify")
 		log.Error(err)
 		return err
 	}
