@@ -18,7 +18,6 @@ var bsdLineRex = regexp.MustCompile(`^SHA256[ ]+\((?P<name>[^)]+)\)[ ]+=[ ]+(?P<
 var gnuLineRex = regexp.MustCompile(`^(?P<checksum>[0-9a-z]+)[ ]+(?P<name>\S+)$`)
 
 func Parse(stream io.Reader, format ChecksumFormat) (map[string]string, error) {
-
 	var lineRex *regexp.Regexp
 	switch format {
 	case ChecksumFormatGNU:

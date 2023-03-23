@@ -94,7 +94,7 @@ linters:
     - unparam
     - unused
     - varcheck
- #  - whitespace
+    - whitespace
 
   # don't enable:
   # - asciicheck
