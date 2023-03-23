@@ -28,7 +28,7 @@ type ImageInfo struct {
 }
 
 type Repository interface {
-	ImageMetadata(imgRef string) (*ImageInfo, error)
+	ImageMetadata(imgRef string, insecure bool) (*ImageInfo, error)
 	PushImage(ctx context.Context, img v1.Image, imgRef string) error
 	CopyImage(ctx context.Context, srcRef, dstRef string, insecure bool) error
 }
