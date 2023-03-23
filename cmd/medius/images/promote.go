@@ -68,8 +68,10 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 			}
 		},
 	}
-	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.SourceRegistry, "source-registry", options.PromoteImageOptions.SourceRegistry, "Registry to pull images from")
-	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.TargetRegistry, "target-registry", options.PromoteImageOptions.TargetRegistry, "Registry to promote images to")
+	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.SourceRegistry, "source-registry",
+		options.PromoteImageOptions.SourceRegistry, "Registry to pull images from")
+	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.TargetRegistry, "target-registry",
+		options.PromoteImageOptions.TargetRegistry, "Registry to promote images to")
 
 	err := promoteCmd.MarkFlagRequired("source-registry")
 	if err != nil {

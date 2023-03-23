@@ -72,10 +72,14 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 			}
 		},
 	}
-	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.ForceBuild, "force", options.PublishImagesOptions.ForceBuild, "Force a rebuild and push")
-	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.NoFail, "no-fail", options.PublishImagesOptions.NoFail, "Return success even if a worker fails")
-	publishCmd.Flags().StringVar(&options.PublishImagesOptions.SourceRegistry, "source-registry", options.PublishImagesOptions.SourceRegistry, "Registry to check if updates are needed")
-	publishCmd.Flags().StringVar(&options.PublishImagesOptions.TargetRegistry, "target-registry", options.PublishImagesOptions.TargetRegistry, "Registry to push built containerdisks to")
+	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.ForceBuild, "force",
+		options.PublishImagesOptions.ForceBuild, "Force a rebuild and push")
+	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.NoFail, "no-fail",
+		options.PublishImagesOptions.NoFail, "Return success even if a worker fails")
+	publishCmd.Flags().StringVar(&options.PublishImagesOptions.SourceRegistry, "source-registry",
+		options.PublishImagesOptions.SourceRegistry, "Registry to check if updates are needed")
+	publishCmd.Flags().StringVar(&options.PublishImagesOptions.TargetRegistry, "target-registry",
+		options.PublishImagesOptions.TargetRegistry, "Registry to push built containerdisks to")
 
 	return publishCmd
 }

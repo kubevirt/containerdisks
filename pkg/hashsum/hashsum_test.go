@@ -7,6 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+//nolint:lll
 func TestParse(t *testing.T) {
 	type args struct {
 		fileName       string

@@ -22,6 +22,7 @@ type rhcos struct {
 	AppendLatest bool
 }
 
+//nolint:lll
 var description string = `RHCOS images for KubeVirt.
 <br />
 <br />

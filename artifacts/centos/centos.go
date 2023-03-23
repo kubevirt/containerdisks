@@ -14,6 +14,7 @@ import (
 	"kubevirt.io/containerdisks/pkg/tests"
 )
 
+//nolint:lll
 var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Generic Cloud images for KubeVirt.
 <br />
 <br />
@@ -69,7 +70,8 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	} else if strings.HasPrefix(c.Version, "7-") {
 		components := strings.Split(c.Version, "-")
 		for fileName := range checksums {
-			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-7-x86_64-%s-%s.qcow2", c.Variant, components[1])) && strings.HasSuffix(fileName, "qcow2") {
+			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-7-x86_64-%s-%s.qcow2", c.Variant, components[1])) &&
+				strings.HasSuffix(fileName, "qcow2") {
 				candidates = append(candidates, fileName)
 			}
 		}

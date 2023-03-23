@@ -29,7 +29,10 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 
 			elements := strings.Split(options.PublishDocsOptions.Registry, "/")
 			if len(elements) != 2 || elements[0] != "quay.io" || elements[1] == "" {
-				return fmt.Errorf("error determining quay.io organiation from %v, this command only works with quay.io", options.PublishDocsOptions.Registry)
+				return fmt.Errorf(
+					"error determining quay.io organization from %v, this command only works with quay.io",
+					options.PublishDocsOptions.Registry,
+				)
 			}
 
 			client := quay.NewQuayClient(options.PublishDocsOptions.TokenFile, elements[1])
@@ -79,8 +82,10 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 			return nil
 		},
 	}
-	publishCmd.Flags().StringVar(&options.PublishDocsOptions.Registry, "registry", options.PublishDocsOptions.Registry, "target registry for the containerdisks")
-	publishCmd.Flags().StringVar(&options.PublishDocsOptions.TokenFile, "quay-token-file", options.PublishDocsOptions.TokenFile, "quay.io oauth token file")
+	publishCmd.Flags().StringVar(&options.PublishDocsOptions.Registry, "registry",
+		options.PublishDocsOptions.Registry, "target registry for the containerdisks")
+	publishCmd.Flags().StringVar(&options.PublishDocsOptions.TokenFile, "quay-token-file",
+		options.PublishDocsOptions.TokenFile, "quay.io oauth token file")
 
 	err := publishCmd.MarkFlagRequired("quay-token-file")
 	if err != nil {

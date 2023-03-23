@@ -80,7 +80,7 @@ linters:
  #  - gosimple
  #  - govet
     - ineffassign
- #  - lll
+    - lll
     - misspell
     - nakedret
     - noctx
