@@ -25,11 +25,11 @@ type ReadCloserWithChecksum interface {
 type HTTPGetter struct {
 }
 
-func (H *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
-	return H.GetAllWithContext(context.Background(), fileURL)
+func (h *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
+	return h.GetAllWithContext(context.Background(), fileURL)
 }
 
-func (H *HTTPGetter) GetAllWithContext(ctx context.Context, fileURL string) ([]byte, error) {
+func (h *HTTPGetter) GetAllWithContext(ctx context.Context, fileURL string) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, http.NoBody)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
@@ -47,11 +47,11 @@ func (H *HTTPGetter) GetAllWithContext(ctx context.Context, fileURL string) ([]b
 	return io.ReadAll(resp.Body)
 }
 
-func (H *HTTPGetter) GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error) {
-	return H.GetWithChecksumAndContext(context.Background(), fileURL)
+func (h *HTTPGetter) GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error) {
+	return h.GetWithChecksumAndContext(context.Background(), fileURL)
 }
 
-func (H *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error) {
+func (h *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, http.NoBody)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)

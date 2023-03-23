@@ -66,14 +66,14 @@ func main() {
 	}
 }
 
-func getInterruptibleContext() (context.Context, func()) {
-	ctx := context.Background()
+func getInterruptibleContext() (ctx context.Context, cancel func()) {
+	ctx = context.Background()
 	ctx, cancelCtx := context.WithCancel(ctx)
 
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, os.Interrupt)
 
-	cancel := func() {
+	cancel = func() {
 		signal.Stop(signalChan)
 		cancelCtx()
 	}

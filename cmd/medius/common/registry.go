@@ -92,7 +92,7 @@ var Registry = []Entry{
 		Artifact:   ubuntu.New("18.04"),
 		UseForDocs: false,
 	},
-	//for testing only
+	// for testing only
 	{
 		Artifact: generic.New(
 			&api.ArtifactDetails{

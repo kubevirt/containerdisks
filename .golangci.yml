@@ -69,7 +69,7 @@ linters:
  #  - funlen
  #  - gochecknoinits
     - goconst
- #  - gocritic
+    - gocritic
  #  - gocyclo
     - gofmt
     - goheader

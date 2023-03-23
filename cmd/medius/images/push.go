@@ -142,7 +142,7 @@ func buildAndPublish(ctx context.Context, entry *common.Entry, options *common.O
 
 	file, err := os.CreateTemp("", "containerdisks")
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer os.Remove(file.Name())
 
