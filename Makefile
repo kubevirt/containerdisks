@@ -1,3 +1,8 @@
+## Location to install dependencies to
+LOCALBIN ?= $(shell pwd)/bin
+$(LOCALBIN):
+	mkdir -p $(LOCALBIN)
+
 all: test medius
 
 test:
@@ -17,8 +22,13 @@ fmt:
 vendor:
 	go mod vendor
 
+GOLANGCI_LINT ?= $(LOCALBIN)/golangci-lint
+GOLANGCI_LINT_VERSION ?= v1.51.1
+
+.PHONY: lint
 lint:
-	CGO_ENABLED=0 golangci-lint run
+	test -s $(GOLANGCI_LINT) || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(LOCALBIN) $(GOLANGCI_LINT_VERSION)
+	CGO_ENABLED=0 $(GOLANGCI_LINT) run --timeout 5m
 
 .PHONY: cluster-up
 cluster-up:
