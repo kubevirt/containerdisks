@@ -27,7 +27,7 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				description := e.Artifact.Metadata().Describe()
 				r, ok := results[description]
 				if !ok {
@@ -63,8 +63,8 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 				}
 			}
 
-			if err != nil {
-				logrus.Fatal(err)
+			if workerErr != nil {
+				logrus.Fatal(workerErr)
 			}
 		},
 	}

@@ -43,7 +43,7 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 				options.PublishImagesOptions.TargetRegistry = options.PublishImagesOptions.SourceRegistry
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				errString := ""
 
 				b := buildAndPublish{
@@ -80,11 +80,11 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 				}
 			}
 
-			if err != nil {
+			if workerErr != nil {
 				if options.PublishImagesOptions.NoFail {
-					logrus.Warn(err)
+					logrus.Warn(workerErr)
 				} else {
-					logrus.Fatal(err)
+					logrus.Fatal(workerErr)
 				}
 			}
 		},

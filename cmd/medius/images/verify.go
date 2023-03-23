@@ -51,7 +51,7 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				description := e.Artifact.Metadata().Describe()
 				r, ok := results[description]
 				if !ok {
@@ -85,11 +85,11 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			if err != nil {
+			if workerErr != nil {
 				if options.VerifyImagesOptions.NoFail {
-					logrus.Warn(err)
+					logrus.Warn(workerErr)
 				} else {
-					logrus.Fatal(err)
+					logrus.Fatal(workerErr)
 				}
 			}
 		},
