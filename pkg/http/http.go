@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -11,7 +12,9 @@ import (
 
 type Getter interface {
 	GetAll(fileURL string) ([]byte, error)
+	GetAllWithContext(ctx context.Context, fileURL string) ([]byte, error)
 	GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error)
+	GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error)
 }
 
 type ReadCloserWithChecksum interface {
@@ -23,11 +26,21 @@ type HTTPGetter struct {
 }
 
 func (H *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
-	resp, err := http.Get(fileURL)
+	return H.GetAllWithContext(context.Background(), fileURL)
+}
+
+func (H *HTTPGetter) GetAllWithContext(ctx context.Context, fileURL string) ([]byte, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, http.NoBody)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
 	}
 	defer resp.Body.Close()
+
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		return nil, fmt.Errorf("failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
 	}
@@ -35,10 +48,20 @@ func (H *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
 }
 
 func (H *HTTPGetter) GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error) {
-	resp, err := http.Get(fileURL)
+	return H.GetWithChecksumAndContext(context.Background(), fileURL)
+}
+
+func (H *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, http.NoBody)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
 	}
+
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		resp.Body.Close()
 		return nil, fmt.Errorf("failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))

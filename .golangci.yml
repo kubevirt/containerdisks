@@ -83,7 +83,7 @@ linters:
  #  - lll
  #  - misspell
     - nakedret
- #  - noctx
+    - noctx
     - nolintlint
     - rowserrcheck
     - staticcheck
