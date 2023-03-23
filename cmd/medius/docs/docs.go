@@ -69,14 +69,14 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 				}
 
 				log.Info("Updating description on quay.io")
-				if options.DryRun == false {
+				if !options.DryRun {
 					if err := client.Update(context.Background(), metadata.Name, result.String()); err != nil {
 						success = false
 						log.Errorf("error marshaling example for for %q: %v", metadata.Name, err)
 					}
 				}
 			}
-			if success == false {
+			if !success {
 				os.Exit(1)
 			}
 			return nil
