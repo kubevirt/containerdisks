@@ -217,7 +217,8 @@ func marshallPublicKey(key *ed25519.PrivateKey) (string, error) {
 }
 
 func randName(name string) string {
-	return name + "-" + urand.String(5)
+	const randomCharCount = 5
+	return name + "-" + urand.String(randomCharCount)
 }
 
 func waitVMReady(ctx context.Context, name string, client kvirtcli.VirtualMachineInterface, timeout int) error {

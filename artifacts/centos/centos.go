@@ -106,11 +106,14 @@ func getCandidates(version, variant string, checksums map[string]string) (candid
 }
 
 func getAdditionalTags(version, variant, candidate string) (additionalTags []string) {
+	// The CentOS 8 version is expected to contain one dash
+	const expectedCentos8VersionPartsCount = 2
+
 	if strings.HasPrefix(version, "8.") {
 		additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-8-%s-", variant)), ".x86_64.qcow2")
 		additionalTags = append(additionalTags, additionalTag)
 		split := strings.Split(additionalTag, "-")
-		if len(split) == 2 {
+		if len(split) == expectedCentos8VersionPartsCount {
 			additionalTags = append(additionalTags, split[0])
 		}
 	}

@@ -47,6 +47,7 @@ func NewVM(name, image string, opts ...Option) *v1.VirtualMachine {
 }
 
 func BasicVM(name, image string) *v1.VirtualMachine {
+	const terminationGracePeriod int64 = 180
 	always := v1.RunStrategyAlways
 	return &v1.VirtualMachine{
 		TypeMeta: metav1.TypeMeta{
@@ -60,7 +61,7 @@ func BasicVM(name, image string) *v1.VirtualMachine {
 			RunStrategy: &always,
 			Template: &v1.VirtualMachineInstanceTemplateSpec{
 				Spec: v1.VirtualMachineInstanceSpec{
-					TerminationGracePeriodSeconds: pointer.Int64(180),
+					TerminationGracePeriodSeconds: pointer.Int64(terminationGracePeriod),
 					Domain: v1.DomainSpec{
 						Resources: v1.ResourceRequirements{
 							Requests: map[k8sv1.ResourceName]resource.Quantity{
