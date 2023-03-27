@@ -86,7 +86,7 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 			}
 
 			if err != nil {
-				if options.PublishImagesOptions.NoFail {
+				if options.VerifyImagesOptions.NoFail {
 					logrus.Warn(err)
 				} else {
 					logrus.Fatal(err)
