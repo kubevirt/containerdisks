@@ -21,12 +21,24 @@ type Entry struct {
 
 var Registry = []Entry{
 	{
-		Artifact:   rhcos.New("4.9"),
+		Artifact:   rhcos.New("4.9", true),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcos.New("4.10"),
+		Artifact:   rhcos.New("4.10", true),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   rhcos.New("4.11", true),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   rhcos.New("4.12", true),
 		UseForDocs: true,
+	},
+	{
+		Artifact:   rhcos.New("latest", false),
+		UseForDocs: false,
 	},
 	{
 		Artifact:   rhcosprerelease.New("latest-4.9"),
@@ -38,6 +50,14 @@ var Registry = []Entry{
 	},
 	{
 		Artifact:   rhcosprerelease.New("latest-4.11"),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   rhcosprerelease.New("latest-4.12"),
+		UseForDocs: false,
+	},
+	{
+		Artifact:   rhcosprerelease.New("latest-4.13"),
 		UseForDocs: false,
 	},
 	{
@@ -76,12 +96,12 @@ var Registry = []Entry{
 	{
 		Artifact: generic.New(
 			&api.ArtifactDetails{
-				SHA256Sum:   "932fcae93574e242dc3d772d5235061747dfe537668443a1f0567d893614b464",
-				DownloadURL: "https://download.cirros-cloud.net/0.5.2/cirros-0.5.2-x86_64-disk.img",
+				SHA256Sum:   "cc704ab14342c1c8a8d91b66a7fc611d921c8b8f1aaf4695f9d6463d913fa8d1",
+				DownloadURL: "https://download.cirros-cloud.net/0.6.1/cirros-0.6.1-x86_64-disk.img",
 			},
 			&api.Metadata{
 				Name:    "cirros",
-				Version: "5.2",
+				Version: "6.1",
 			},
 		),
 		SkipWhenNotFocused: true,

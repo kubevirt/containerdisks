@@ -14,11 +14,12 @@ import (
 )
 
 type rhcos struct {
-	Version     string
-	Variant     string
-	getter      http.Getter
-	Arch        string
-	Compression string
+	Version      string
+	Variant      string
+	getter       http.Getter
+	Arch         string
+	Compression  string
+	AppendLatest bool
 }
 
 var description string = `RHCOS images for KubeVirt.
@@ -36,7 +37,10 @@ func (r *rhcos) Metadata() *api.Metadata {
 }
 
 func (r *rhcos) Inspect() (*api.ArtifactDetails, error) {
-	baseURL := fmt.Sprintf("https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/%s/latest/", r.Version)
+	baseURL := fmt.Sprintf("https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/%s/", r.Version)
+	if r.AppendLatest {
+		baseURL += "latest/"
+	}
 	checksumURL := baseURL + "sha256sum.txt"
 	raw, err := r.getter.GetAll(checksumURL)
 	if err != nil {
@@ -77,12 +81,13 @@ func (r *rhcos) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(release string) *rhcos {
+func New(release string, appendLatest bool) *rhcos {
 	return &rhcos{
-		Version:     release,
-		Arch:        "x86_64",
-		Variant:     "rhcos-openstack.x86_64.qcow2.gz",
-		getter:      &http.HTTPGetter{},
-		Compression: types.GzipAlgorithmName,
+		Version:      release,
+		Arch:         "x86_64",
+		Variant:      "rhcos-openstack.x86_64.qcow2.gz",
+		getter:       &http.HTTPGetter{},
+		Compression:  types.GzipAlgorithmName,
+		AppendLatest: appendLatest,
 	}
 }
