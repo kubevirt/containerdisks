@@ -1,6 +1,6 @@
 all: test medius
 
-test:
+test: lint
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go test ./...
 
 clean:
