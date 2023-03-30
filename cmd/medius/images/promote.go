@@ -27,14 +27,14 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				description := e.Artifact.Metadata().Describe()
 				r, ok := results[description]
 				if !ok {
 					return nil, nil
 				}
 				if r.Err != "" {
-					return nil, fmt.Errorf("Artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
+					return nil, fmt.Errorf("artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
 				}
 				if r.Stage != StageVerify {
 					return nil, nil
@@ -63,13 +63,15 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 				}
 			}
 
-			if err != nil {
-				logrus.Fatal(err)
+			if workerErr != nil {
+				logrus.Fatal(workerErr)
 			}
 		},
 	}
-	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.SourceRegistry, "source-registry", options.PromoteImageOptions.SourceRegistry, "Registry to pull images from")
-	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.TargetRegistry, "target-registry", options.PromoteImageOptions.TargetRegistry, "Registry to promote images to")
+	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.SourceRegistry, "source-registry",
+		options.PromoteImageOptions.SourceRegistry, "Registry to pull images from")
+	promoteCmd.Flags().StringVar(&options.PromoteImageOptions.TargetRegistry, "target-registry",
+		options.PromoteImageOptions.TargetRegistry, "Registry to promote images to")
 
 	err := promoteCmd.MarkFlagRequired("source-registry")
 	if err != nil {
@@ -83,7 +85,7 @@ func promoteArtifact(ctx context.Context, artifact api.Artifact, tags []string, 
 	log := common.Logger(artifact)
 
 	if len(tags) == 0 {
-		err := errors.New("No containerdisks to promote")
+		err := errors.New("no containerdisks to promote")
 		log.Error(err)
 		return err
 	}

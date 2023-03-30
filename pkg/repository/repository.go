@@ -28,7 +28,7 @@ type ImageInfo struct {
 }
 
 type Repository interface {
-	ImageMetadata(imgRef string) (*ImageInfo, error)
+	ImageMetadata(imgRef string, insecure bool) (*ImageInfo, error)
 	PushImage(ctx context.Context, img v1.Image, imgRef string) error
 	CopyImage(ctx context.Context, srcRef, dstRef string, insecure bool) error
 }
@@ -50,14 +50,14 @@ func (r RepositoryImpl) ImageMetadata(imgRef string, insecure bool) (imageInfo *
 	}
 
 	defer func() {
-		if err := src.Close(); err != nil {
-			retErr = errors.Wrapf(retErr, fmt.Sprintf("(could not close image: %v) ", err))
+		if closeErr := src.Close(); closeErr != nil {
+			retErr = errors.Wrap(closeErr, "could not close image")
 		}
 	}()
 
 	img, err := image.FromUnparsedImage(ctx, sys, image.UnparsedInstance(src, nil))
 	if err != nil {
-		return nil, errors.Wrapf(err, "Error parsing manifest for image")
+		return nil, errors.Wrap(err, "Error parsing manifest for image")
 	}
 	imgInspect, err := img.Inspect(ctx)
 	if err != nil {
@@ -75,7 +75,7 @@ func (r RepositoryImpl) ImageMetadata(imgRef string, insecure bool) (imageInfo *
 		Env:           imgInspect.Env,
 	}
 
-	return imageInfo, nil
+	return imageInfo, retErr
 }
 
 func (r RepositoryImpl) PushImage(ctx context.Context, img v1.Image, imgRef string) error {

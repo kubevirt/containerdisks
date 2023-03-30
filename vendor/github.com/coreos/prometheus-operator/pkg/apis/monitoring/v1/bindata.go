@@ -266,11 +266,13 @@ var _bindata = map[string]func() (*asset, error){
 // directory embedded in the file by go-bindata.
 // For example if you run go-bindata on data/... and data contains the
 // following hierarchy:
-//     data/
-//       foo.txt
-//       img/
-//         a.png
-//         b.png
+//
+//	data/
+//	  foo.txt
+//	  img/
+//	    a.png
+//	    b.png
+//
 // then AssetDir("data") would return []string{"foo.txt", "img"}
 // AssetDir("data/img") would return []string{"a.png", "b.png"}
 // AssetDir("foo.txt") and AssetDir("notexist") would return an error
@@ -303,14 +305,14 @@ type bintree struct {
 }
 
 var _bintree = &bintree{nil, map[string]*bintree{
-	"example": &bintree{nil, map[string]*bintree{
-		"prometheus-operator-crd": &bintree{nil, map[string]*bintree{
-			"monitoring.coreos.com_alertmanagers.yaml":   &bintree{examplePrometheusOperatorCrdMonitoringCoreosCom_alertmanagersYaml, map[string]*bintree{}},
-			"monitoring.coreos.com_podmonitors.yaml":     &bintree{examplePrometheusOperatorCrdMonitoringCoreosCom_podmonitorsYaml, map[string]*bintree{}},
-			"monitoring.coreos.com_prometheuses.yaml":    &bintree{examplePrometheusOperatorCrdMonitoringCoreosCom_prometheusesYaml, map[string]*bintree{}},
-			"monitoring.coreos.com_prometheusrules.yaml": &bintree{examplePrometheusOperatorCrdMonitoringCoreosCom_prometheusrulesYaml, map[string]*bintree{}},
-			"monitoring.coreos.com_servicemonitors.yaml": &bintree{examplePrometheusOperatorCrdMonitoringCoreosCom_servicemonitorsYaml, map[string]*bintree{}},
-			"monitoring.coreos.com_thanosrulers.yaml":    &bintree{examplePrometheusOperatorCrdMonitoringCoreosCom_thanosrulersYaml, map[string]*bintree{}},
+	"example": {nil, map[string]*bintree{
+		"prometheus-operator-crd": {nil, map[string]*bintree{
+			"monitoring.coreos.com_alertmanagers.yaml":   {examplePrometheusOperatorCrdMonitoringCoreosCom_alertmanagersYaml, map[string]*bintree{}},
+			"monitoring.coreos.com_podmonitors.yaml":     {examplePrometheusOperatorCrdMonitoringCoreosCom_podmonitorsYaml, map[string]*bintree{}},
+			"monitoring.coreos.com_prometheuses.yaml":    {examplePrometheusOperatorCrdMonitoringCoreosCom_prometheusesYaml, map[string]*bintree{}},
+			"monitoring.coreos.com_prometheusrules.yaml": {examplePrometheusOperatorCrdMonitoringCoreosCom_prometheusrulesYaml, map[string]*bintree{}},
+			"monitoring.coreos.com_servicemonitors.yaml": {examplePrometheusOperatorCrdMonitoringCoreosCom_servicemonitorsYaml, map[string]*bintree{}},
+			"monitoring.coreos.com_thanosrulers.yaml":    {examplePrometheusOperatorCrdMonitoringCoreosCom_thanosrulersYaml, map[string]*bintree{}},
 		}},
 	}},
 }}

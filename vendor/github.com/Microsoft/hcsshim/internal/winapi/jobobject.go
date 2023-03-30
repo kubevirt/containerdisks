@@ -111,29 +111,27 @@ type JOBOBJECT_BASIC_ACCOUNTING_INFORMATION struct {
 	TotalTerminateProcesses   uint32
 }
 
-//https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_and_io_accounting_information
+// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_and_io_accounting_information
 type JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION struct {
 	BasicInfo JOBOBJECT_BASIC_ACCOUNTING_INFORMATION
 	IoInfo    windows.IO_COUNTERS
 }
 
-// typedef struct _JOBOBJECT_MEMORY_USAGE_INFORMATION {
-//     ULONG64 JobMemory;
-//     ULONG64 PeakJobMemoryUsed;
-// } JOBOBJECT_MEMORY_USAGE_INFORMATION, *PJOBOBJECT_MEMORY_USAGE_INFORMATION;
-//
+//	typedef struct _JOBOBJECT_MEMORY_USAGE_INFORMATION {
+//	    ULONG64 JobMemory;
+//	    ULONG64 PeakJobMemoryUsed;
+//	} JOBOBJECT_MEMORY_USAGE_INFORMATION, *PJOBOBJECT_MEMORY_USAGE_INFORMATION;
 type JOBOBJECT_MEMORY_USAGE_INFORMATION struct {
 	JobMemory         uint64
 	PeakJobMemoryUsed uint64
 }
 
-// typedef struct _JOBOBJECT_IO_ATTRIBUTION_STATS {
-//     ULONG_PTR IoCount;
-//     ULONGLONG TotalNonOverlappedQueueTime;
-//     ULONGLONG TotalNonOverlappedServiceTime;
-//     ULONGLONG TotalSize;
-// } JOBOBJECT_IO_ATTRIBUTION_STATS, *PJOBOBJECT_IO_ATTRIBUTION_STATS;
-//
+//	typedef struct _JOBOBJECT_IO_ATTRIBUTION_STATS {
+//	    ULONG_PTR IoCount;
+//	    ULONGLONG TotalNonOverlappedQueueTime;
+//	    ULONGLONG TotalNonOverlappedServiceTime;
+//	    ULONGLONG TotalSize;
+//	} JOBOBJECT_IO_ATTRIBUTION_STATS, *PJOBOBJECT_IO_ATTRIBUTION_STATS;
 type JOBOBJECT_IO_ATTRIBUTION_STATS struct {
 	IoCount                       uintptr
 	TotalNonOverlappedQueueTime   uint64
@@ -141,12 +139,11 @@ type JOBOBJECT_IO_ATTRIBUTION_STATS struct {
 	TotalSize                     uint64
 }
 
-// typedef struct _JOBOBJECT_IO_ATTRIBUTION_INFORMATION {
-//     ULONG ControlFlags;
-//     JOBOBJECT_IO_ATTRIBUTION_STATS ReadStats;
-//     JOBOBJECT_IO_ATTRIBUTION_STATS WriteStats;
-// } JOBOBJECT_IO_ATTRIBUTION_INFORMATION, *PJOBOBJECT_IO_ATTRIBUTION_INFORMATION;
-//
+//	typedef struct _JOBOBJECT_IO_ATTRIBUTION_INFORMATION {
+//	    ULONG ControlFlags;
+//	    JOBOBJECT_IO_ATTRIBUTION_STATS ReadStats;
+//	    JOBOBJECT_IO_ATTRIBUTION_STATS WriteStats;
+//	} JOBOBJECT_IO_ATTRIBUTION_INFORMATION, *PJOBOBJECT_IO_ATTRIBUTION_INFORMATION;
 type JOBOBJECT_IO_ATTRIBUTION_INFORMATION struct {
 	ControlFlags uint32
 	ReadStats    JOBOBJECT_IO_ATTRIBUTION_STATS

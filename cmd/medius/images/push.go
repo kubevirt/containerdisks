@@ -6,12 +6,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"time"
 
 	"github.com/containers/image/v5/pkg/compression/types"
+	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/ulikunitz/xz"
@@ -21,6 +21,14 @@ import (
 	"kubevirt.io/containerdisks/pkg/http"
 	"kubevirt.io/containerdisks/pkg/repository"
 )
+
+type buildAndPublish struct {
+	Ctx     context.Context
+	Log     *logrus.Entry
+	Options *common.Options
+	Repo    repository.Repository
+	Getter  http.Getter
+}
 
 func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 	options.PublishImagesOptions = common.PublishImageOptions{
@@ -35,9 +43,17 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 				options.PublishImagesOptions.TargetRegistry = options.PublishImagesOptions.SourceRegistry
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				errString := ""
-				tags, err := buildAndPublish(cmd.Context(), e, options, time.Now())
+
+				b := buildAndPublish{
+					Ctx:     cmd.Context(),
+					Log:     common.Logger(e.Artifact),
+					Options: options,
+					Repo:    &repository.RepositoryImpl{},
+					Getter:  &http.HTTPGetter{},
+				}
+				tags, err := b.Do(e, time.Now())
 				if err != nil {
 					errString = err.Error()
 				}
@@ -64,123 +80,180 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 				}
 			}
 
-			if err != nil {
+			if workerErr != nil {
 				if options.PublishImagesOptions.NoFail {
-					logrus.Warn(err)
+					logrus.Warn(workerErr)
 				} else {
-					logrus.Fatal(err)
+					logrus.Fatal(workerErr)
 				}
 			}
 		},
 	}
-	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.ForceBuild, "force", options.PublishImagesOptions.ForceBuild, "Force a rebuild and push")
-	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.NoFail, "no-fail", options.PublishImagesOptions.NoFail, "Return success even if a worker fails")
-	publishCmd.Flags().StringVar(&options.PublishImagesOptions.SourceRegistry, "source-registry", options.PublishImagesOptions.SourceRegistry, "Registry to check if updates are needed")
-	publishCmd.Flags().StringVar(&options.PublishImagesOptions.TargetRegistry, "target-registry", options.PublishImagesOptions.TargetRegistry, "Registry to push built containerdisks to")
+	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.ForceBuild, "force",
+		options.PublishImagesOptions.ForceBuild, "Force a rebuild and push")
+	publishCmd.Flags().BoolVar(&options.PublishImagesOptions.NoFail, "no-fail",
+		options.PublishImagesOptions.NoFail, "Return success even if a worker fails")
+	publishCmd.Flags().StringVar(&options.PublishImagesOptions.SourceRegistry, "source-registry",
+		options.PublishImagesOptions.SourceRegistry, "Registry to check if updates are needed")
+	publishCmd.Flags().StringVar(&options.PublishImagesOptions.TargetRegistry, "target-registry",
+		options.PublishImagesOptions.TargetRegistry, "Registry to push built containerdisks to")
 
 	return publishCmd
 }
 
-func buildAndPublish(ctx context.Context, entry *common.Entry, options *common.Options, timestamp time.Time) ([]string, error) {
+func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string, error) {
 	description := entry.Artifact.Metadata().Describe()
-	log := common.Logger(entry.Artifact)
-
-	imageName := path.Join(options.PublishImagesOptions.SourceRegistry, description)
 	artifactInfo, err := entry.Artifact.Inspect()
 	if err != nil {
 		return nil, fmt.Errorf("error introspecting artifact %q: %v", description, err)
 	}
-	log.Infof("Remote artifact checksum: %q", artifactInfo.SHA256Sum)
-	repo := repository.RepositoryImpl{}
-	imageSha := ""
-	imageInfo, err := repo.ImageMetadata(imageName, options.AllowInsecureRegistry)
+	b.Log.Infof("Remote artifact checksum: %q", artifactInfo.SHA256Sum)
+
+	imageSha, err := b.getImageSha(description)
 	if err != nil {
-		if repository.IsRepositoryUnknownError(err) {
-			log.Info("Repository does not yet exist, it will be created")
-		} else if repository.IsManifestUnknownError(err) {
-			log.Info("Tag does not yet exist, it will be created")
-		} else if repository.IsTagUnknownError(err) {
-			log.Info("Tag is gone but seems to have existed already, it will be created")
-		} else {
-			return nil, fmt.Errorf("error introspecting image %q: %v", imageName, err)
-		}
-	} else {
-		log.Infof("Latest containerdisk checksum: %q", imageInfo.Labels[build.LabelShaSum])
-		imageSha = imageInfo.Labels[build.LabelShaSum]
+		return nil, err
 	}
-	if artifactInfo.SHA256Sum == imageSha && !options.PublishImagesOptions.ForceBuild {
-		log.Info("Nothing to do.")
+	if imageSha == artifactInfo.SHA256Sum && !b.Options.PublishImagesOptions.ForceBuild {
+		b.Log.Info("Nothing to do.")
 		return nil, nil
 	}
-	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, ctx.Err()
+	if errors.Is(b.Ctx.Err(), context.Canceled) {
+		return nil, b.Ctx.Err()
 	}
 
-	log.Infof("Rebuild needed, downloading %q ...", artifactInfo.DownloadURL)
-	getter := &http.HTTPGetter{}
-	artifactReader, err := getter.GetWithChecksum(artifactInfo.DownloadURL)
+	b.Log.Infof("Rebuild needed, downloading %q ...", artifactInfo.DownloadURL)
+	file, err := b.getArtifact(artifactInfo)
 	if err != nil {
-		return nil, fmt.Errorf("error opening a connection to the specified download location: %v", err)
+		return nil, err
 	}
-	defer artifactReader.Close()
+	defer os.Remove(file)
 
-	var reader io.Reader = artifactReader
-	if artifactInfo.Compression == types.GzipAlgorithmName {
-		reader, err = gzip.NewReader(artifactReader)
-		if err != nil {
-			return nil, fmt.Errorf("error creating a gunzip reader for the specified download location: %v", err)
-		}
-	} else if artifactInfo.Compression == types.XzAlgorithmName {
-		reader, err = xz.NewReader(artifactReader)
-		if err != nil {
-			return nil, fmt.Errorf("error creating a lzma reader for the specified download location: %v", err)
-		}
-	}
-
-	file, err := ioutil.TempFile("", "containerdisks")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer os.Remove(file.Name())
-	if _, err := io.Copy(file, reader); err != nil {
-		return nil, fmt.Errorf("error writing the image to the destination file: %v", err)
-	}
-	file.Close()
-	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, ctx.Err()
-	}
-
-	checksum := artifactReader.Checksum()
-	if checksum != artifactInfo.SHA256Sum {
-		return nil, fmt.Errorf("expected checksum %q but got %q", artifactInfo.SHA256Sum, checksum)
-	}
-	log.Info("Building containerdisk ...")
-	containerDisk, err := build.BuildContainerDisk(file.Name(), checksum)
+	b.Log.Info("Building containerdisk ...")
+	containerDisk, err := build.ContainerDisk(file, artifactInfo.SHA256Sum)
 	if err != nil {
 		return nil, fmt.Errorf("error creating the containerdisk : %v", err)
 	}
-	if errors.Is(ctx.Err(), context.Canceled) {
-		return nil, ctx.Err()
+	if errors.Is(b.Ctx.Err(), context.Canceled) {
+		return nil, b.Ctx.Err()
 	}
 
-	names := prepareTags(timestamp, options.PublishImagesOptions.TargetRegistry, entry, artifactInfo)
+	names := prepareTags(timestamp, b.Options.PublishImagesOptions.TargetRegistry, entry, artifactInfo)
 	for _, name := range names {
-		if !options.DryRun {
-			log.Infof("Pushing %s", name)
-			if err := repo.PushImage(ctx, containerDisk, name); err != nil {
-				log.WithError(err).Error("Failed to push image")
-				return nil, err
-			}
-		} else {
-			log.Infof("Dry run enabled, not pushing %s", name)
+		if err := b.pushImage(containerDisk, name); err != nil {
+			return nil, err
 		}
-
-		if errors.Is(ctx.Err(), context.Canceled) {
-			return nil, ctx.Err()
+		if errors.Is(b.Ctx.Err(), context.Canceled) {
+			return nil, b.Ctx.Err()
 		}
 	}
 
 	return prepareTags(timestamp, "", entry, artifactInfo), nil
+}
+
+func (b *buildAndPublish) getImageSha(description string) (imageSha string, err error) {
+	imageName := path.Join(b.Options.PublishImagesOptions.SourceRegistry, description)
+	imageInfo, err := b.Repo.ImageMetadata(imageName, b.Options.AllowInsecureRegistry)
+	if err != nil {
+		err = b.handleMetadataError(imageName, err)
+	} else {
+		b.Log.Infof("Latest containerdisk checksum: %q", imageInfo.Labels[build.LabelShaSum])
+		imageSha = imageInfo.Labels[build.LabelShaSum]
+	}
+
+	return
+}
+
+func (b *buildAndPublish) handleMetadataError(imageName string, err error) error {
+	switch {
+	case repository.IsRepositoryUnknownError(err):
+		b.Log.Info("Repository does not yet exist, it will be created")
+	case repository.IsManifestUnknownError(err):
+		b.Log.Info("Tag does not yet exist, it will be created")
+	case repository.IsTagUnknownError(err):
+		b.Log.Info("Tag is gone but seems to have existed already, it will be created")
+	default:
+		return fmt.Errorf("error introspecting image %q: %v", imageName, err)
+	}
+
+	return nil
+}
+
+func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string, error) {
+	artifactReader, err := b.Getter.GetWithChecksumAndContext(b.Ctx, artifactInfo.DownloadURL)
+	if err != nil {
+		return "", fmt.Errorf("error opening a connection to the specified download location: %v", err)
+	}
+	defer artifactReader.Close()
+
+	file, err := b.readArtifact(artifactReader, artifactInfo.Compression)
+	if err != nil {
+		return "", err
+	}
+	if errors.Is(b.Ctx.Err(), context.Canceled) {
+		return "", b.Ctx.Err()
+	}
+
+	checksum := artifactReader.Checksum()
+	if checksum != artifactInfo.SHA256Sum {
+		return "", fmt.Errorf("expected checksum %q but got %q", artifactInfo.SHA256Sum, checksum)
+	}
+
+	return file, nil
+}
+
+func (b *buildAndPublish) readArtifact(artifactReader http.ReadCloserWithChecksum, compression string) (string, error) {
+	var err error
+
+	// Initialize reader with the artifactReader for the case where no compression is used
+	var reader io.Reader = artifactReader
+	if compression == types.GzipAlgorithmName {
+		reader, err = gzip.NewReader(artifactReader)
+		if err != nil {
+			return "", fmt.Errorf("error creating a gunzip reader for the specified download location: %v", err)
+		}
+	} else if compression == types.XzAlgorithmName {
+		reader, err = xz.NewReader(artifactReader)
+		if err != nil {
+			return "", fmt.Errorf("error creating a lzma reader for the specified download location: %v", err)
+		}
+	}
+
+	file, err := os.CreateTemp("", "containerdisks")
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	// Uncompress disks in chunks up to size defined below
+	const chunkSize = 1024 * 1024 * 50 // MiB
+	for {
+		_, err := io.CopyN(file, reader, chunkSize)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return "", fmt.Errorf("error writing the image to the destination file: %v", err)
+		}
+		if errors.Is(b.Ctx.Err(), context.Canceled) {
+			return "", b.Ctx.Err()
+		}
+	}
+
+	return file.Name(), nil
+}
+
+func (b *buildAndPublish) pushImage(containerDisk v1.Image, name string) error {
+	if !b.Options.DryRun {
+		b.Log.Infof("Pushing %s", name)
+		if err := b.Repo.PushImage(b.Ctx, containerDisk, name); err != nil {
+			b.Log.WithError(err).Error("Failed to push image")
+			return err
+		}
+	} else {
+		b.Log.Infof("Dry run enabled, not pushing %s", name)
+	}
+
+	return nil
 }
 
 func prepareTags(timestamp time.Time, registry string, entry *common.Entry, artifactDetails *api.ArtifactDetails) []string {

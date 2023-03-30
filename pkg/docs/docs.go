@@ -6,6 +6,7 @@ import (
 	"strings"
 	"text/template"
 
+	"golang.org/x/text/cases"
 	k8sv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -46,6 +47,7 @@ func NewVM(name, image string, opts ...Option) *v1.VirtualMachine {
 }
 
 func BasicVM(name, image string) *v1.VirtualMachine {
+	const terminationGracePeriod int64 = 180
 	always := v1.RunStrategyAlways
 	return &v1.VirtualMachine{
 		TypeMeta: metav1.TypeMeta{
@@ -59,7 +61,7 @@ func BasicVM(name, image string) *v1.VirtualMachine {
 			RunStrategy: &always,
 			Template: &v1.VirtualMachineInstanceTemplateSpec{
 				Spec: v1.VirtualMachineInstanceSpec{
-					TerminationGracePeriodSeconds: pointer.Int64Ptr(180),
+					TerminationGracePeriodSeconds: pointer.Int64(terminationGracePeriod),
 					Domain: v1.DomainSpec{
 						Resources: v1.ResourceRequirements{
 							Requests: map[k8sv1.ResourceName]resource.Quantity{
@@ -101,7 +103,7 @@ func WithRng() Option {
 	}
 }
 
-func WithCloudInitNoCloud(userData string) Option {
+func withCloudInit(volumeSource v1.VolumeSource) Option {
 	return func(vm *v1.VirtualMachine) {
 		vm.Spec.Template.Spec.Domain.Devices.Disks = append(
 			vm.Spec.Template.Spec.Domain.Devices.Disks,
@@ -117,42 +119,27 @@ func WithCloudInitNoCloud(userData string) Option {
 		vm.Spec.Template.Spec.Volumes = append(
 			vm.Spec.Template.Spec.Volumes,
 			v1.Volume{
-				Name: "cloudinit",
-				VolumeSource: v1.VolumeSource{
-					CloudInitNoCloud: &v1.CloudInitNoCloudSource{
-						UserData: userData,
-					},
-				},
+				Name:         "cloudinit",
+				VolumeSource: volumeSource,
 			},
 		)
 	}
 }
 
+func WithCloudInitNoCloud(userData string) Option {
+	return withCloudInit(v1.VolumeSource{
+		CloudInitNoCloud: &v1.CloudInitNoCloudSource{
+			UserData: userData,
+		},
+	})
+}
+
 func WithCloudInitConfigDrive(userData string) Option {
-	return func(vm *v1.VirtualMachine) {
-		vm.Spec.Template.Spec.Domain.Devices.Disks = append(
-			vm.Spec.Template.Spec.Domain.Devices.Disks,
-			v1.Disk{
-				Name: "cloudinit",
-				DiskDevice: v1.DiskDevice{
-					Disk: &v1.DiskTarget{
-						Bus: "virtio",
-					},
-				},
-			},
-		)
-		vm.Spec.Template.Spec.Volumes = append(
-			vm.Spec.Template.Spec.Volumes,
-			v1.Volume{
-				Name: "cloudinit",
-				VolumeSource: v1.VolumeSource{
-					CloudInitConfigDrive: &v1.CloudInitConfigDriveSource{
-						UserData: userData,
-					},
-				},
-			},
-		)
-	}
+	return withCloudInit(v1.VolumeSource{
+		CloudInitConfigDrive: &v1.CloudInitConfigDriveSource{
+			UserData: userData,
+		},
+	})
 }
 
 func WithSecureBoot() Option {
@@ -174,7 +161,7 @@ func WithSecureBoot() Option {
 
 func Template() *template.Template {
 	funcMap := template.FuncMap{
-		"ToTitle": strings.Title,
+		"ToTitle": cases.Title,
 	}
 
 	return template.Must(

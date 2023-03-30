@@ -2,14 +2,16 @@
 // source: plugin.proto
 
 /*
-	Package runtime is a generated protocol buffer package.
+Package runtime is a generated protocol buffer package.
 
-	It is generated from these files:
-		plugin.proto
+It is generated from these files:
 
-	It has these top-level messages:
-		PluginSpec
-		PluginPrivilege
+	plugin.proto
+
+It has these top-level messages:
+
+	PluginSpec
+	PluginPrivilege
 */
 package runtime
 

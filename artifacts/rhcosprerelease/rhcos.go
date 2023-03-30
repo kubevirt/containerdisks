@@ -22,6 +22,7 @@ type rhcos struct {
 	Compression string
 }
 
+//nolint:lll
 var description string = `RHCOS prerelease images for KubeVirt.
 <br />
 <br />

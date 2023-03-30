@@ -14,7 +14,7 @@ const (
 	ImageArchitecture = "amd64"
 )
 
-func BuildContainerDisk(imgPath string, checksum string) (v1.Image, error) {
+func ContainerDisk(imgPath string, checksum string) (v1.Image, error) {
 	img := empty.Image
 	layer, err := tarball.LayerFromOpener(StreamLayerOpener(imgPath))
 	if err != nil {

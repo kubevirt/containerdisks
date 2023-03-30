@@ -47,11 +47,16 @@ func main() {
 	imagesCmd.AddCommand(images.NewVerifyImagesCommand(options))
 	docsCmd.AddCommand(docs.NewPublishDocsCommand(options))
 
-	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls", options.AllowInsecureRegistry, "allow connecting to insecure registries")
-	rootCmd.PersistentFlags().BoolVar(&options.DryRun, "dry-run", options.DryRun, "don't publish anything")
-	rootCmd.PersistentFlags().StringVar(&options.Focus, "focus", options.Focus, "Focus on a specific containerdisk")
-	imagesCmd.PersistentFlags().StringVar(&options.ImagesOptions.ResultsFile, "results-file", options.ImagesOptions.ResultsFile, "File to store/read results of operations")
-	imagesCmd.PersistentFlags().IntVar(&options.ImagesOptions.Workers, "workers", options.ImagesOptions.Workers, "Number of parallel workers")
+	rootCmd.PersistentFlags().BoolVar(&options.AllowInsecureRegistry, "insecure-skip-tls",
+		options.AllowInsecureRegistry, "allow connecting to insecure registries")
+	rootCmd.PersistentFlags().BoolVar(&options.DryRun, "dry-run",
+		options.DryRun, "don't publish anything")
+	rootCmd.PersistentFlags().StringVar(&options.Focus, "focus",
+		options.Focus, "Focus on a specific containerdisk")
+	imagesCmd.PersistentFlags().StringVar(&options.ImagesOptions.ResultsFile, "results-file",
+		options.ImagesOptions.ResultsFile, "File to store/read results of operations")
+	imagesCmd.PersistentFlags().IntVar(&options.ImagesOptions.Workers, "workers",
+		options.ImagesOptions.Workers, "Number of parallel workers")
 
 	ctx, cancel := getInterruptibleContext()
 	defer cancel()
@@ -61,14 +66,14 @@ func main() {
 	}
 }
 
-func getInterruptibleContext() (context.Context, func()) {
-	ctx := context.Background()
+func getInterruptibleContext() (ctx context.Context, cancel func()) {
+	ctx = context.Background()
 	ctx, cancelCtx := context.WithCancel(ctx)
 
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, os.Interrupt)
 
-	cancel := func() {
+	cancel = func() {
 		signal.Stop(signalChan)
 		cancelCtx()
 	}

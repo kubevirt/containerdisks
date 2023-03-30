@@ -14,6 +14,7 @@ import (
 	"kubevirt.io/containerdisks/pkg/tests"
 )
 
+//nolint:lll
 var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Stream Generic Cloud images for KubeVirt.
 <br />
 <br />

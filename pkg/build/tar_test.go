@@ -2,7 +2,7 @@ package build
 
 import (
 	"archive/tar"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 	"testing"
@@ -28,7 +28,7 @@ func TestStreamLayer(t *testing.T) {
 			g := NewGomegaWithT(t)
 			imageName := filepath.Join(t.TempDir(), "image")
 
-			err := os.WriteFile(imageName, []byte(tt.args.imageContent), 0777)
+			err := os.WriteFile(imageName, []byte(tt.args.imageContent), 0600)
 			g.Expect(err).ToNot(HaveOccurred())
 
 			imageStat, err := os.Stat(imageName)
@@ -53,7 +53,7 @@ func TestStreamLayer(t *testing.T) {
 			g.Expect(image.Size).To(Equal(imageStat.Size()))
 			g.Expect(image.Uid).To(Equal(107))
 			g.Expect(image.Gid).To(Equal(107))
-			data, err := ioutil.ReadAll(tarReader)
+			data, err := io.ReadAll(tarReader)
 			g.Expect(err).ToNot(HaveOccurred())
 			g.Expect(string(data)).To(Equal(tt.args.imageContent))
 		})

@@ -23,25 +23,26 @@ type workerResult struct {
 	Value api.ArtifactResult
 }
 
-func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(*common.Entry) (*api.ArtifactResult, error)) (chan workerResult, error) {
-	count := len(common.Registry)
+func spawnWorkers(ctx context.Context, o *common.Options, fn func(*common.Entry) (*api.ArtifactResult, error)) (chan workerResult, error) {
+	registry := common.NewRegistry()
+	count := len(registry)
 	errChan := make(chan error, count)
 	jobChan := make(chan *common.Entry, count)
 	resultsChan := make(chan workerResult, count)
 	defer close(resultsChan)
 
-	if options.ImagesOptions.Workers > count {
+	if o.ImagesOptions.Workers > count {
 		logrus.Warnf("Limiting workers to number of artifacts: %d", count)
-		options.ImagesOptions.Workers = count
+		o.ImagesOptions.Workers = count
 	}
 
 	wg := &sync.WaitGroup{}
-	wg.Add(options.ImagesOptions.Workers)
-	for x := 0; x < options.ImagesOptions.Workers; x++ {
+	wg.Add(o.ImagesOptions.Workers)
+	for x := 0; x < o.ImagesOptions.Workers; x++ {
 		go func() {
 			defer wg.Done()
 			for e := range jobChan {
-				result, err := workerFn(e)
+				result, err := fn(e)
 				if result != nil {
 					resultsChan <- workerResult{
 						Key:   e.Artifact.Metadata().Describe(),
@@ -59,7 +60,7 @@ func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(*c
 		}()
 	}
 
-	fillJobChan(jobChan, options.Focus)
+	fillJobChan(jobChan, registry, o.Focus)
 	close(jobChan)
 
 	wg.Wait()
@@ -72,8 +73,8 @@ func spawnWorkers(ctx context.Context, options *common.Options, workerFn func(*c
 	}
 }
 
-func fillJobChan(jobChan chan *common.Entry, focus string) {
-	for i, desc := range common.Registry {
+func fillJobChan(jobChan chan *common.Entry, registry []common.Entry, focus string) {
+	for i, desc := range registry {
 		if focus == "" && desc.SkipWhenNotFocused {
 			continue
 		}
@@ -82,7 +83,7 @@ func fillJobChan(jobChan chan *common.Entry, focus string) {
 			continue
 		}
 
-		jobChan <- &common.Registry[i]
+		jobChan <- &registry[i]
 	}
 }
 
@@ -94,7 +95,8 @@ func writeResultsFile(fileName string, results map[string]api.ArtifactResult) er
 		return err
 	}
 
-	err = os.WriteFile(fileName, data, 0644)
+	const permissionUserReadWrite = 0600
+	err = os.WriteFile(fileName, data, permissionUserReadWrite)
 	if err != nil {
 		return err
 	}

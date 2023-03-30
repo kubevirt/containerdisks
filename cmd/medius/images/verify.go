@@ -51,14 +51,14 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			resultsChan, err := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				description := e.Artifact.Metadata().Describe()
 				r, ok := results[description]
 				if !ok {
 					return nil, nil
 				}
 				if r.Err != "" {
-					return nil, fmt.Errorf("Artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
+					return nil, fmt.Errorf("artifact %s failed in stage %s: %s", description, r.Stage, r.Err)
 				}
 				if r.Stage != StagePush {
 					return nil, nil
@@ -85,19 +85,23 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			if err != nil {
+			if workerErr != nil {
 				if options.VerifyImagesOptions.NoFail {
-					logrus.Warn(err)
+					logrus.Warn(workerErr)
 				} else {
-					logrus.Fatal(err)
+					logrus.Fatal(workerErr)
 				}
 			}
 		},
 	}
-	verifyCmd.Flags().StringVar(&options.VerifyImagesOptions.Registry, "registry", options.VerifyImagesOptions.Registry, "Registry that contains containerdisks to verify")
-	verifyCmd.Flags().StringVar(&options.VerifyImagesOptions.Namespace, "namespace", options.VerifyImagesOptions.Namespace, "Namespace to run verify in")
-	verifyCmd.Flags().BoolVar(&options.VerifyImagesOptions.NoFail, "no-fail", options.VerifyImagesOptions.NoFail, "Return success even if a worker fails")
-	verifyCmd.Flags().IntVar(&options.VerifyImagesOptions.Timeout, "timeout", options.VerifyImagesOptions.Timeout, "Maximum seconds to wait for VM to be running")
+	verifyCmd.Flags().StringVar(&options.VerifyImagesOptions.Registry, "registry",
+		options.VerifyImagesOptions.Registry, "Registry that contains containerdisks to verify")
+	verifyCmd.Flags().StringVar(&options.VerifyImagesOptions.Namespace, "namespace",
+		options.VerifyImagesOptions.Namespace, "Namespace to run verify in")
+	verifyCmd.Flags().BoolVar(&options.VerifyImagesOptions.NoFail, "no-fail",
+		options.VerifyImagesOptions.NoFail, "Return success even if a worker fails")
+	verifyCmd.Flags().IntVar(&options.VerifyImagesOptions.Timeout, "timeout",
+		options.VerifyImagesOptions.Timeout, "Maximum seconds to wait for VM to be running")
 	verifyCmd.Flags().AddGoFlagSet(kvirtcli.FlagSet())
 
 	err := verifyCmd.MarkFlagRequired("registry")
@@ -108,17 +112,17 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 	return verifyCmd
 }
 
-func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.ArtifactResult, options *common.Options, client kvirtcli.KubevirtClient) error {
-	log := common.Logger(artifact)
+func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult, o *common.Options, client kvirtcli.KubevirtClient) error {
+	log := common.Logger(a)
 
-	if len(result.Tags) == 0 {
-		err := errors.New("No containerdisks to verify")
+	if len(res.Tags) == 0 {
+		err := errors.New("no containerdisks to verify")
 		log.Error(err)
 		return err
 	}
 
-	imgRef := path.Join(options.VerifyImagesOptions.Registry, result.Tags[0])
-	vm, privateKey, err := createVM(artifact, imgRef)
+	imgRef := path.Join(o.VerifyImagesOptions.Registry, res.Tags[0])
+	vm, privateKey, err := createVM(a, imgRef)
 	if err != nil {
 		log.WithError(err).Error("Failed to create VM object")
 		return err
@@ -127,7 +131,7 @@ func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.Artif
 		return ctx.Err()
 	}
 
-	vmClient := client.VirtualMachine(options.VerifyImagesOptions.Namespace)
+	vmClient := client.VirtualMachine(o.VerifyImagesOptions.Namespace)
 	log.Info("Creating VM")
 	if vm, err = vmClient.Create(vm); err != nil {
 		log.WithError(err).Error("Failed to create VM")
@@ -145,7 +149,7 @@ func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.Artif
 	}
 
 	log.Info("Waiting for VM to be ready")
-	if err = waitVMReady(ctx, vm.Name, vmClient, options.VerifyImagesOptions.Timeout); err != nil {
+	if err = waitVMReady(ctx, vm.Name, vmClient, o.VerifyImagesOptions.Timeout); err != nil {
 		if errors.Is(ctx.Err(), context.Canceled) {
 			return ctx.Err()
 		}
@@ -154,7 +158,7 @@ func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.Artif
 		return err
 	}
 
-	vmi, err := client.VirtualMachineInstance(options.VerifyImagesOptions.Namespace).Get(vm.Name, &metav1.GetOptions{})
+	vmi, err := client.VirtualMachineInstance(o.VerifyImagesOptions.Namespace).Get(vm.Name, &metav1.GetOptions{})
 	if err != nil {
 		log.WithError(err).Error("Failed to get VMI")
 		return err
@@ -164,7 +168,7 @@ func verifyArtifact(ctx context.Context, artifact api.Artifact, result api.Artif
 	}
 
 	log.Info("Running tests on VMI")
-	for _, testFn := range artifact.Tests() {
+	for _, testFn := range a.Tests() {
 		if err = testFn(ctx, vmi, &api.ArtifactTestParams{Username: VerifyUsername, PrivateKey: privateKey}); err != nil {
 			log.WithError(err).Error("Failed to verify containerdisk")
 			return err
@@ -208,12 +212,13 @@ func marshallPublicKey(key *ed25519.PrivateKey) (string, error) {
 		return "", err
 	}
 
-	marshalled := string(ssh.MarshalAuthorizedKey(sshKey))
-	return marshalled[:len(marshalled)-1], nil
+	marshaled := string(ssh.MarshalAuthorizedKey(sshKey))
+	return marshaled[:len(marshaled)-1], nil
 }
 
 func randName(name string) string {
-	return name + "-" + urand.String(5)
+	const randomCharCount = 5
+	return name + "-" + urand.String(randomCharCount)
 }
 
 func waitVMReady(ctx context.Context, name string, client kvirtcli.VirtualMachineInterface, timeout int) error {

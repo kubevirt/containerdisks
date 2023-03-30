@@ -21,8 +21,9 @@ func SSH(ctx context.Context, vmi *v1.VirtualMachineInstance, params *api.Artifa
 		return err
 	}
 
+	// Test SSH while deliberately ignoring insecure host keys
 	config := &ssh.ClientConfig{
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(), //nolint:gosec
 		User:            params.Username,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),
@@ -35,7 +36,8 @@ func SSH(ctx context.Context, vmi *v1.VirtualMachineInstance, params *api.Artifa
 }
 
 func testSSH(vmi *v1.VirtualMachineInstance, kvirtClient kvirtcli.KubevirtClient, config *ssh.ClientConfig) error {
-	tunnel, err := kvirtClient.VirtualMachineInstance(vmi.Namespace).PortForward(vmi.Name, 22, "tcp")
+	const sshPort = 22
+	tunnel, err := kvirtClient.VirtualMachineInstance(vmi.Namespace).PortForward(vmi.Name, sshPort, "tcp")
 	if err != nil {
 		return fmt.Errorf("failed to forward ssh port: %w", err)
 	}

@@ -1,18 +1,20 @@
 package http
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"hash"
 	"io"
-	"io/ioutil"
 	"net/http"
 )
 
 type Getter interface {
 	GetAll(fileURL string) ([]byte, error)
+	GetAllWithContext(ctx context.Context, fileURL string) ([]byte, error)
 	GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error)
+	GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error)
 }
 
 type ReadCloserWithChecksum interface {
@@ -23,26 +25,46 @@ type ReadCloserWithChecksum interface {
 type HTTPGetter struct {
 }
 
-func (H *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
-	resp, err := http.Get(fileURL)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to load primary repository file from %s: %v", fileURL, err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		return nil, fmt.Errorf("Failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
-	}
-	return ioutil.ReadAll(resp.Body)
+func (h *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
+	return h.GetAllWithContext(context.Background(), fileURL)
 }
 
-func (H *HTTPGetter) GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error) {
-	resp, err := http.Get(fileURL)
+func (h *HTTPGetter) GetAllWithContext(ctx context.Context, fileURL string) ([]byte, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, http.NoBody)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to load primary repository file from %s: %v", fileURL, err)
+		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		return nil, fmt.Errorf("failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
+	}
+	return io.ReadAll(resp.Body)
+}
+
+func (h *HTTPGetter) GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error) {
+	return h.GetWithChecksumAndContext(context.Background(), fileURL)
+}
+
+func (h *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, http.NoBody)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
+	}
+
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		resp.Body.Close()
-		return nil, fmt.Errorf("Failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
+		return nil, fmt.Errorf("failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
 	}
 	return newReadCloserWithChecksum(resp.Body), nil
 }

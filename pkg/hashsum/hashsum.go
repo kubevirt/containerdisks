@@ -14,10 +14,12 @@ const (
 	ChecksumFormatGNU
 )
 
-var bsdLineRex = regexp.MustCompile(`^SHA256[ ]+\((?P<name>[^)]+)\)[ ]+=[ ]+(?P<checksum>[a-z0-9]+)$`)
-var gnuLineRex = regexp.MustCompile(`^(?P<checksum>[0-9a-z]+)[ ]+(?P<name>\S+)$`)
+var bsdLineRex = regexp.MustCompile(`^SHA256 +\((?P<name>[^)]+)\) += +(?P<checksum>[a-z0-9]+)$`)
+var gnuLineRex = regexp.MustCompile(`^(?P<checksum>[0-9a-z]+) +(?P<name>\S+)$`)
 
 func Parse(stream io.Reader, format ChecksumFormat) (map[string]string, error) {
+	// The regex should match the group as a whole and both subgroups
+	const expectedMatchCount = 3
 
 	var lineRex *regexp.Regexp
 	switch format {
@@ -33,7 +35,7 @@ func Parse(stream io.Reader, format ChecksumFormat) (map[string]string, error) {
 	s := bufio.NewScanner(stream)
 	for s.Scan() {
 		line := strings.TrimSpace(s.Text())
-		if matches := lineRex.FindStringSubmatch(line); len(matches) == 3 {
+		if matches := lineRex.FindStringSubmatch(line); len(matches) == expectedMatchCount {
 			name := ""
 			checksum := ""
 			for i, groupName := range lineRex.SubexpNames() {

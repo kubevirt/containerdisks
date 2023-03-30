@@ -14,6 +14,7 @@ import (
 	"kubevirt.io/containerdisks/pkg/tests"
 )
 
+//nolint:lll
 var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Generic Cloud images for KubeVirt.
 <br />
 <br />
@@ -36,20 +37,8 @@ func (c *centos) Metadata() *api.Metadata {
 }
 
 func (c *centos) Inspect() (*api.ArtifactDetails, error) {
-	var baseURL string
-	var checksumURL string
-	var checksumFormat hashsum.ChecksumFormat
-	if strings.HasPrefix(c.Version, "8.") {
-		baseURL = "https://cloud.centos.org/centos/8/x86_64/images/"
-		checksumURL = baseURL + "CHECKSUM"
-		checksumFormat = hashsum.ChecksumFormatBSD
-	} else if strings.HasPrefix(c.Version, "7-") {
-		baseURL = "https://cloud.centos.org/centos/7/images/"
-		checksumURL = baseURL + "sha256sum.txt"
-		checksumFormat = hashsum.ChecksumFormatGNU
-	} else {
-		panic(fmt.Sprintf("can't understand provided version: %q", c.Version))
-	}
+	baseURL, checksumURL, checksumFormat := getURLsAndChecksumFormat(c.Version)
+
 	raw, err := c.getter.GetAll(checksumURL)
 	if err != nil {
 		return nil, fmt.Errorf("error downloading the centos checksum file: %v", err)
@@ -59,46 +48,77 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 		return nil, fmt.Errorf("error reading the centos checksum file: %v", err)
 	}
 
-	candidates := []string{}
-	if strings.HasPrefix(c.Version, "8.") {
-		for fileName := range checksums {
-			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-8-%s-%s", c.Variant, c.Version)) && strings.HasSuffix(fileName, "qcow2") {
-				candidates = append(candidates, fileName)
-			}
-		}
-	} else if strings.HasPrefix(c.Version, "7-") {
-		components := strings.Split(c.Version, "-")
-		for fileName := range checksums {
-			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-7-x86_64-%s-%s.qcow2", c.Variant, components[1])) && strings.HasSuffix(fileName, "qcow2") {
-				candidates = append(candidates, fileName)
-			}
-		}
-	}
+	candidates := getCandidates(c.Version, c.Variant, checksums)
 	if len(candidates) == 0 {
 		return nil, fmt.Errorf("no candidates for version %q and variant %q found", c.Version, c.Variant)
 	}
 
-	sort.Strings(candidates)
 	candidate := candidates[len(candidates)-1]
-
-	var additionalTags []string
-	if strings.HasPrefix(c.Version, "8.") {
-		additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-8-%s-", c.Variant)), ".x86_64.qcow2")
-		additionalTags = append(additionalTags, additionalTag)
-		split := strings.Split(additionalTag, "-")
-		if len(split) == 2 {
-			additionalTags = append(additionalTags, split[0])
-		}
-	}
-
 	if checksum, exists := checksums[candidate]; exists {
 		return &api.ArtifactDetails{
 			SHA256Sum:            checksum,
 			DownloadURL:          baseURL + candidate,
-			AdditionalUniqueTags: additionalTags,
+			AdditionalUniqueTags: getAdditionalTags(c.Version, c.Variant, candidate),
 		}, nil
 	}
+
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)
+}
+
+func getURLsAndChecksumFormat(version string) (baseURL string, checksumURL string, checksumFormat hashsum.ChecksumFormat) {
+	switch {
+	case strings.HasPrefix(version, "8."):
+		baseURL = "https://cloud.centos.org/centos/8/x86_64/images/"
+		checksumURL = baseURL + "CHECKSUM"
+		checksumFormat = hashsum.ChecksumFormatBSD
+	case strings.HasPrefix(version, "7-"):
+		baseURL = "https://cloud.centos.org/centos/7/images/"
+		checksumURL = baseURL + "sha256sum.txt"
+		checksumFormat = hashsum.ChecksumFormatGNU
+	default:
+		panic(fmt.Sprintf("can't understand provided version: %q", version))
+	}
+
+	return
+}
+
+func getCandidates(version, variant string, checksums map[string]string) (candidates []string) {
+	switch {
+	case strings.HasPrefix(version, "8."):
+		for fileName := range checksums {
+			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-8-%s-%s", variant, version)) && strings.HasSuffix(fileName, "qcow2") {
+				candidates = append(candidates, fileName)
+			}
+		}
+	case strings.HasPrefix(version, "7-"):
+		components := strings.Split(version, "-")
+		for fileName := range checksums {
+			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-7-x86_64-%s-%s.qcow2", variant, components[1])) &&
+				strings.HasSuffix(fileName, "qcow2") {
+				candidates = append(candidates, fileName)
+			}
+		}
+	}
+
+	sort.Strings(candidates)
+
+	return
+}
+
+func getAdditionalTags(version, variant, candidate string) (additionalTags []string) {
+	// The CentOS 8 version is expected to contain one dash
+	const expectedCentos8VersionPartsCount = 2
+
+	if strings.HasPrefix(version, "8.") {
+		additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-8-%s-", variant)), ".x86_64.qcow2")
+		additionalTags = append(additionalTags, additionalTag)
+		split := strings.Split(additionalTag, "-")
+		if len(split) == expectedCentos8VersionPartsCount {
+			additionalTags = append(additionalTags, split[0])
+		}
+	}
+
+	return
 }
 
 func (c *centos) VM(name, imgRef, userData string) *v1.VirtualMachine {
