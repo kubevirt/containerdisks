@@ -7,6 +7,7 @@ import (
 	"text/template"
 
 	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	k8sv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -160,8 +161,9 @@ func WithSecureBoot() Option {
 }
 
 func Template() *template.Template {
+	caser := cases.Title(language.English)
 	funcMap := template.FuncMap{
-		"ToTitle": cases.Title,
+		"ToTitle": caser.String,
 	}
 
 	return template.Must(
