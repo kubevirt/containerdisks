@@ -1,6 +1,6 @@
 #cloud-config
 users:
-  - name: {{ or .Username "admin" }}
+  - name: {{ or .Username "myuser" }}
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh_authorized_keys:
       {{- range .AuthorizedKeys}}
