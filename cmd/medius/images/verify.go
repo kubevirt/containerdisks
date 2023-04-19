@@ -51,7 +51,7 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			focusMatched, resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				description := e.Artifact.Metadata().Describe()
 				r, ok := results[description]
 				if !ok {
@@ -79,6 +79,10 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 
 			for result := range resultsChan {
 				results[result.Key] = result.Value
+			}
+
+			if !focusMatched {
+				logrus.Fatalf("no artifact was processed, focus '%s' did not match", options.Focus)
 			}
 
 			if err := writeResultsFile(options.ImagesOptions.ResultsFile, results); err != nil {
