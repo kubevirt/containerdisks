@@ -109,14 +109,14 @@ var staticRegistry = []Entry{
 	},
 }
 
-func gatherArtifacts(registry []Entry, gatherers []api.ArtifactsGatherer) {
+func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 	for _, gatherer := range gatherers {
 		artifacts, err := gatherer.Gather()
 		if err != nil {
 			logrus.Warn("Failed to gather artifacts", err)
 		} else {
 			for i := range artifacts {
-				registry = append(registry, Entry{
+				*registry = append(*registry, Entry{
 					Artifact:     artifacts[i],
 					UseForDocs:   i == 0,
 					UseForLatest: i == 0,
@@ -131,7 +131,7 @@ func NewRegistry() []Entry {
 	copy(registry, staticRegistry)
 
 	gatherers := []api.ArtifactsGatherer{fedora.NewGatherer()}
-	gatherArtifacts(registry, gatherers)
+	gatherArtifacts(&registry, gatherers)
 
 	return registry
 }
