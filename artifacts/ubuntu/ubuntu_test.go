@@ -30,9 +30,9 @@ var _ = Describe("Ubuntu", func() {
 				Name:        "ubuntu",
 				Version:     "22.04",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "ubuntu",
-				}),
+				},
 			},
 		),
 	)

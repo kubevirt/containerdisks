@@ -30,9 +30,9 @@ func (u *ubuntu) Metadata() *api.Metadata {
 		Name:        "ubuntu",
 		Version:     u.Version,
 		Description: description,
-		ExampleUserDataPayload: u.UserData(&docs.UserData{
+		ExampleUserData: docs.UserData{
 			Username: "ubuntu",
-		}),
+		},
 	}
 }
 

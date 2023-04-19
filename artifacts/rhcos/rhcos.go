@@ -33,9 +33,9 @@ func (r *rhcos) Metadata() *api.Metadata {
 		Name:        "rhcos",
 		Version:     r.Version,
 		Description: description,
-		ExampleUserDataPayload: r.UserData(&docs.UserData{
+		ExampleUserData: docs.UserData{
 			Username: "core",
-		}),
+		},
 	}
 }
 

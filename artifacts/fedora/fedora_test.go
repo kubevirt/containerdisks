@@ -32,9 +32,9 @@ var _ = Describe("Fedora", func() {
 				Name:        "fedora",
 				Version:     "35",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "fedora",
-				}),
+				},
 			},
 		),
 		Entry("fedora:34", "34", "testdata/releases.json",
@@ -47,9 +47,9 @@ var _ = Describe("Fedora", func() {
 				Name:        "fedora",
 				Version:     "34",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "fedora",
-				}),
+				},
 			},
 		),
 	)

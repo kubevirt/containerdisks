@@ -32,9 +32,9 @@ func (c *centos) Metadata() *api.Metadata {
 		Name:        "centos",
 		Version:     c.Version,
 		Description: description,
-		ExampleUserDataPayload: c.UserData(&docs.UserData{
+		ExampleUserData: docs.UserData{
 			Username: "centos",
-		}),
+		},
 	}
 }
 

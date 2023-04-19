@@ -105,8 +105,8 @@ func createDescription(artifact api.Artifact, registry string) (string, error) {
 	metadata := artifact.Metadata()
 	vm := artifact.VM(
 		metadata.Name,
-		path.Join(registry, artifact.Metadata().Describe()),
-		metadata.ExampleUserDataPayload,
+		path.Join(registry, metadata.Describe()),
+		artifact.UserData(&metadata.ExampleUserData),
 	)
 
 	example, err := yaml.Marshal(&vm)

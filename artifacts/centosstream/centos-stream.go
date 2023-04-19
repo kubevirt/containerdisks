@@ -36,7 +36,7 @@ func (c *centos) Metadata() *api.Metadata {
 	}
 
 	if c.ExampleUserData != nil {
-		metadata.ExampleUserDataPayload = c.UserData(c.ExampleUserData)
+		metadata.ExampleUserData = *c.ExampleUserData
 	}
 
 	return metadata

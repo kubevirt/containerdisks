@@ -32,9 +32,9 @@ var _ = Describe("RhcosPrerelease", func() {
 				Name:        "rhcos",
 				Version:     "4.9-pre-release",
 				Description: description,
-				ExampleUserDataPayload: docs.Ignition(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "core",
-				}),
+				},
 			},
 		),
 		Entry("rhcos:latest", "latest", "testdata/rhcos-latest-prerelease.checksum",
@@ -48,9 +48,9 @@ var _ = Describe("RhcosPrerelease", func() {
 				Name:        "rhcos",
 				Version:     "latest-pre-release",
 				Description: description,
-				ExampleUserDataPayload: docs.Ignition(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "core",
-				}),
+				},
 			},
 		),
 	)

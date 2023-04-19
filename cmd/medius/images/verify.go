@@ -25,10 +25,6 @@ import (
 	"kubevirt.io/containerdisks/pkg/docs"
 )
 
-const (
-	VerifyUsername = "verify"
-)
-
 func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 	options.VerifyImagesOptions = common.VerifyImageOptions{
 		Namespace: "kubevirt",
@@ -126,7 +122,7 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 	}
 
 	imgRef := path.Join(o.VerifyImagesOptions.Registry, res.Tags[0])
-	vm, privateKey, err := createVM(a, imgRef)
+	vm, username, privateKey, err := createVM(a, imgRef)
 	if err != nil {
 		log.WithError(err).Error("Failed to create VM object")
 		return err
@@ -173,7 +169,7 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 
 	log.Info("Running tests on VMI")
 	for _, testFn := range a.Tests() {
-		if err = testFn(ctx, vmi, &api.ArtifactTestParams{Username: VerifyUsername, PrivateKey: privateKey}); err != nil {
+		if err = testFn(ctx, vmi, &api.ArtifactTestParams{Username: username, PrivateKey: privateKey}); err != nil {
 			log.WithError(err).Error("Failed to verify containerdisk")
 			return err
 		}
@@ -186,28 +182,31 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 	return nil
 }
 
-func createVM(artifact api.Artifact, imgRef string) (*v1.VirtualMachine, ed25519.PrivateKey, error) {
+func createVM(artifact api.Artifact, imgRef string) (*v1.VirtualMachine, string, ed25519.PrivateKey, error) {
+	metadata := artifact.Metadata()
+	username := metadata.ExampleUserData.Username
+
 	_, privateKey, err := ed25519.GenerateKey(rand.Reader)
 	if err != nil {
-		return nil, nil, err
+		return nil, "", nil, err
 	}
 
 	publicKey, err := marshallPublicKey(&privateKey)
 	if err != nil {
-		return nil, nil, err
+		return nil, "", nil, err
 	}
 
 	userData := artifact.UserData(
 		&docs.UserData{
-			Username:       VerifyUsername,
+			Username:       username,
 			AuthorizedKeys: []string{publicKey},
 		},
 	)
 
-	name := randName(artifact.Metadata().Name)
+	name := randName(metadata.Name)
 	vm := artifact.VM(name, imgRef, userData)
 	vm.Spec.Template.Spec.TerminationGracePeriodSeconds = pointer.Int64(0)
-	return vm, privateKey, nil
+	return vm, username, privateKey, nil
 }
 
 func marshallPublicKey(key *ed25519.PrivateKey) (string, error) {

@@ -32,9 +32,9 @@ var _ = Describe("Centos", func() {
 				Name:        "centos",
 				Version:     "8.4",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "centos",
-				}),
+				},
 			},
 		),
 		Entry("centos:8.3", "8.3", "testdata/centos8.checksum",
@@ -48,9 +48,9 @@ var _ = Describe("Centos", func() {
 				Name:        "centos",
 				Version:     "8.3",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "centos",
-				}),
+				},
 			},
 		),
 		Entry("centos:7-2009", "7-2009", "testdata/centos7.checksum",
@@ -62,9 +62,9 @@ var _ = Describe("Centos", func() {
 				Name:        "centos",
 				Version:     "7-2009",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "centos",
-				}),
+				},
 			},
 		),
 		Entry("centos:7-1809", "7-1809", "testdata/centos7.checksum",
@@ -76,9 +76,9 @@ var _ = Describe("Centos", func() {
 				Name:        "centos",
 				Version:     "7-1809",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "centos",
-				}),
+				},
 			},
 		),
 	)

@@ -34,9 +34,9 @@ var _ = Describe("CentosStream", func() {
 				Name:        "centos-stream",
 				Version:     "8",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "centos",
-				}),
+				},
 			},
 		),
 		Entry("centos-stream:9", "9", "testdata/centos-stream9.checksum",
@@ -52,9 +52,9 @@ var _ = Describe("CentosStream", func() {
 				Name:        "centos-stream",
 				Version:     "9",
 				Description: description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+				ExampleUserData: docs.UserData{
 					Username: "cloud-user",
-				}),
+				},
 			},
 		),
 	)

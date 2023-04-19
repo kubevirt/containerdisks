@@ -51,9 +51,9 @@ func (f *fedora) Metadata() *api.Metadata {
 		Name:        "fedora",
 		Version:     f.Version,
 		Description: description,
-		ExampleUserDataPayload: f.UserData(&docs.UserData{
+		ExampleUserData: docs.UserData{
 			Username: "fedora",
-		}),
+		},
 	}
 }
 
