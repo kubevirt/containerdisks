@@ -61,7 +61,12 @@ func spawnWorkers(ctx context.Context, o *common.Options,
 		}()
 	}
 
-	matched = fillJobChan(jobChan, registry, o.Focus)
+	for i := range registry {
+		if !common.ShouldSkip(o.Focus, &registry[i]) {
+			jobChan <- &registry[i]
+			matched = true
+		}
+	}
 	close(jobChan)
 
 	wg.Wait()
@@ -72,25 +77,6 @@ func spawnWorkers(ctx context.Context, o *common.Options,
 	default:
 		return matched, resultsChan, nil
 	}
-}
-
-func fillJobChan(jobChan chan *common.Entry, registry []common.Entry, focus string) bool {
-	focusMatched := false
-
-	for i, desc := range registry {
-		if focus == "" && desc.SkipWhenNotFocused {
-			continue
-		}
-
-		if focus != "" && focus != desc.Artifact.Metadata().Describe() {
-			continue
-		}
-
-		jobChan <- &registry[i]
-		focusMatched = true
-	}
-
-	return focusMatched
 }
 
 func writeResultsFile(fileName string, results map[string]api.ArtifactResult) error {
