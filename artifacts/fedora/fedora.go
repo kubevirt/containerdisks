@@ -48,10 +48,12 @@ Visit [getfedora.org](https://getfedora.org/) to learn more about the Fedora pro
 
 func (f *fedora) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                   "fedora",
-		Version:                f.Version,
-		Description:            description,
-		ExampleUserDataPayload: f.UserData(&docs.UserData{}),
+		Name:        "fedora",
+		Version:     f.Version,
+		Description: description,
+		ExampleUserDataPayload: f.UserData(&docs.UserData{
+			Username: "fedora",
+		}),
 	}
 }
 

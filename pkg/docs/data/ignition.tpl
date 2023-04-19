@@ -5,10 +5,10 @@
   "passwd": {
     "users": [
       {
-        "name": "{{ or .Username "admin"}}",
+        "name": "{{ .Username }}",
         "sshAuthorizedKeys": [
           {{if len .AuthorizedKeys -}}
-          {{Join (Quote .AuthorizedKeys) ","}}
+          {{Join (Quote .AuthorizedKeys) ",\n          "}}
           {{- else -}}
           "ssh-rsa AAAA..."
           {{- end}}

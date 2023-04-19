@@ -27,10 +27,12 @@ var _ = Describe("Ubuntu", func() {
 				DownloadURL: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img",
 			},
 			&api.Metadata{
-				Name:                   "ubuntu",
-				Version:                "22.04",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "ubuntu",
+				Version:     "22.04",
+				Description: description,
+				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+					Username: "ubuntu",
+				}),
 			},
 		),
 	)

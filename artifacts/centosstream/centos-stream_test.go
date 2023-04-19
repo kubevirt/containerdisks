@@ -13,8 +13,8 @@ import (
 
 var _ = Describe("CentosStream", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
-		func(release, mockFile string, details *api.ArtifactDetails, metadata *api.Metadata) {
-			c := New(release)
+		func(release, mockFile string, details *api.ArtifactDetails, exampleUserData *docs.UserData, metadata *api.Metadata) {
+			c := New(release, exampleUserData)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -27,11 +27,16 @@ var _ = Describe("CentosStream", func() {
 				DownloadURL:          "https://cloud.centos.org/centos/8-stream/x86_64/images/CentOS-Stream-GenericCloud-8-20210603.0.x86_64.qcow2",
 				AdditionalUniqueTags: []string{"8-20210603.0"},
 			},
+			&docs.UserData{
+				Username: "centos",
+			},
 			&api.Metadata{
-				Name:                   "centos-stream",
-				Version:                "8",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "centos-stream",
+				Version:     "8",
+				Description: description,
+				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+					Username: "centos",
+				}),
 			},
 		),
 		Entry("centos-stream:9", "9", "testdata/centos-stream9.checksum",
@@ -40,11 +45,16 @@ var _ = Describe("CentosStream", func() {
 				DownloadURL:          "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20211222.0.x86_64.qcow2",
 				AdditionalUniqueTags: []string{"9-20211222.0"},
 			},
+			&docs.UserData{
+				Username: "cloud-user",
+			},
 			&api.Metadata{
-				Name:                   "centos-stream",
-				Version:                "9",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "centos-stream",
+				Version:     "9",
+				Description: description,
+				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{
+					Username: "cloud-user",
+				}),
 			},
 		),
 	)

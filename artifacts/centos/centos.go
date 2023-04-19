@@ -29,10 +29,12 @@ type centos struct {
 
 func (c *centos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                   "centos",
-		Version:                c.Version,
-		Description:            description,
-		ExampleUserDataPayload: c.UserData(&docs.UserData{}),
+		Name:        "centos",
+		Version:     c.Version,
+		Description: description,
+		ExampleUserDataPayload: c.UserData(&docs.UserData{
+			Username: "centos",
+		}),
 	}
 }
 

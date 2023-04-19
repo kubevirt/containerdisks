@@ -12,6 +12,7 @@ import (
 	"kubevirt.io/containerdisks/artifacts/rhcosprerelease"
 	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/docs"
 )
 
 type Entry struct {
@@ -75,11 +76,15 @@ var staticRegistry = []Entry{
 		UseForDocs: true,
 	},
 	{
-		Artifact:   centosstream.New("9"),
+		Artifact: centosstream.New("9", &docs.UserData{
+			Username: "cloud-user",
+		}),
 		UseForDocs: true,
 	},
 	{
-		Artifact:   centosstream.New("8"),
+		Artifact: centosstream.New("8", &docs.UserData{
+			Username: "centos",
+		}),
 		UseForDocs: false,
 	},
 	{

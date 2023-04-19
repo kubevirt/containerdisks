@@ -29,10 +29,12 @@ var _ = Describe("Rhcos", func() {
 				AdditionalUniqueTags: []string{"3466690807fb710102559ea57daac0484c59ed4d914996882d601b8bb7a7ada8"},
 			},
 			&api.Metadata{
-				Name:                   "rhcos",
-				Version:                "4.9",
-				Description:            description,
-				ExampleUserDataPayload: docs.Ignition(&docs.UserData{}),
+				Name:        "rhcos",
+				Version:     "4.9",
+				Description: description,
+				ExampleUserDataPayload: docs.Ignition(&docs.UserData{
+					Username: "core",
+				}),
 			},
 		),
 		Entry("rhcos:4.8", "4.8", "testdata/rhcos-4.8.checksum",
@@ -43,10 +45,12 @@ var _ = Describe("Rhcos", func() {
 				AdditionalUniqueTags: []string{"99da4ed945b391d452e55a3a7809c799e4c74f69acbee1ecaec78f368c4e369e"},
 			},
 			&api.Metadata{
-				Name:                   "rhcos",
-				Version:                "4.8",
-				Description:            description,
-				ExampleUserDataPayload: docs.Ignition(&docs.UserData{}),
+				Name:        "rhcos",
+				Version:     "4.8",
+				Description: description,
+				ExampleUserDataPayload: docs.Ignition(&docs.UserData{
+					Username: "core",
+				}),
 			},
 		),
 	)

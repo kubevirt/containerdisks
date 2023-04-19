@@ -27,10 +27,12 @@ Visit [ubuntu.com](https://ubuntu.com/) to learn more about Ubuntu.`
 
 func (u *ubuntu) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                   "ubuntu",
-		Version:                u.Version,
-		Description:            description,
-		ExampleUserDataPayload: u.UserData(&docs.UserData{}),
+		Name:        "ubuntu",
+		Version:     u.Version,
+		Description: description,
+		ExampleUserDataPayload: u.UserData(&docs.UserData{
+			Username: "ubuntu",
+		}),
 	}
 }
 

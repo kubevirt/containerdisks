@@ -29,10 +29,12 @@ var _ = Describe("RhcosPrerelease", func() {
 				AdditionalUniqueTags: []string{"4.9.0-rc.7", "3466690807fb710102559ea57daac0484c59ed4d914996882d601b8bb7a7ada8"},
 			},
 			&api.Metadata{
-				Name:                   "rhcos",
-				Version:                "4.9-pre-release",
-				Description:            description,
-				ExampleUserDataPayload: docs.Ignition(&docs.UserData{}),
+				Name:        "rhcos",
+				Version:     "4.9-pre-release",
+				Description: description,
+				ExampleUserDataPayload: docs.Ignition(&docs.UserData{
+					Username: "core",
+				}),
 			},
 		),
 		Entry("rhcos:latest", "latest", "testdata/rhcos-latest-prerelease.checksum",
@@ -43,10 +45,12 @@ var _ = Describe("RhcosPrerelease", func() {
 				AdditionalUniqueTags: []string{"4.10.0-rc.1", "f581896eee37216021bfce9ddd5e1fd8289c366ca0d1db25221c77688de85fd7"},
 			},
 			&api.Metadata{
-				Name:                   "rhcos",
-				Version:                "latest-pre-release",
-				Description:            description,
-				ExampleUserDataPayload: docs.Ignition(&docs.UserData{}),
+				Name:        "rhcos",
+				Version:     "latest-pre-release",
+				Description: description,
+				ExampleUserDataPayload: docs.Ignition(&docs.UserData{
+					Username: "core",
+				}),
 			},
 		),
 	)
