@@ -44,6 +44,7 @@ func NewPublishDocsCommand(options *common.Options) *cobra.Command {
 
 func run(options *common.Options) error {
 	success := true
+	focusMatched := false
 
 	quayOrg, err := getQuayOrg(options.PublishDocsOptions.Registry)
 	if err != nil {
@@ -57,6 +58,7 @@ func run(options *common.Options) error {
 			continue
 		}
 
+		focusMatched = true
 		log := common.Logger(p.Artifact)
 		name := p.Artifact.Metadata().Name
 
@@ -74,6 +76,10 @@ func run(options *common.Options) error {
 				log.Errorf("error marshaling example for for %q: %v", name, err)
 			}
 		}
+	}
+
+	if !focusMatched {
+		return fmt.Errorf("no artifact was processed, focus '%s' did not match", options.Focus)
 	}
 
 	if !success {

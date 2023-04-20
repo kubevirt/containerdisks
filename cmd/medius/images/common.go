@@ -23,12 +23,13 @@ type workerResult struct {
 	Value api.ArtifactResult
 }
 
-func spawnWorkers(ctx context.Context, o *common.Options, fn func(*common.Entry) (*api.ArtifactResult, error)) (chan workerResult, error) {
+func spawnWorkers(ctx context.Context, o *common.Options,
+	fn func(*common.Entry) (*api.ArtifactResult, error)) (matched bool, resultsChan chan workerResult, err error) {
 	registry := common.NewRegistry()
 	count := len(registry)
 	errChan := make(chan error, count)
 	jobChan := make(chan *common.Entry, count)
-	resultsChan := make(chan workerResult, count)
+	resultsChan = make(chan workerResult, count)
 	defer close(resultsChan)
 
 	if o.ImagesOptions.Workers > count {
@@ -42,16 +43,16 @@ func spawnWorkers(ctx context.Context, o *common.Options, fn func(*common.Entry)
 		go func() {
 			defer wg.Done()
 			for e := range jobChan {
-				result, err := fn(e)
+				result, workerErr := fn(e)
 				if result != nil {
 					resultsChan <- workerResult{
 						Key:   e.Artifact.Metadata().Describe(),
 						Value: *result,
 					}
 				}
-				if err != nil && !errors.Is(err, context.Canceled) {
+				if workerErr != nil && !errors.Is(workerErr, context.Canceled) {
 					common.Logger(e.Artifact).Error(err)
-					errChan <- err
+					errChan <- workerErr
 				}
 				if errors.Is(ctx.Err(), context.Canceled) {
 					return
@@ -60,20 +61,22 @@ func spawnWorkers(ctx context.Context, o *common.Options, fn func(*common.Entry)
 		}()
 	}
 
-	fillJobChan(jobChan, registry, o.Focus)
+	matched = fillJobChan(jobChan, registry, o.Focus)
 	close(jobChan)
 
 	wg.Wait()
 
 	select {
-	case err := <-errChan:
-		return resultsChan, err
+	case err = <-errChan:
+		return matched, resultsChan, err
 	default:
-		return resultsChan, nil
+		return matched, resultsChan, nil
 	}
 }
 
-func fillJobChan(jobChan chan *common.Entry, registry []common.Entry, focus string) {
+func fillJobChan(jobChan chan *common.Entry, registry []common.Entry, focus string) bool {
+	focusMatched := false
+
 	for i, desc := range registry {
 		if focus == "" && desc.SkipWhenNotFocused {
 			continue
@@ -84,7 +87,10 @@ func fillJobChan(jobChan chan *common.Entry, registry []common.Entry, focus stri
 		}
 
 		jobChan <- &registry[i]
+		focusMatched = true
 	}
+
+	return focusMatched
 }
 
 func writeResultsFile(fileName string, results map[string]api.ArtifactResult) error {

@@ -43,7 +43,7 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 				options.PublishImagesOptions.TargetRegistry = options.PublishImagesOptions.SourceRegistry
 			}
 
-			resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
+			focusMatched, resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				errString := ""
 
 				b := buildAndPublish{
@@ -72,6 +72,10 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 			results := map[string]api.ArtifactResult{}
 			for result := range resultsChan {
 				results[result.Key] = result.Value
+			}
+
+			if !focusMatched {
+				logrus.Fatalf("no artifact was processed, focus '%s' did not match", options.Focus)
 			}
 
 			if !options.DryRun {
