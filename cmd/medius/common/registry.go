@@ -1,6 +1,8 @@
 package common
 
 import (
+	"strings"
+
 	"github.com/sirupsen/logrus"
 	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/centosstream"
@@ -134,4 +136,19 @@ func NewRegistry() []Entry {
 	gatherArtifacts(&registry, gatherers)
 
 	return registry
+}
+
+func ShouldSkip(focus string, entry *Entry) bool {
+	if focus == "" {
+		return entry.SkipWhenNotFocused
+	}
+
+	focusSplit := strings.Split(focus, ":")
+	wildcardFocus := len(focusSplit) == 2 && focusSplit[1] == "*"
+
+	if wildcardFocus {
+		return focusSplit[0] != entry.Artifact.Metadata().Name
+	}
+
+	return focus != entry.Artifact.Metadata().Describe()
 }

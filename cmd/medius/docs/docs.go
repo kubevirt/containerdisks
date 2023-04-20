@@ -54,7 +54,7 @@ func run(options *common.Options) error {
 	client := quay.NewQuayClient(options.PublishDocsOptions.TokenFile, quayOrg)
 	registry := common.NewRegistry()
 	for i, p := range registry {
-		if shouldSkip(options, &registry[i]) {
+		if common.ShouldSkip(options.Focus, &registry[i]) || !p.UseForDocs {
 			continue
 		}
 
@@ -99,12 +99,6 @@ func getQuayOrg(registry string) (string, error) {
 	}
 
 	return elements[1], nil
-}
-
-func shouldSkip(options *common.Options, entry *common.Entry) bool {
-	return (options.Focus == "" && entry.SkipWhenNotFocused) ||
-		(options.Focus != "" && options.Focus != entry.Artifact.Metadata().Describe()) ||
-		!entry.UseForDocs
 }
 
 func createDescription(artifact api.Artifact, registry string) (string, error) {
