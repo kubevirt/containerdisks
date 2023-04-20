@@ -51,7 +51,7 @@ func spawnWorkers(ctx context.Context, o *common.Options,
 					}
 				}
 				if workerErr != nil && !errors.Is(workerErr, context.Canceled) {
-					common.Logger(e.Artifact).Error(err)
+					common.Logger(e.Artifact).Error(workerErr)
 					errChan <- workerErr
 				}
 				if errors.Is(ctx.Err(), context.Canceled) {
