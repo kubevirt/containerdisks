@@ -23,7 +23,7 @@ func main() {
 
 	rootCmd := &cobra.Command{
 		Use:   "medius",
-		Short: "medius determines if new OS images are released and publishes them as containerdisks",
+		Short: "testci determines if new OS images are released and publishes them as containerdisks",
 		Run:   func(cmd *cobra.Command, args []string) {},
 	}
 
