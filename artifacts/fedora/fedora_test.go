@@ -29,10 +29,12 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"35-1.2"},
 			},
 			&api.Metadata{
-				Name:                   "fedora",
-				Version:                "35",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "fedora",
+				Version:     "35",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "fedora",
+				},
 			},
 		),
 		Entry("fedora:34", "34", "testdata/releases.json",
@@ -42,10 +44,12 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"34-1.2"},
 			},
 			&api.Metadata{
-				Name:                   "fedora",
-				Version:                "34",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "fedora",
+				Version:     "34",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "fedora",
+				},
 			},
 		),
 	)

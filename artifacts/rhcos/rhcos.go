@@ -30,10 +30,12 @@ Visit [https://docs.openshift.com/container-platform/latest/architecture/archite
 
 func (r *rhcos) Metadata() *api.Metadata {
 	return &api.Metadata{
-		Name:                   "rhcos",
-		Version:                r.Version,
-		Description:            description,
-		ExampleUserDataPayload: r.UserData(&docs.UserData{}),
+		Name:        "rhcos",
+		Version:     r.Version,
+		Description: description,
+		ExampleUserData: docs.UserData{
+			Username: "core",
+		},
 	}
 }
 

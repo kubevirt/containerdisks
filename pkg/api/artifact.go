@@ -11,9 +11,9 @@ import (
 type ArtifactTest func(ctx context.Context, vmi *v1.VirtualMachineInstance, params *ArtifactTestParams) error
 
 type ArtifactTestParams struct {
-	// Username is the username used to login into the VM.
+	// Username is the username used to log in into the VM.
 	Username string
-	// PrivateKey is the private key used to login into the VM.
+	// PrivateKey is the private key used to log in into the VM.
 	PrivateKey interface{}
 }
 
@@ -48,7 +48,7 @@ type Metadata struct {
 	// Description of the project in Markdown format.
 	Description string
 	// CloudInit/Ignition Payload example.
-	ExampleUserDataPayload string
+	ExampleUserData docs.UserData
 }
 
 func (m Metadata) Describe() string {

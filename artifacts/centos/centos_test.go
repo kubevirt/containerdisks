@@ -29,10 +29,12 @@ var _ = Describe("Centos", func() {
 				AdditionalUniqueTags: []string{"8.4.2105-20210603.0", "8.4.2105"},
 			},
 			&api.Metadata{
-				Name:                   "centos",
-				Version:                "8.4",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "centos",
+				Version:     "8.4",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "centos",
+				},
 			},
 		),
 		Entry("centos:8.3", "8.3", "testdata/centos8.checksum",
@@ -43,10 +45,12 @@ var _ = Describe("Centos", func() {
 				AdditionalUniqueTags: []string{"8.3.2011-20201204.2", "8.3.2011"},
 			},
 			&api.Metadata{
-				Name:                   "centos",
-				Version:                "8.3",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "centos",
+				Version:     "8.3",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "centos",
+				},
 			},
 		),
 		Entry("centos:7-2009", "7-2009", "testdata/centos7.checksum",
@@ -55,10 +59,12 @@ var _ = Describe("Centos", func() {
 				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-2009.qcow2",
 			},
 			&api.Metadata{
-				Name:                   "centos",
-				Version:                "7-2009",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "centos",
+				Version:     "7-2009",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "centos",
+				},
 			},
 		),
 		Entry("centos:7-1809", "7-1809", "testdata/centos7.checksum",
@@ -67,10 +73,12 @@ var _ = Describe("Centos", func() {
 				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1809.qcow2",
 			},
 			&api.Metadata{
-				Name:                   "centos",
-				Version:                "7-1809",
-				Description:            description,
-				ExampleUserDataPayload: docs.CloudInit(&docs.UserData{}),
+				Name:        "centos",
+				Version:     "7-1809",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "centos",
+				},
 			},
 		),
 	)
