@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	v1 "kubevirt.io/api/core/v1"
+	"kubevirt.io/api/instancetype"
 
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
@@ -27,10 +28,11 @@ type Release struct {
 }
 
 type fedora struct {
-	Version string
-	Arch    string
-	Variant string
-	getter  http.Getter
+	Version          string
+	Arch             string
+	Variant          string
+	getter           http.Getter
+	AdditionalLabels map[string]string
 }
 
 type fedoraGatherer struct {
@@ -55,6 +57,7 @@ func (f *fedora) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "fedora",
 		},
+		AdditionalLabels: f.AdditionalLabels,
 	}
 }
 
@@ -111,7 +114,15 @@ func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
 	artifacts := []api.Artifact{}
 	for i, release := range releases {
 		if f.releaseMatches(&releases[i]) {
-			artifacts = append(artifacts, New(release.Version))
+			artifacts = append(artifacts,
+				New(
+					release.Version,
+					map[string]string{
+						instancetype.DefaultInstancetypeLabel: "u1.small",
+						instancetype.DefaultPreferenceLabel:   "fedora",
+					},
+				),
+			)
 		}
 	}
 
@@ -147,12 +158,13 @@ func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 		strings.HasSuffix(release.Link, "qcow2")
 }
 
-func New(release string) *fedora {
+func New(release string, additionalLabels map[string]string) *fedora {
 	return &fedora{
-		Version: release,
-		Arch:    "x86_64",
-		Variant: "Cloud",
-		getter:  &http.HTTPGetter{},
+		Version:          release,
+		Arch:             "x86_64",
+		Variant:          "Cloud",
+		getter:           &http.HTTPGetter{},
+		AdditionalLabels: additionalLabels,
 	}
 }
 

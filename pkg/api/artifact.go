@@ -50,6 +50,9 @@ type Metadata struct {
 	Description string
 	// CloudInit/Ignition Payload example.
 	ExampleUserData docs.UserData
+	// AdditionalLabels contains additional labels which should be added to the resulting containerdisk.
+	// These labels can e.g. describe an appropriate instancetype or preference.
+	AdditionalLabels map[string]string
 }
 
 func (m Metadata) Describe() string {

@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"kubevirt.io/api/instancetype"
 
 	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/centosstream"
@@ -25,79 +26,137 @@ type Entry struct {
 
 var staticRegistry = []Entry{
 	{
-		Artifact:   rhcos.New("4.9", true),
+		Artifact: rhcos.New(
+			"4.9",
+			true,
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcos.New("4.10", true),
+		Artifact: rhcos.New(
+			"4.10",
+			true,
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcos.New("4.11", true),
+		Artifact: rhcos.New(
+			"4.11",
+			true,
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcos.New("4.12", true),
+		Artifact: rhcos.New(
+			"4.12",
+			true,
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: true,
 	},
 	{
-		Artifact:   rhcos.New("latest", false),
+		Artifact: rhcos.New(
+			"latest",
+			false,
+			defaultLabels("u1.small", "rhel.9"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcosprerelease.New("latest-4.9"),
+		Artifact: rhcosprerelease.New(
+			"latest-4.9",
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcosprerelease.New("latest-4.10"),
+		Artifact: rhcosprerelease.New(
+			"latest-4.10",
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcosprerelease.New("latest-4.11"),
+		Artifact: rhcosprerelease.New(
+			"latest-4.11",
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcosprerelease.New("latest-4.12"),
+		Artifact: rhcosprerelease.New(
+			"latest-4.12",
+			defaultLabels("u1.small", "rhel.8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcosprerelease.New("latest-4.13"),
+		Artifact: rhcosprerelease.New(
+			"latest-4.13",
+			defaultLabels("u1.small", "rhel.9"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   rhcosprerelease.New("latest"),
+		Artifact: rhcosprerelease.New(
+			"latest",
+			defaultLabels("u1.small", "rhel.9"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   centos.New("8.4"),
+		Artifact:   centos.New("8.4", nil),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   centos.New("7-2009"),
+		Artifact: centos.New(
+			"7-2009",
+			defaultLabels("u1.small", "centos.7"),
+		),
 		UseForDocs: true,
 	},
 	{
-		Artifact: centosstream.New("9", &docs.UserData{
-			Username: "cloud-user",
-		}),
+		Artifact: centosstream.New(
+			"9",
+			&docs.UserData{
+				Username: "cloud-user",
+			},
+			defaultLabels("u1.small", "centos.stream9"),
+		),
 		UseForDocs: true,
 	},
 	{
-		Artifact: centosstream.New("8", &docs.UserData{
-			Username: "centos",
-		}),
+		Artifact: centosstream.New(
+			"8",
+			&docs.UserData{
+				Username: "centos",
+			},
+			defaultLabels("u1.small", "centos.stream8"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   ubuntu.New("22.04"),
+		Artifact: ubuntu.New(
+			"22.04",
+			defaultLabels("u1.small", "ubuntu"),
+		),
 		UseForDocs: true,
 	},
 	{
-		Artifact:   ubuntu.New("20.04"),
+		Artifact: ubuntu.New(
+			"20.04",
+			defaultLabels("u1.small", "ubuntu"),
+		),
 		UseForDocs: false,
 	},
 	{
-		Artifact:   ubuntu.New("18.04"),
+		Artifact: ubuntu.New(
+			"18.04",
+			defaultLabels("u1.small", "ubuntu"),
+		),
 		UseForDocs: false,
 	},
 	// for testing only
@@ -131,6 +190,13 @@ func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 				})
 			}
 		}
+	}
+}
+
+func defaultLabels(defaultInstancetype, defaultPreference string) map[string]string {
+	return map[string]string{
+		instancetype.DefaultInstancetypeLabel: defaultInstancetype,
+		instancetype.DefaultPreferenceLabel:   defaultPreference,
 	}
 }
 

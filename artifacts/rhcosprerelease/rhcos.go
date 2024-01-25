@@ -16,11 +16,12 @@ import (
 )
 
 type rhcos struct {
-	Version     string
-	Variant     string
-	getter      http.Getter
-	Arch        string
-	Compression string
+	Version          string
+	Variant          string
+	getter           http.Getter
+	Arch             string
+	Compression      string
+	AdditionalLabels map[string]string
 }
 
 //nolint:lll
@@ -37,6 +38,7 @@ func (r *rhcos) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "core",
 		},
+		AdditionalLabels: r.AdditionalLabels,
 	}
 }
 
@@ -100,12 +102,13 @@ func (r *rhcos) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(release string) *rhcos {
+func New(release string, additionalLabels map[string]string) *rhcos {
 	return &rhcos{
-		Version:     release,
-		Arch:        "x86_64",
-		Variant:     "rhcos-openstack.x86_64.qcow2.gz",
-		getter:      &http.HTTPGetter{},
-		Compression: types.GzipAlgorithmName,
+		Version:          release,
+		Arch:             "x86_64",
+		Variant:          "rhcos-openstack.x86_64.qcow2.gz",
+		getter:           &http.HTTPGetter{},
+		Compression:      types.GzipAlgorithmName,
+		AdditionalLabels: additionalLabels,
 	}
 }

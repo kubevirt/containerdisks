@@ -6,6 +6,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
+	"kubevirt.io/api/instancetype"
+
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
@@ -13,8 +15,8 @@ import (
 
 var _ = Describe("Centos", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
-		func(release, mockFile string, details *api.ArtifactDetails, metadata *api.Metadata) {
-			c := New(release)
+		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
+			c := New(release, additionalLabels)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -28,12 +30,18 @@ var _ = Describe("Centos", func() {
 				Compression:          "",
 				AdditionalUniqueTags: []string{"8.4.2105-20210603.0", "8.4.2105"},
 			},
+			map[string]string{
+				"test-label": "test-value",
+			},
 			&api.Metadata{
 				Name:        "centos",
 				Version:     "8.4",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "centos",
+				},
+				AdditionalLabels: map[string]string{
+					"test-label": "test-value",
 				},
 			},
 		),
@@ -44,12 +52,18 @@ var _ = Describe("Centos", func() {
 				Compression:          "",
 				AdditionalUniqueTags: []string{"8.3.2011-20201204.2", "8.3.2011"},
 			},
+			map[string]string{
+				"test-label": "test-value",
+			},
 			&api.Metadata{
 				Name:        "centos",
 				Version:     "8.3",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "centos",
+				},
+				AdditionalLabels: map[string]string{
+					"test-label": "test-value",
 				},
 			},
 		),
@@ -58,12 +72,20 @@ var _ = Describe("Centos", func() {
 				SHA256Sum:   "e38bab0475cc6d004d2e17015969c659e5a308111851b0e2715e84646035bdd3",
 				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-2009.qcow2",
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "centos.7",
+			},
 			&api.Metadata{
 				Name:        "centos",
 				Version:     "7-2009",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "centos",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "centos.7",
 				},
 			},
 		),
@@ -72,12 +94,20 @@ var _ = Describe("Centos", func() {
 				SHA256Sum:   "42c062df8a8c36991ec0282009dd52ac488461a3f7ee114fc21a765bfc2671c2",
 				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1809.qcow2",
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "centos.7",
+			},
 			&api.Metadata{
 				Name:        "centos",
 				Version:     "7-1809",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "centos",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "centos.7",
 				},
 			},
 		),
