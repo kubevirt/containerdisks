@@ -6,7 +6,7 @@ make medius
 
 export KUBEVIRT_MEMORY_SIZE=9216M
 make cluster-up
-trap '{ make cluster-down; }' EXIT SIGINT SIGTERM SIGSTOP
+trap '{ make cluster-down; }' EXIT SIGINT SIGTERM
 
 registry="$(./hack/kubevirtci.sh registry)"
 kubeconfig="$(./hack/kubevirtci.sh kubeconfig)"

@@ -24,7 +24,7 @@ type rhcos struct {
 }
 
 //nolint:lll
-var description string = `RHCOS prerelease images for KubeVirt.
+const description = `RHCOS prerelease images for KubeVirt.
 <br />
 <br />
 Visit [https://docs.openshift.com/container-platform/latest/architecture/architecture-rhcos.html) to learn more about Red Hat Enterprise Linux CoreOS.`

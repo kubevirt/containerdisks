@@ -16,7 +16,7 @@ import (
 )
 
 //nolint:lll
-var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Generic Cloud images for KubeVirt.
+const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Generic Cloud images for KubeVirt.
 <br />
 <br />
 Visit [centos.org](https://www.centos.org/) to learn more about the CentOS project.`

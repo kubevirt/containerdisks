@@ -21,7 +21,7 @@ type ubuntu struct {
 	Compression string
 }
 
-var description string = `Ubuntu images for KubeVirt.
+const description = `Ubuntu images for KubeVirt.
 <br />
 <br />
 Visit [ubuntu.com](https://ubuntu.com/) to learn more about Ubuntu.`
