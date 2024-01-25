@@ -20,21 +20,19 @@ const ProcessVmCounters = 3
 //
 //sys NtQueryInformationProcess(processHandle windows.Handle, processInfoClass uint32, processInfo unsafe.Pointer, processInfoLength uint32, returnLength *uint32) (status uint32) = ntdll.NtQueryInformationProcess
 
-// typedef struct _VM_COUNTERS_EX
-//
-//	{
-//	   SIZE_T PeakVirtualSize;
-//	   SIZE_T VirtualSize;
-//	   ULONG PageFaultCount;
-//	   SIZE_T PeakWorkingSetSize;
-//	   SIZE_T WorkingSetSize;
-//	   SIZE_T QuotaPeakPagedPoolUsage;
-//	   SIZE_T QuotaPagedPoolUsage;
-//	   SIZE_T QuotaPeakNonPagedPoolUsage;
-//	   SIZE_T QuotaNonPagedPoolUsage;
-//	   SIZE_T PagefileUsage;
-//	   SIZE_T PeakPagefileUsage;
-//	   SIZE_T PrivateUsage;
+//	typedef struct _VM_COUNTERS_EX {
+//		   SIZE_T PeakVirtualSize;
+//		   SIZE_T VirtualSize;
+//		   ULONG PageFaultCount;
+//		   SIZE_T PeakWorkingSetSize;
+//		   SIZE_T WorkingSetSize;
+//		   SIZE_T QuotaPeakPagedPoolUsage;
+//		   SIZE_T QuotaPagedPoolUsage;
+//		   SIZE_T QuotaPeakNonPagedPoolUsage;
+//		   SIZE_T QuotaNonPagedPoolUsage;
+//		   SIZE_T PagefileUsage;
+//		   SIZE_T PeakPagefileUsage;
+//		   SIZE_T PrivateUsage;
 //	} VM_COUNTERS_EX, *PVM_COUNTERS_EX;
 type VM_COUNTERS_EX struct {
 	PeakVirtualSize            uintptr
@@ -51,12 +49,10 @@ type VM_COUNTERS_EX struct {
 	PrivateUsage               uintptr
 }
 
-// typedef struct _VM_COUNTERS_EX2
-//
-//	{
-//	   VM_COUNTERS_EX CountersEx;
-//	   SIZE_T PrivateWorkingSetSize;
-//	   SIZE_T SharedCommitUsage;
+//	typedef struct _VM_COUNTERS_EX2 {
+//		   VM_COUNTERS_EX CountersEx;
+//		   SIZE_T PrivateWorkingSetSize;
+//		   SIZE_T SharedCommitUsage;
 //	} VM_COUNTERS_EX2, *PVM_COUNTERS_EX2;
 type VM_COUNTERS_EX2 struct {
 	CountersEx            VM_COUNTERS_EX

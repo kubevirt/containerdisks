@@ -1,3 +1,5 @@
+//go:build windows
+
 package winapi
 
 import (
@@ -77,4 +79,10 @@ func ConvertStringSetToSlice(buf []byte) ([]string, error) {
 		}
 	}
 	return nil, errors.New("string set malformed: missing null terminator at end of buffer")
+}
+
+// ParseUtf16LE parses a UTF-16LE byte array into a string (without passing
+// through a uint16 or rune array).
+func ParseUtf16LE(b []byte) string {
+	return windows.UTF16PtrToString((*uint16)(unsafe.Pointer(&b[0])))
 }

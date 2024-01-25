@@ -21,6 +21,7 @@ const (
 	consoleTemplateURI        = "wss://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/console"
 	usbredirTemplateURI       = "wss://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/usbredir"
 	vncTemplateURI            = "wss://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/vnc"
+	vsockTemplateURI          = "wss://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/vsock"
 	pauseTemplateURI          = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/pause"
 	unpauseTemplateURI        = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/unpause"
 	freezeTemplateURI         = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/freeze"
@@ -29,6 +30,10 @@ const (
 	guestInfoTemplateURI      = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/guestosinfo"
 	userListTemplateURI       = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/userlist"
 	filesystemListTemplateURI = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/filesystemlist"
+
+	sevFetchCertChainTemplateURI         = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/sev/fetchcertchain"
+	sevQueryLaunchMeasurementTemplateURI = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/sev/querylaunchmeasurement"
+	sevInjectLaunchSecretTemplateURI     = "https://%s:%v/v1/namespaces/%s/virtualmachineinstances/%s/sev/injectlaunchsecret"
 )
 
 func NewVirtHandlerClient(virtCli KubevirtClient, httpCli *http.Client) VirtHandlerClient {
@@ -51,11 +56,15 @@ type VirtHandlerConn interface {
 	ConsoleURI(vmi *virtv1.VirtualMachineInstance) (string, error)
 	USBRedirURI(vmi *virtv1.VirtualMachineInstance) (string, error)
 	VNCURI(vmi *virtv1.VirtualMachineInstance) (string, error)
+	VSOCKURI(vmi *virtv1.VirtualMachineInstance, port string, tls string) (string, error)
 	PauseURI(vmi *virtv1.VirtualMachineInstance) (string, error)
 	UnpauseURI(vmi *virtv1.VirtualMachineInstance) (string, error)
 	FreezeURI(vmi *virtv1.VirtualMachineInstance) (string, error)
 	UnfreezeURI(vmi *virtv1.VirtualMachineInstance) (string, error)
 	SoftRebootURI(vmi *virtv1.VirtualMachineInstance) (string, error)
+	SEVFetchCertChainURI(vmi *virtv1.VirtualMachineInstance) (string, error)
+	SEVQueryLaunchMeasurementURI(vmi *virtv1.VirtualMachineInstance) (string, error)
+	SEVInjectLaunchSecretURI(vmi *virtv1.VirtualMachineInstance) (string, error)
 	Pod() (pod *v1.Pod, err error)
 	Put(url string, body io.ReadCloser) error
 	Get(url string) (string, error)
@@ -176,6 +185,14 @@ func (v *virtHandlerConn) VNCURI(vmi *virtv1.VirtualMachineInstance) (string, er
 	return v.formatURI(vncTemplateURI, vmi)
 }
 
+func (v *virtHandlerConn) VSOCKURI(vmi *virtv1.VirtualMachineInstance, port string, tls string) (string, error) {
+	baseURI, err := v.formatURI(vsockTemplateURI, vmi)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s?port=%s&tls=%s", baseURI, port, tls), nil
+}
+
 func (v *virtHandlerConn) FreezeURI(vmi *virtv1.VirtualMachineInstance) (string, error) {
 	return v.formatURI(freezeTemplateURI, vmi)
 }
@@ -269,4 +286,16 @@ func (v *virtHandlerConn) UserListURI(vmi *virtv1.VirtualMachineInstance) (strin
 
 func (v *virtHandlerConn) FilesystemListURI(vmi *virtv1.VirtualMachineInstance) (string, error) {
 	return v.formatURI(filesystemListTemplateURI, vmi)
+}
+
+func (v *virtHandlerConn) SEVFetchCertChainURI(vmi *virtv1.VirtualMachineInstance) (string, error) {
+	return v.formatURI(sevFetchCertChainTemplateURI, vmi)
+}
+
+func (v *virtHandlerConn) SEVQueryLaunchMeasurementURI(vmi *virtv1.VirtualMachineInstance) (string, error) {
+	return v.formatURI(sevQueryLaunchMeasurementTemplateURI, vmi)
+}
+
+func (v *virtHandlerConn) SEVInjectLaunchSecretURI(vmi *virtv1.VirtualMachineInstance) (string, error) {
+	return v.formatURI(sevInjectLaunchSecretTemplateURI, vmi)
 }

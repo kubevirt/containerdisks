@@ -12,14 +12,14 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/ssh"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	urand "k8s.io/apimachinery/pkg/util/rand"
 	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
 	v1 "kubevirt.io/api/core/v1"
 	kvirtcli "kubevirt.io/client-go/kubecli"
 	kvirtlog "kubevirt.io/client-go/log"
+
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
@@ -133,13 +133,13 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 
 	vmClient := client.VirtualMachine(o.VerifyImagesOptions.Namespace)
 	log.Info("Creating VM")
-	if vm, err = vmClient.Create(vm); err != nil {
+	if vm, err = vmClient.Create(ctx, vm); err != nil {
 		log.WithError(err).Error("Failed to create VM")
 		return err
 	}
 
 	defer func() {
-		if err = vmClient.Delete(vm.Name, &metav1.DeleteOptions{GracePeriodSeconds: pointer.Int64(0)}); err != nil {
+		if err = vmClient.Delete(ctx, vm.Name, &metav1.DeleteOptions{GracePeriodSeconds: ptr.To[int64](0)}); err != nil {
 			log.WithError(err).Error("Failed to delete VM")
 		}
 	}()
@@ -158,7 +158,7 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 		return err
 	}
 
-	vmi, err := client.VirtualMachineInstance(o.VerifyImagesOptions.Namespace).Get(vm.Name, &metav1.GetOptions{})
+	vmi, err := client.VirtualMachineInstance(o.VerifyImagesOptions.Namespace).Get(ctx, vm.Name, &metav1.GetOptions{})
 	if err != nil {
 		log.WithError(err).Error("Failed to get VMI")
 		return err
@@ -205,7 +205,7 @@ func createVM(artifact api.Artifact, imgRef string) (*v1.VirtualMachine, string,
 
 	name := randName(metadata.Name)
 	vm := artifact.VM(name, imgRef, userData)
-	vm.Spec.Template.Spec.TerminationGracePeriodSeconds = pointer.Int64(0)
+	vm.Spec.Template.Spec.TerminationGracePeriodSeconds = ptr.To[int64](0)
 	return vm, username, privateKey, nil
 }
 
@@ -226,7 +226,7 @@ func randName(name string) string {
 
 func waitVMReady(ctx context.Context, name string, client kvirtcli.VirtualMachineInterface, timeout int) error {
 	return wait.PollImmediateWithContext(ctx, time.Second, time.Duration(timeout)*time.Second, func(_ context.Context) (bool, error) {
-		vm, err := client.Get(name, &metav1.GetOptions{})
+		vm, err := client.Get(ctx, name, &metav1.GetOptions{})
 
 		if err != nil {
 			return false, err

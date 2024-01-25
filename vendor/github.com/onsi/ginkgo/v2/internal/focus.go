@@ -45,14 +45,13 @@ func ApplyNestedFocusPolicyToTree(tree *TreeNode) {
 
 /*
 Ginkgo supports focussing specs using `FIt`, `FDescribe`, etc. - this is called "programmatic focus"
-It also supports focussing specs using regular expressions on the command line (`-focus=`, `-skip=`) that match against spec text
-and file filters (`-focus-files=`, `-skip-files=`) that match against code locations for nodes in specs.
+It also supports focussing specs using regular expressions on the command line (`-focus=`, `-skip=`) that match against spec text and file filters (`-focus-files=`, `-skip-files=`) that match against code locations for nodes in specs.
 
-If any of the CLI flags are provided they take precedence.  The file filters run first followed by the regex filters.
+When both programmatic and file filters are provided their results are ANDed together.  If multiple kinds of filters are provided, the file filters run first followed by the regex filters.
 
 This function sets the `Skip` property on specs by applying Ginkgo's focus policy:
 - If there are no CLI arguments and no programmatic focus, do nothing.
-- If there are no CLI arguments but a spec somewhere has programmatic focus, skip any specs that have no programmatic focus.
+- If a spec somewhere has programmatic focus skip any specs that have no programmatic focus.
 - If there are CLI arguments parse them and skip any specs that either don't match the focus filters or do match the skip filters.
 
 *Note:* specs with pending nodes are Skipped when created by NewSpec.
@@ -61,23 +60,21 @@ func ApplyFocusToSpecs(specs Specs, description string, suiteLabels Labels, suit
 	focusString := strings.Join(suiteConfig.FocusStrings, "|")
 	skipString := strings.Join(suiteConfig.SkipStrings, "|")
 
-	hasFocusCLIFlags := focusString != "" || skipString != "" || len(suiteConfig.SkipFiles) > 0 || len(suiteConfig.FocusFiles) > 0 || suiteConfig.LabelFilter != ""
-
 	type SkipCheck func(spec Spec) bool
 
 	// by default, skip any specs marked pending
 	skipChecks := []SkipCheck{func(spec Spec) bool { return spec.Nodes.HasNodeMarkedPending() }}
 	hasProgrammaticFocus := false
 
-	if !hasFocusCLIFlags {
-		// check for programmatic focus
-		for _, spec := range specs {
-			if spec.Nodes.HasNodeMarkedFocus() && !spec.Nodes.HasNodeMarkedPending() {
-				skipChecks = append(skipChecks, func(spec Spec) bool { return !spec.Nodes.HasNodeMarkedFocus() })
-				hasProgrammaticFocus = true
-				break
-			}
+	for _, spec := range specs {
+		if spec.Nodes.HasNodeMarkedFocus() && !spec.Nodes.HasNodeMarkedPending() {
+			hasProgrammaticFocus = true
+			break
 		}
+	}
+
+	if hasProgrammaticFocus {
+		skipChecks = append(skipChecks, func(spec Spec) bool { return !spec.Nodes.HasNodeMarkedFocus() })
 	}
 
 	if suiteConfig.LabelFilter != "" {

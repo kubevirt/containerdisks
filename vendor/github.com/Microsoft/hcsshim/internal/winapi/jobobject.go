@@ -1,3 +1,5 @@
+//go:build windows
+
 package winapi
 
 import (
@@ -55,6 +57,8 @@ const (
 	JobObjectLimitViolationInformation       uint32 = 13
 	JobObjectMemoryUsageInformation          uint32 = 28
 	JobObjectNotificationLimitInformation2   uint32 = 33
+	JobObjectCreateSilo                      uint32 = 35
+	JobObjectSiloBasicInformation            uint32 = 36
 	JobObjectIoAttribution                   uint32 = 42
 )
 
@@ -118,8 +122,8 @@ type JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION struct {
 }
 
 //	typedef struct _JOBOBJECT_MEMORY_USAGE_INFORMATION {
-//	    ULONG64 JobMemory;
-//	    ULONG64 PeakJobMemoryUsed;
+//		ULONG64 JobMemory;
+//		ULONG64 PeakJobMemoryUsed;
 //	} JOBOBJECT_MEMORY_USAGE_INFORMATION, *PJOBOBJECT_MEMORY_USAGE_INFORMATION;
 type JOBOBJECT_MEMORY_USAGE_INFORMATION struct {
 	JobMemory         uint64
@@ -127,10 +131,10 @@ type JOBOBJECT_MEMORY_USAGE_INFORMATION struct {
 }
 
 //	typedef struct _JOBOBJECT_IO_ATTRIBUTION_STATS {
-//	    ULONG_PTR IoCount;
-//	    ULONGLONG TotalNonOverlappedQueueTime;
-//	    ULONGLONG TotalNonOverlappedServiceTime;
-//	    ULONGLONG TotalSize;
+//		ULONG_PTR IoCount;
+//		ULONGLONG TotalNonOverlappedQueueTime;
+//		ULONGLONG TotalNonOverlappedServiceTime;
+//		ULONGLONG TotalSize;
 //	} JOBOBJECT_IO_ATTRIBUTION_STATS, *PJOBOBJECT_IO_ATTRIBUTION_STATS;
 type JOBOBJECT_IO_ATTRIBUTION_STATS struct {
 	IoCount                       uintptr
@@ -180,7 +184,7 @@ type JOBOBJECT_ASSOCIATE_COMPLETION_PORT struct {
 //		LPCWSTR lpName
 // );
 //
-//sys OpenJobObject(desiredAccess uint32, inheritHandle bool, lpName *uint16) (handle windows.Handle, err error) = kernel32.OpenJobObjectW
+//sys OpenJobObject(desiredAccess uint32, inheritHandle int32, lpName *uint16) (handle windows.Handle, err error) = kernel32.OpenJobObjectW
 
 // DWORD SetIoRateControlInformationJobObject(
 //		HANDLE                                hJob,
@@ -195,6 +199,7 @@ type JOBOBJECT_ASSOCIATE_COMPLETION_PORT struct {
 //		JOBOBJECT_IO_RATE_CONTROL_INFORMATION **InfoBlocks,
 // 		ULONG                                 *InfoBlockCount
 // );
+//
 //sys QueryIoRateControlInformationJobObject(jobHandle windows.Handle, volumeName *uint16, ioRateControlInfo **JOBOBJECT_IO_RATE_CONTROL_INFORMATION, infoBlockCount *uint32) (ret uint32, err error) = kernel32.QueryIoRateControlInformationJobObject
 
 // NTSTATUS
@@ -203,6 +208,7 @@ type JOBOBJECT_ASSOCIATE_COMPLETION_PORT struct {
 //     _In_ ACCESS_MASK DesiredAccess,
 //     _In_ POBJECT_ATTRIBUTES ObjectAttributes
 // );
+//
 //sys NtOpenJobObject(jobHandle *windows.Handle, desiredAccess uint32, objAttributes *ObjectAttributes) (status uint32) = ntdll.NtOpenJobObject
 
 // NTSTATUS
@@ -212,4 +218,5 @@ type JOBOBJECT_ASSOCIATE_COMPLETION_PORT struct {
 //     _In_ ACCESS_MASK DesiredAccess,
 //     _In_opt_ POBJECT_ATTRIBUTES ObjectAttributes
 // );
+//
 //sys NtCreateJobObject(jobHandle *windows.Handle, desiredAccess uint32, objAttributes *ObjectAttributes) (status uint32) = ntdll.NtCreateJobObject

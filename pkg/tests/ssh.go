@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/ssh"
 	v1 "kubevirt.io/api/core/v1"
 	kvirtcli "kubevirt.io/client-go/kubecli"
+
 	"kubevirt.io/containerdisks/pkg/api"
 )
 
