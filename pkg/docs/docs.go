@@ -11,7 +11,7 @@ import (
 	k8sv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
 	v1 "kubevirt.io/api/core/v1"
 )
 
@@ -49,7 +49,6 @@ func NewVM(name, image string, opts ...Option) *v1.VirtualMachine {
 
 func BasicVM(name, image string) *v1.VirtualMachine {
 	const terminationGracePeriod int64 = 180
-	always := v1.RunStrategyAlways
 	return &v1.VirtualMachine{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "VirtualMachine",
@@ -59,10 +58,10 @@ func BasicVM(name, image string) *v1.VirtualMachine {
 			Name: name,
 		},
 		Spec: v1.VirtualMachineSpec{
-			RunStrategy: &always,
+			RunStrategy: ptr.To(v1.RunStrategyAlways),
 			Template: &v1.VirtualMachineInstanceTemplateSpec{
 				Spec: v1.VirtualMachineInstanceSpec{
-					TerminationGracePeriodSeconds: pointer.Int64(terminationGracePeriod),
+					TerminationGracePeriodSeconds: ptr.To(terminationGracePeriod),
 					Domain: v1.DomainSpec{
 						Resources: v1.ResourceRequirements{
 							Requests: map[k8sv1.ResourceName]resource.Quantity{
@@ -147,13 +146,13 @@ func WithSecureBoot() Option {
 	return func(vm *v1.VirtualMachine) {
 		vm.Spec.Template.Spec.Domain.Features = &v1.Features{
 			SMM: &v1.FeatureState{
-				Enabled: pointer.Bool(true),
+				Enabled: ptr.To(true),
 			},
 		}
 		vm.Spec.Template.Spec.Domain.Firmware = &v1.Firmware{
 			Bootloader: &v1.Bootloader{
 				EFI: &v1.EFI{
-					SecureBoot: pointer.Bool(true),
+					SecureBoot: ptr.To(true),
 				},
 			},
 		}

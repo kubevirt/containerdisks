@@ -32,6 +32,8 @@ linters-settings:
         sizeThreshold: 1024
   gocyclo:
     min-complexity: 15
+  goimports:
+    local-prefixes: kubevirt.io/containerdisks
   gomnd:
     settings:
       mnd:
@@ -88,10 +90,8 @@ linters:
     - stylecheck
     - typecheck
     - unconvert
-    - unparam
     - unused
     - whitespace
-    - ginkgolinter
 
   # don't enable:
   # - asciicheck

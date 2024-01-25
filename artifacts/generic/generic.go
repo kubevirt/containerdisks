@@ -2,6 +2,7 @@ package generic
 
 import (
 	v1 "kubevirt.io/api/core/v1"
+
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 )

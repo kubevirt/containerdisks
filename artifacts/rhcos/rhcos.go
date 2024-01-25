@@ -6,6 +6,7 @@ import (
 
 	"github.com/containers/image/v5/pkg/compression/types"
 	v1 "kubevirt.io/api/core/v1"
+
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"

@@ -1,5 +1,8 @@
+//go:build windows
+
 package winapi
 
+//sys CopyFileW(existingFileName *uint16, newFileName *uint16, failIfExists int32) (err error) = kernel32.CopyFileW
 //sys NtCreateFile(handle *uintptr, accessMask uint32, oa *ObjectAttributes, iosb *IOStatusBlock, allocationSize *uint64, fileAttributes uint32, shareAccess uint32, createDisposition uint32, createOptions uint32, eaBuffer *byte, eaLength uint32) (status uint32) = ntdll.NtCreateFile
 //sys NtSetInformationFile(handle uintptr, iosb *IOStatusBlock, information uintptr, length uint32, class uint32) (status uint32) = ntdll.NtSetInformationFile
 
@@ -101,8 +104,8 @@ type FileLinkInformation struct {
 // C declaration:
 //
 //	typedef struct _FILE_ID_INFO {
-//	    ULONGLONG   VolumeSerialNumber;
-//	    FILE_ID_128 FileId;
+//		ULONGLONG   VolumeSerialNumber;
+//		FILE_ID_128 FileId;
 //	} FILE_ID_INFO, *PFILE_ID_INFO;
 //
 // Documentation: https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info

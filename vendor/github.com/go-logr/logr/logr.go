@@ -127,9 +127,9 @@ limitations under the License.
 // such a value can call its methods without having to check whether the
 // instance is ready for use.
 //
-// Calling methods with the null logger (Logger{}) as instance will crash
-// because it has no LogSink. Therefore this null logger should never be passed
-// around. For cases where passing a logger is optional, a pointer to Logger
+// The zero logger (= Logger{}) is identical to Discard() and discards all log
+// entries. Code that receives a Logger by value can simply call it, the methods
+// will never crash. For cases where passing a logger is optional, a pointer to Logger
 // should be used.
 //
 // # Key Naming Conventions
@@ -179,7 +179,7 @@ limitations under the License.
 // Logger grants access to the sink to enable type assertions like this:
 //
 //	func DoSomethingWithImpl(log logr.Logger) {
-//	    if underlier, ok := log.GetSink()(impl.Underlier) {
+//	    if underlier, ok := log.GetSink().(impl.Underlier); ok {
 //	       implLogger := underlier.GetUnderlying()
 //	       ...
 //	    }
@@ -192,7 +192,7 @@ limitations under the License.
 //	// new logger with that modified sink.  It does nothing for loggers where
 //	// the sink doesn't support that parameter.
 //	func WithFoobar(log logr.Logger, foobar int) logr.Logger {
-//	   if foobarLogSink, ok := log.GetSink()(FoobarSink); ok {
+//	   if foobarLogSink, ok := log.GetSink().(FoobarSink); ok {
 //	      log = log.WithSink(foobarLogSink.WithFooBar(foobar))
 //	   }
 //	   return log
@@ -212,11 +212,14 @@ import (
 )
 
 // New returns a new Logger instance.  This is primarily used by libraries
-// implementing LogSink, rather than end users.
+// implementing LogSink, rather than end users.  Passing a nil sink will create
+// a Logger which discards all log lines.
 func New(sink LogSink) Logger {
 	logger := Logger{}
 	logger.setSink(sink)
-	sink.Init(runtimeInfo)
+	if sink != nil {
+		sink.Init(runtimeInfo)
+	}
 	return logger
 }
 
@@ -255,7 +258,13 @@ type Logger struct {
 // Enabled tests whether this Logger is enabled.  For example, commandline
 // flags might be used to set the logging verbosity and disable some info logs.
 func (l Logger) Enabled() bool {
-	return l.sink.Enabled(l.level)
+	// Some implementations of LogSink look at the caller in Enabled (e.g.
+	// different verbosity levels per package or file), but we only pass one
+	// CallDepth in (via Init).  This means that all calls from Logger to the
+	// LogSink's Enabled, Info, and Error methods must have the same number of
+	// frames.  In other words, Logger methods can't call other Logger methods
+	// which call these LogSink methods unless we do it the same in all paths.
+	return l.sink != nil && l.sink.Enabled(l.level)
 }
 
 // Info logs a non-error message with the given key/value pairs as context.
@@ -264,8 +273,11 @@ func (l Logger) Enabled() bool {
 // line.  The key/value pairs can then be used to add additional variable
 // information.  The key/value pairs must alternate string keys and arbitrary
 // values.
-func (l Logger) Info(msg string, keysAndValues ...interface{}) {
-	if l.Enabled() {
+func (l Logger) Info(msg string, keysAndValues ...any) {
+	if l.sink == nil {
+		return
+	}
+	if l.sink.Enabled(l.level) { // see comment in Enabled
 		if withHelper, ok := l.sink.(CallStackHelperLogSink); ok {
 			withHelper.GetCallStackHelper()()
 		}
@@ -283,7 +295,10 @@ func (l Logger) Info(msg string, keysAndValues ...interface{}) {
 // while the err argument should be used to attach the actual error that
 // triggered this log line, if present. The err parameter is optional
 // and nil may be passed instead of an error instance.
-func (l Logger) Error(err error, msg string, keysAndValues ...interface{}) {
+func (l Logger) Error(err error, msg string, keysAndValues ...any) {
+	if l.sink == nil {
+		return
+	}
 	if withHelper, ok := l.sink.(CallStackHelperLogSink); ok {
 		withHelper.GetCallStackHelper()()
 	}
@@ -295,6 +310,9 @@ func (l Logger) Error(err error, msg string, keysAndValues ...interface{}) {
 // level means a log message is less important.  Negative V-levels are treated
 // as 0.
 func (l Logger) V(level int) Logger {
+	if l.sink == nil {
+		return l
+	}
 	if level < 0 {
 		level = 0
 	}
@@ -302,9 +320,19 @@ func (l Logger) V(level int) Logger {
 	return l
 }
 
+// GetV returns the verbosity level of the logger. If the logger's LogSink is
+// nil as in the Discard logger, this will always return 0.
+func (l Logger) GetV() int {
+	// 0 if l.sink nil because of the if check in V above.
+	return l.level
+}
+
 // WithValues returns a new Logger instance with additional key/value pairs.
 // See Info for documentation on how key/value pairs work.
-func (l Logger) WithValues(keysAndValues ...interface{}) Logger {
+func (l Logger) WithValues(keysAndValues ...any) Logger {
+	if l.sink == nil {
+		return l
+	}
 	l.setSink(l.sink.WithValues(keysAndValues...))
 	return l
 }
@@ -315,6 +343,9 @@ func (l Logger) WithValues(keysAndValues ...interface{}) Logger {
 // contain only letters, digits, and hyphens (see the package documentation for
 // more information).
 func (l Logger) WithName(name string) Logger {
+	if l.sink == nil {
+		return l
+	}
 	l.setSink(l.sink.WithName(name))
 	return l
 }
@@ -335,6 +366,9 @@ func (l Logger) WithName(name string) Logger {
 // WithCallDepth(1) because it works with implementions that support the
 // CallDepthLogSink and/or CallStackHelperLogSink interfaces.
 func (l Logger) WithCallDepth(depth int) Logger {
+	if l.sink == nil {
+		return l
+	}
 	if withCallDepth, ok := l.sink.(CallDepthLogSink); ok {
 		l.setSink(withCallDepth.WithCallDepth(depth))
 	}
@@ -356,6 +390,9 @@ func (l Logger) WithCallDepth(depth int) Logger {
 // implementation does not support either of these, the original Logger will be
 // returned.
 func (l Logger) WithCallStackHelper() (func(), Logger) {
+	if l.sink == nil {
+		return func() {}, l
+	}
 	var helper func()
 	if withCallDepth, ok := l.sink.(CallDepthLogSink); ok {
 		l.setSink(withCallDepth.WithCallDepth(1))
@@ -366,6 +403,11 @@ func (l Logger) WithCallStackHelper() (func(), Logger) {
 		helper = func() {}
 	}
 	return helper, l
+}
+
+// IsZero returns true if this logger is an uninitialized zero value
+func (l Logger) IsZero() bool {
+	return l.sink == nil
 }
 
 // contextKey is how we find Loggers in a context.Context.
@@ -438,22 +480,22 @@ type LogSink interface {
 	// The level argument is provided for optional logging.  This method will
 	// only be called when Enabled(level) is true. See Logger.Info for more
 	// details.
-	Info(level int, msg string, keysAndValues ...interface{})
+	Info(level int, msg string, keysAndValues ...any)
 
 	// Error logs an error, with the given message and key/value pairs as
 	// context.  See Logger.Error for more details.
-	Error(err error, msg string, keysAndValues ...interface{})
+	Error(err error, msg string, keysAndValues ...any)
 
 	// WithValues returns a new LogSink with additional key/value pairs.  See
 	// Logger.WithValues for more details.
-	WithValues(keysAndValues ...interface{}) LogSink
+	WithValues(keysAndValues ...any) LogSink
 
 	// WithName returns a new LogSink with the specified name appended.  See
 	// Logger.WithName for more details.
 	WithName(name string) LogSink
 }
 
-// CallDepthLogSink represents a Logger that knows how to climb the call stack
+// CallDepthLogSink represents a LogSink that knows how to climb the call stack
 // to identify the original call site and can offset the depth by a specified
 // number of frames.  This is useful for users who have helper functions
 // between the "real" call site and the actual calls to Logger methods.
@@ -478,7 +520,7 @@ type CallDepthLogSink interface {
 	WithCallDepth(depth int) LogSink
 }
 
-// CallStackHelperLogSink represents a Logger that knows how to climb
+// CallStackHelperLogSink represents a LogSink that knows how to climb
 // the call stack to identify the original call site and can skip
 // intermediate helper functions if they mark themselves as
 // helper. Go's testing package uses that approach.
@@ -517,5 +559,5 @@ type Marshaler interface {
 	//     with exported fields
 	//
 	// It may return any value of any type.
-	MarshalLog() interface{}
+	MarshalLog() any
 }

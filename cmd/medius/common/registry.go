@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+
 	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/fedora"

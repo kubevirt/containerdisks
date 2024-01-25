@@ -184,7 +184,7 @@ func GetCoverageFromCoverProfile(profile string) (float64, error) {
 	cmd := exec.Command("go", "tool", "cover", "-func", profile)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return 0, fmt.Errorf("Could not process Coverprofile %s: %s", profile, err.Error())
+		return 0, fmt.Errorf("Could not process Coverprofile %s: %s - %s", profile, err.Error(), string(output))
 	}
 	re := regexp.MustCompile(`total:\s*\(statements\)\s*(\d*\.\d*)\%`)
 	matches := re.FindStringSubmatch(string(output))
