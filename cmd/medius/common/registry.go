@@ -59,6 +59,22 @@ var staticRegistry = []Entry{
 	},
 	{
 		Artifact: rhcos.New(
+			"4.13",
+			true,
+			defaultLabels("u1.small", "rhel.9"),
+		),
+		UseForDocs: true,
+	},
+	{
+		Artifact: rhcos.New(
+			"4.14",
+			true,
+			defaultLabels("u1.small", "rhel.9"),
+		),
+		UseForDocs: true,
+	},
+	{
+		Artifact: rhcos.New(
 			"latest",
 			false,
 			defaultLabels("u1.small", "rhel.9"),
@@ -96,6 +112,20 @@ var staticRegistry = []Entry{
 	{
 		Artifact: rhcosprerelease.New(
 			"latest-4.13",
+			defaultLabels("u1.small", "rhel.9"),
+		),
+		UseForDocs: false,
+	},
+	{
+		Artifact: rhcosprerelease.New(
+			"latest-4.14",
+			defaultLabels("u1.small", "rhel.9"),
+		),
+		UseForDocs: false,
+	},
+	{
+		Artifact: rhcosprerelease.New(
+			"latest-4.15",
 			defaultLabels("u1.small", "rhel.9"),
 		),
 		UseForDocs: false,
