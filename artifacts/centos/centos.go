@@ -16,16 +16,17 @@ import (
 )
 
 //nolint:lll
-var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Generic Cloud images for KubeVirt.
+const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Generic Cloud images for KubeVirt.
 <br />
 <br />
 Visit [centos.org](https://www.centos.org/) to learn more about the CentOS project.`
 
 type centos struct {
-	Version string
-	Variant string
-	getter  http.Getter
-	Arch    string
+	Version          string
+	Variant          string
+	getter           http.Getter
+	Arch             string
+	AdditionalLabels map[string]string
 }
 
 func (c *centos) Metadata() *api.Metadata {
@@ -36,6 +37,7 @@ func (c *centos) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "centos",
 		},
+		AdditionalLabels: c.AdditionalLabels,
 	}
 }
 
@@ -145,11 +147,12 @@ func (c *centos) Tests() []api.ArtifactTest {
 }
 
 // New accepts CentOS 7 and 8 versions. Example patterns are 7-2111, 7-2009, 8.3, 8.4, ...
-func New(release string) *centos {
+func New(release string, additionalLabels map[string]string) *centos {
 	return &centos{
-		Version: release,
-		Arch:    "x86_64",
-		Variant: "GenericCloud",
-		getter:  &http.HTTPGetter{},
+		Version:          release,
+		Variant:          "GenericCloud",
+		Arch:             "x86_64",
+		getter:           &http.HTTPGetter{},
+		AdditionalLabels: additionalLabels,
 	}
 }

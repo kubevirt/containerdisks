@@ -107,14 +107,14 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 }
 
 func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string, error) {
-	description := entry.Artifact.Metadata().Describe()
+	metadata := entry.Artifact.Metadata()
 	artifactInfo, err := entry.Artifact.Inspect()
 	if err != nil {
-		return nil, fmt.Errorf("error introspecting artifact %q: %v", description, err)
+		return nil, fmt.Errorf("error introspecting artifact %q: %v", metadata.Describe(), err)
 	}
 	b.Log.Infof("Remote artifact checksum: %q", artifactInfo.SHA256Sum)
 
-	imageSha, err := b.getImageSha(description)
+	imageSha, err := b.getImageSha(metadata.Describe())
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string
 	defer os.Remove(file)
 
 	b.Log.Info("Building containerdisk ...")
-	containerDisk, err := build.ContainerDisk(file, artifactInfo.SHA256Sum)
+	containerDisk, err := build.ContainerDisk(file, build.ContainerDiskConfig(artifactInfo.SHA256Sum, metadata.AdditionalLabels))
 	if err != nil {
 		return nil, fmt.Errorf("error creating the containerdisk : %v", err)
 	}

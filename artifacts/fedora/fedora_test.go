@@ -6,6 +6,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
+	"kubevirt.io/api/instancetype"
+
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
@@ -14,8 +16,8 @@ import (
 
 var _ = Describe("Fedora", func() {
 	DescribeTable("Inspect should be able to parse releases files",
-		func(release, mockFile string, details *api.ArtifactDetails, metadata *api.Metadata) {
-			c := New(release)
+		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
+			c := New(release, additionalLabels)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -28,12 +30,20 @@ var _ = Describe("Fedora", func() {
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"35-1.2"},
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "fedora",
+			},
 			&api.Metadata{
 				Name:        "fedora",
 				Version:     "35",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "fedora",
 				},
 			},
 		),
@@ -43,12 +53,20 @@ var _ = Describe("Fedora", func() {
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"34-1.2"},
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "fedora",
+			},
 			&api.Metadata{
 				Name:        "fedora",
 				Version:     "34",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "fedora",
 				},
 			},
 		),
@@ -61,12 +79,20 @@ var _ = Describe("Fedora", func() {
 				Arch:    "x86_64",
 				Variant: "Cloud",
 				getter:  &http.HTTPGetter{},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "fedora",
+				},
 			},
 			&fedora{
 				Version: "35",
 				Arch:    "x86_64",
 				Variant: "Cloud",
 				getter:  &http.HTTPGetter{},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "fedora",
+				},
 			},
 		}
 

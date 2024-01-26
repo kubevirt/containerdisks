@@ -6,6 +6,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
+	"kubevirt.io/api/instancetype"
+
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
@@ -13,8 +15,8 @@ import (
 
 var _ = Describe("RhcosPrerelease", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
-		func(release, mockFile string, details *api.ArtifactDetails, metadata *api.Metadata) {
-			c := New(release)
+		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
+			c := New(release, additionalLabels)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -28,12 +30,20 @@ var _ = Describe("RhcosPrerelease", func() {
 				Compression:          "gzip",
 				AdditionalUniqueTags: []string{"4.9.0-rc.7", "3466690807fb710102559ea57daac0484c59ed4d914996882d601b8bb7a7ada8"},
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "rhel.8",
+			},
 			&api.Metadata{
 				Name:        "rhcos",
 				Version:     "4.9-pre-release",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "core",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "rhel.8",
 				},
 			},
 		),
@@ -44,12 +54,20 @@ var _ = Describe("RhcosPrerelease", func() {
 				Compression:          "gzip",
 				AdditionalUniqueTags: []string{"4.10.0-rc.1", "f581896eee37216021bfce9ddd5e1fd8289c366ca0d1db25221c77688de85fd7"},
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "rhel.8",
+			},
 			&api.Metadata{
 				Name:        "rhcos",
 				Version:     "latest-pre-release",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "core",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "rhel.8",
 				},
 			},
 		),

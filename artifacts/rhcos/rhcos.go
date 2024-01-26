@@ -15,16 +15,17 @@ import (
 )
 
 type rhcos struct {
-	Version      string
-	Variant      string
-	getter       http.Getter
-	Arch         string
-	Compression  string
-	AppendLatest bool
+	Version          string
+	Variant          string
+	getter           http.Getter
+	Arch             string
+	Compression      string
+	AppendLatest     bool
+	AdditionalLabels map[string]string
 }
 
 //nolint:lll
-var description string = `RHCOS images for KubeVirt.
+const description = `RHCOS images for KubeVirt.
 <br />
 <br />
 Visit [https://docs.openshift.com/container-platform/latest/architecture/architecture-rhcos.html) to learn more about Red Hat Enterprise Linux CoreOS.`
@@ -37,6 +38,7 @@ func (r *rhcos) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "core",
 		},
+		AdditionalLabels: r.AdditionalLabels,
 	}
 }
 
@@ -85,13 +87,14 @@ func (r *rhcos) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(release string, appendLatest bool) *rhcos {
+func New(release string, appendLatest bool, additionalLabels map[string]string) *rhcos {
 	return &rhcos{
-		Version:      release,
-		Arch:         "x86_64",
-		Variant:      "rhcos-openstack.x86_64.qcow2.gz",
-		getter:       &http.HTTPGetter{},
-		Compression:  types.GzipAlgorithmName,
-		AppendLatest: appendLatest,
+		Version:          release,
+		Arch:             "x86_64",
+		Variant:          "rhcos-openstack.x86_64.qcow2.gz",
+		getter:           &http.HTTPGetter{},
+		Compression:      types.GzipAlgorithmName,
+		AppendLatest:     appendLatest,
+		AdditionalLabels: additionalLabels,
 	}
 }

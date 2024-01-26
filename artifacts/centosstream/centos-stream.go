@@ -16,24 +16,26 @@ import (
 )
 
 //nolint:lll
-var description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Stream Generic Cloud images for KubeVirt.
+const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Stream Generic Cloud images for KubeVirt.
 <br />
 <br />
 Visit [centos.org](https://www.centos.org/) to learn more about the CentOS project.`
 
 type centos struct {
-	Version         string
-	Variant         string
-	getter          http.Getter
-	Arch            string
-	ExampleUserData *docs.UserData
+	Version          string
+	Variant          string
+	getter           http.Getter
+	Arch             string
+	ExampleUserData  *docs.UserData
+	AdditionalLabels map[string]string
 }
 
 func (c *centos) Metadata() *api.Metadata {
 	metadata := &api.Metadata{
-		Name:        "centos-stream",
-		Version:     c.Version,
-		Description: description,
+		Name:             "centos-stream",
+		Version:          c.Version,
+		Description:      description,
+		AdditionalLabels: c.AdditionalLabels,
 	}
 
 	if c.ExampleUserData != nil {
@@ -114,12 +116,13 @@ func (c *centos) Tests() []api.ArtifactTest {
 }
 
 // New accepts CentOS Stream 8 and 9 versions.
-func New(release string, exampleUserData *docs.UserData) *centos {
+func New(release string, exampleUserData *docs.UserData, additionalLabels map[string]string) *centos {
 	return &centos{
-		Version:         release,
-		Arch:            "x86_64",
-		Variant:         "GenericCloud",
-		getter:          &http.HTTPGetter{},
-		ExampleUserData: exampleUserData,
+		Version:          release,
+		Arch:             "x86_64",
+		Variant:          "GenericCloud",
+		getter:           &http.HTTPGetter{},
+		ExampleUserData:  exampleUserData,
+		AdditionalLabels: additionalLabels,
 	}
 }

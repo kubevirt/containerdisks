@@ -6,6 +6,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
+	"kubevirt.io/api/instancetype"
+
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
@@ -13,8 +15,9 @@ import (
 
 var _ = Describe("CentosStream", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
-		func(release, mockFile string, details *api.ArtifactDetails, exampleUserData *docs.UserData, metadata *api.Metadata) {
-			c := New(release, exampleUserData)
+		func(release, mockFile string, details *api.ArtifactDetails,
+			exampleUserData *docs.UserData, additionalLabels map[string]string, metadata *api.Metadata) {
+			c := New(release, exampleUserData, additionalLabels)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -30,12 +33,20 @@ var _ = Describe("CentosStream", func() {
 			&docs.UserData{
 				Username: "centos",
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "centos.stream8",
+			},
 			&api.Metadata{
 				Name:        "centos-stream",
 				Version:     "8",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "centos",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "centos.stream8",
 				},
 			},
 		),
@@ -48,12 +59,20 @@ var _ = Describe("CentosStream", func() {
 			&docs.UserData{
 				Username: "cloud-user",
 			},
+			map[string]string{
+				instancetype.DefaultInstancetypeLabel: "u1.small",
+				instancetype.DefaultPreferenceLabel:   "centos.stream9",
+			},
 			&api.Metadata{
 				Name:        "centos-stream",
 				Version:     "9",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "cloud-user",
+				},
+				AdditionalLabels: map[string]string{
+					instancetype.DefaultInstancetypeLabel: "u1.small",
+					instancetype.DefaultPreferenceLabel:   "centos.stream9",
 				},
 			},
 		),
