@@ -10,8 +10,6 @@ import (
 	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
-	"kubevirt.io/containerdisks/artifacts/rhcos"
-	"kubevirt.io/containerdisks/artifacts/rhcosprerelease"
 	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/docs"
@@ -25,88 +23,6 @@ type Entry struct {
 }
 
 var staticRegistry = []Entry{
-	{
-		Artifact: rhcos.New(
-			"4.9",
-			true,
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcos.New(
-			"4.10",
-			true,
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcos.New(
-			"4.11",
-			true,
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcos.New(
-			"4.12",
-			true,
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: true,
-	},
-	{
-		Artifact: rhcos.New(
-			"latest",
-			false,
-			defaultLabels("u1.small", "rhel.9"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcosprerelease.New(
-			"latest-4.9",
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcosprerelease.New(
-			"latest-4.10",
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcosprerelease.New(
-			"latest-4.11",
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcosprerelease.New(
-			"latest-4.12",
-			defaultLabels("u1.small", "rhel.8"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcosprerelease.New(
-			"latest-4.13",
-			defaultLabels("u1.small", "rhel.9"),
-		),
-		UseForDocs: false,
-	},
-	{
-		Artifact: rhcosprerelease.New(
-			"latest",
-			defaultLabels("u1.small", "rhel.9"),
-		),
-		UseForDocs: false,
-	},
 	{
 		Artifact:   centos.New("8.4", nil),
 		UseForDocs: false,
