@@ -32,6 +32,8 @@ type ArtifactDetails struct {
 	SHA256Sum string
 	// DownloadURL points to the target image.
 	DownloadURL string
+	// ImageArchitecture is the target architecture of the image.
+	ImageArchitecture string
 	// Compression describes the compression format of the downloaded image.
 	// Supported are "" (none), "gzip" and "xz".
 	Compression string
@@ -70,5 +72,5 @@ type Artifact interface {
 type ArtifactsGatherer interface {
 	// Gather must return a sorted list of dynamically gathered artifacts.
 	// Artifacts have to be sorted in descending order with the latest release coming first.
-	Gather() ([]Artifact, error)
+	Gather() ([][]Artifact, error)
 }

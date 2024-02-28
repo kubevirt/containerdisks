@@ -89,6 +89,7 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 			SHA256Sum:            checksum,
 			DownloadURL:          baseURL + candidate,
 			AdditionalUniqueTags: additionalTags,
+			ImageArchitecture:    "amd64",
 		}, nil
 	}
 
