@@ -44,15 +44,16 @@ func spawnWorkers(ctx context.Context, o *common.Options,
 		go func() {
 			defer wg.Done()
 			for e := range jobChan {
+				artifact := e.Artifacts[0]
 				result, workerErr := fn(e)
 				if result != nil {
 					resultsChan <- workerResult{
-						Key:   e.Artifact.Metadata().Describe(),
+						Key:   artifact.Metadata().Describe(),
 						Value: *result,
 					}
 				}
 				if workerErr != nil && !errors.Is(workerErr, context.Canceled) {
-					common.Logger(e.Artifact).Error(workerErr)
+					common.Logger(artifact).Error(workerErr)
 					errChan <- workerErr
 				}
 				if errors.Is(ctx.Err(), context.Canceled) {

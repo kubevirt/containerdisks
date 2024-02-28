@@ -12,7 +12,9 @@ import (
 	"github.com/docker/distribution/registry/api/errcode"
 	v2 "github.com/docker/distribution/registry/api/v2"
 	"github.com/google/go-containerregistry/pkg/crane"
+	crname "github.com/google/go-containerregistry/pkg/name"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
+	"github.com/google/go-containerregistry/pkg/v1/remote"
 	"github.com/pkg/errors"
 )
 
@@ -28,17 +30,20 @@ type ImageInfo struct {
 }
 
 type Repository interface {
-	ImageMetadata(imgRef string, insecure bool) (*ImageInfo, error)
+	ImageMetadata(imgRef, arch string, insecure bool) (*ImageInfo, error)
 	PushImage(ctx context.Context, img v1.Image, imgRef string) error
+	PushImageIndex(ctx context.Context, img v1.ImageIndex, imgRef string) error
 	CopyImage(ctx context.Context, srcRef, dstRef string, insecure bool) error
 }
 
 type RepositoryImpl struct {
 }
 
-func (r RepositoryImpl) ImageMetadata(imgRef string, insecure bool) (imageInfo *ImageInfo, retErr error) {
+func (r RepositoryImpl) ImageMetadata(imgRef, arch string, insecure bool) (imageInfo *ImageInfo, retErr error) {
 	sys := &types.SystemContext{
 		OCIInsecureSkipTLSVerify: insecure,
+		ArchitectureChoice:       arch,
+		OSChoice:                 "linux",
 	}
 	if insecure {
 		sys.DockerInsecureSkipTLSVerify = types.OptionalBoolTrue
@@ -80,6 +85,15 @@ func (r RepositoryImpl) ImageMetadata(imgRef string, insecure bool) (imageInfo *
 
 func (r RepositoryImpl) PushImage(ctx context.Context, img v1.Image, imgRef string) error {
 	return crane.Push(img, imgRef, crane.WithContext(ctx))
+}
+
+func (r RepositoryImpl) PushImageIndex(ctx context.Context, imageIndex v1.ImageIndex, imageRef string) error {
+	ref, err := crname.ParseReference(imageRef)
+	if err != nil {
+		return err
+	}
+
+	return remote.WriteIndex(ref, imageIndex, crane.GetOptions(crane.WithContext(ctx)).Remote...)
 }
 
 func (r RepositoryImpl) CopyImage(ctx context.Context, srcRef, dstRef string, insecure bool) error {

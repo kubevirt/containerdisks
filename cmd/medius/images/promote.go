@@ -29,7 +29,8 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 			}
 
 			focusMatched, resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
-				description := e.Artifact.Metadata().Describe()
+				artifact := e.Artifacts[0]
+				description := artifact.Metadata().Describe()
 				r, ok := results[description]
 				if !ok {
 					return nil, nil
@@ -42,7 +43,7 @@ func NewPromoteImagesCommand(options *common.Options) *cobra.Command {
 				}
 
 				errString := ""
-				err := promoteArtifact(cmd.Context(), e.Artifact, r.Tags, options)
+				err := promoteArtifact(cmd.Context(), artifact, r.Tags, options)
 				if err != nil {
 					errString = err.Error()
 				}

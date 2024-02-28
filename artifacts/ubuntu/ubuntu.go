@@ -52,9 +52,10 @@ func (u *ubuntu) Inspect() (*api.ArtifactDetails, error) {
 	}
 	if checksum, exists := checksums[u.Variant]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:   checksum,
-			DownloadURL: baseURL + u.Variant,
-			Compression: u.Compression,
+			SHA256Sum:         checksum,
+			DownloadURL:       baseURL + u.Variant,
+			Compression:       u.Compression,
+			ImageArchitecture: "amd64",
 		}, nil
 	}
 	return nil, fmt.Errorf("file %q does not exist in the SHA256SUMS file: %v", u.Variant, err)

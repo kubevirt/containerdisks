@@ -6,12 +6,13 @@ import (
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
+	"github.com/google/go-containerregistry/pkg/v1/partial"
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
 )
 
 const (
-	LabelShaSum       = "shasum"
-	ImageArchitecture = "amd64"
+	LabelShaSum = "shasum"
+	ImageOS     = "linux"
 )
 
 func ContainerDiskConfig(checksum string, envVariables map[string]string) v1.Config {
@@ -27,7 +28,7 @@ func ContainerDiskConfig(checksum string, envVariables map[string]string) v1.Con
 	return v1.Config{Labels: labels, Env: env}
 }
 
-func ContainerDisk(imgPath string, config v1.Config) (v1.Image, error) {
+func ContainerDisk(imgPath, imgArch string, config v1.Config) (v1.Image, error) {
 	img := empty.Image
 	layer, err := tarball.LayerFromOpener(StreamLayerOpener(imgPath))
 	if err != nil {
@@ -45,7 +46,8 @@ func ContainerDisk(imgPath string, config v1.Config) (v1.Image, error) {
 	}
 
 	// Modify the config file
-	cf.Architecture = ImageArchitecture
+	cf.Architecture = imgArch
+	cf.OS = ImageOS
 	cf.Config = config
 
 	img, err = mutate.ConfigFile(img, cf)
@@ -54,4 +56,28 @@ func ContainerDisk(imgPath string, config v1.Config) (v1.Image, error) {
 	}
 
 	return img, nil
+}
+
+func ContainerDiskIndex(images []v1.Image) (v1.ImageIndex, error) {
+	var indexAddendum []mutate.IndexAddendum
+
+	for _, image := range images {
+		configFile, err := image.ConfigFile()
+		if err != nil {
+			return nil, err
+		}
+
+		descriptor, err := partial.Descriptor(image)
+		if err != nil {
+			return nil, err
+		}
+		descriptor.Platform = configFile.Platform()
+
+		indexAddendum = append(indexAddendum, mutate.IndexAddendum{
+			Add:        image,
+			Descriptor: *descriptor,
+		})
+	}
+
+	return mutate.AppendManifests(empty.Index, indexAddendum...), nil
 }

@@ -46,10 +46,11 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 
 			focusMatched, resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				errString := ""
+				artifact := e.Artifacts[0]
 
 				b := buildAndPublish{
 					Ctx:     cmd.Context(),
-					Log:     common.Logger(e.Artifact),
+					Log:     common.Logger(artifact),
 					Options: options,
 					Repo:    &repository.RepositoryImpl{},
 					Getter:  &http.HTTPGetter{},
@@ -107,18 +108,17 @@ func NewPublishImagesCommand(options *common.Options) *cobra.Command {
 }
 
 func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string, error) {
-	metadata := entry.Artifact.Metadata()
-	artifactInfo, err := entry.Artifact.Inspect()
+	metadata := entry.Artifacts[0].Metadata()
+	artifactInfo, err := entry.Artifacts[0].Inspect()
 	if err != nil {
 		return nil, fmt.Errorf("error introspecting artifact %q: %v", metadata.Describe(), err)
 	}
-	b.Log.Infof("Remote artifact checksum: %q", artifactInfo.SHA256Sum)
 
-	imageSha, err := b.getImageSha(metadata.Describe())
+	rebuildNeeded, err := b.rebuildNeeded(entry)
 	if err != nil {
 		return nil, err
 	}
-	if imageSha == artifactInfo.SHA256Sum && !b.Options.PublishImagesOptions.ForceBuild {
+	if !rebuildNeeded && !b.Options.PublishImagesOptions.ForceBuild {
 		b.Log.Info("Nothing to do.")
 		return nil, nil
 	}
@@ -126,26 +126,26 @@ func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string
 		return nil, b.Ctx.Err()
 	}
 
-	b.Log.Infof("Rebuild needed, downloading %q ...", artifactInfo.DownloadURL)
-	file, err := b.getArtifact(artifactInfo)
+	images, artifacts, err := b.buildImages(entry)
 	if err != nil {
 		return nil, err
 	}
-	defer os.Remove(file)
-
-	b.Log.Info("Building containerdisk ...")
-	containerDisk, err := build.ContainerDisk(file, build.ContainerDiskConfig(artifactInfo.SHA256Sum, metadata.EnvVariables))
-	if err != nil {
-		return nil, fmt.Errorf("error creating the containerdisk : %v", err)
-	}
-	if errors.Is(b.Ctx.Err(), context.Canceled) {
-		return nil, b.Ctx.Err()
-	}
+	defer cleanupArtifacts(artifacts)
 
 	names := prepareTags(timestamp, b.Options.PublishImagesOptions.TargetRegistry, entry, artifactInfo)
 	for _, name := range names {
-		if err := b.pushImage(containerDisk, name); err != nil {
-			return nil, err
+		if len(images) > 1 {
+			containerDiskIndex, err := build.ContainerDiskIndex(images)
+			if err != nil {
+				return nil, fmt.Errorf("error creating the containerdisk index : %v", err)
+			}
+			if err := b.pushImageIndex(containerDiskIndex, name); err != nil {
+				return nil, err
+			}
+		} else if len(images) == 1 {
+			if err := b.pushImage(images[0], name); err != nil {
+				return nil, err
+			}
 		}
 		if errors.Is(b.Ctx.Err(), context.Canceled) {
 			return nil, b.Ctx.Err()
@@ -155,9 +155,9 @@ func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string
 	return prepareTags(timestamp, "", entry, artifactInfo), nil
 }
 
-func (b *buildAndPublish) getImageSha(description string) (imageSha string, err error) {
+func (b *buildAndPublish) getImageSha(description, arch string) (imageSha string, err error) {
 	imageName := path.Join(b.Options.PublishImagesOptions.SourceRegistry, description)
-	imageInfo, err := b.Repo.ImageMetadata(imageName, b.Options.AllowInsecureRegistry)
+	imageInfo, err := b.Repo.ImageMetadata(imageName, arch, b.Options.AllowInsecureRegistry)
 	if err != nil {
 		err = b.handleMetadataError(imageName, err)
 	} else {
@@ -247,6 +247,65 @@ func (b *buildAndPublish) readArtifact(artifactReader http.ReadCloserWithChecksu
 	return file.Name(), nil
 }
 
+func (b *buildAndPublish) buildImages(entry *common.Entry) ([]v1.Image, []string, error) {
+	var images []v1.Image
+	var artifacts []string
+
+	for i := range entry.Artifacts {
+		metadata := entry.Artifacts[i].Metadata()
+		artifactInfo, err := entry.Artifacts[i].Inspect()
+		if err != nil {
+			return nil, nil, fmt.Errorf("error introspecting artifact %q: %v", metadata.Describe(), err)
+		}
+
+		b.Log.Infof("Rebuild needed, downloading %q ...", artifactInfo.DownloadURL)
+		file, err := b.getArtifact(artifactInfo)
+		if err != nil {
+			return nil, nil, err
+		}
+		artifacts = append(artifacts, file)
+
+		b.Log.Info("Building containerdisk ...")
+		image, err := build.ContainerDisk(file,
+			artifactInfo.ImageArchitecture,
+			build.ContainerDiskConfig(artifactInfo.SHA256Sum, metadata.EnvVariables))
+		if err != nil {
+			return nil, nil, fmt.Errorf("error creating the containerdisk : %v", err)
+		}
+		if errors.Is(b.Ctx.Err(), context.Canceled) {
+			return nil, nil, b.Ctx.Err()
+		}
+		images = append(images, image)
+	}
+
+	return images, artifacts, nil
+}
+
+func (b *buildAndPublish) rebuildNeeded(entry *common.Entry) (bool, error) {
+	if len(entry.Artifacts) == 0 {
+		err := errors.New("entry has no artifacts to check for rebuild")
+		b.Log.Error(err)
+		return false, err
+	}
+
+	for i := range entry.Artifacts {
+		metadata := entry.Artifacts[i].Metadata()
+		artifactInfo, err := entry.Artifacts[i].Inspect()
+		if err != nil {
+			return false, fmt.Errorf("error introspecting artifact %q: %v", metadata.Describe(), err)
+		}
+		imageSha, err := b.getImageSha(metadata.Describe(), artifactInfo.ImageArchitecture)
+		if err != nil {
+			return false, err
+		}
+		if imageSha != artifactInfo.SHA256Sum {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
 func (b *buildAndPublish) pushImage(containerDisk v1.Image, name string) error {
 	if !b.Options.DryRun {
 		b.Log.Infof("Pushing %s", name)
@@ -261,8 +320,22 @@ func (b *buildAndPublish) pushImage(containerDisk v1.Image, name string) error {
 	return nil
 }
 
+func (b *buildAndPublish) pushImageIndex(containerDiskIndex v1.ImageIndex, name string) error {
+	if !b.Options.DryRun {
+		b.Log.Infof("Pushing %s image index", name)
+		if err := b.Repo.PushImageIndex(b.Ctx, containerDiskIndex, name); err != nil {
+			b.Log.WithError(err).Error("Failed to push image image")
+			return err
+		}
+	} else {
+		b.Log.Infof("Dry run enabled, not pushing %s image index", name)
+	}
+
+	return nil
+}
+
 func prepareTags(timestamp time.Time, registry string, entry *common.Entry, artifactDetails *api.ArtifactDetails) []string {
-	metadata := entry.Artifact.Metadata()
+	metadata := entry.Artifacts[0].Metadata()
 	imageName := path.Join(registry, metadata.Describe())
 
 	names := []string{fmt.Sprintf("%s-%s", imageName, timestamp.Format("0601021504"))}
@@ -280,4 +353,10 @@ func prepareTags(timestamp time.Time, registry string, entry *common.Entry, arti
 	}
 
 	return names
+}
+
+func cleanupArtifacts(artifacts []string) {
+	for _, file := range artifacts {
+		os.Remove(file)
+	}
 }
