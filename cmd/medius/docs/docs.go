@@ -60,10 +60,12 @@ func run(options *common.Options) error {
 		}
 
 		focusMatched = true
-		log := common.Logger(p.Artifact)
-		name := p.Artifact.Metadata().Name
 
-		description, err := createDescription(p.Artifact, options.PublishDocsOptions.Registry)
+		artifact := p.Artifacts[0]
+		log := common.Logger(artifact)
+		name := artifact.Metadata().Name
+
+		description, err := createDescription(artifact, options.PublishDocsOptions.Registry)
 		if err != nil {
 			success = false
 			log.Errorf("error marshaling example for %q: %v", name, err)
