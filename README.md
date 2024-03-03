@@ -50,16 +50,22 @@ the box for kubevirt will not be published.
 
 ### Local testing
 
+Setup local container registry to just build and publish:
+
+```bash
+podman container run -d -p 5000:5000 --name registry docker.io/library/registry:2
+```
+
 To publish all images to a custom local registry call `medius` like this:
 
 ```bash
-bin/medius images push --target-registry=localhost:49501 --dry-run=false --insecure-skip-tls --workers=3
+bin/medius images push --target-registry=localhost:5000 --dry-run=false --insecure-skip-tls --workers=3
 ```
 
 To publish a specific image run, make use of `--focus`:
 
 ```bash
-bin/medius images push --target-registry=localhost:49501 --dry-run=false --insecure-skip-tls --focus=fedora:35
+bin/medius images push --target-registry=localhost:5000 --dry-run=false --insecure-skip-tls --focus=fedora:35
 ```
 
 ### Scaling considerations
