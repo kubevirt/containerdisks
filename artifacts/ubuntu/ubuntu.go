@@ -52,9 +52,10 @@ func (u *ubuntu) Inspect() (*api.ArtifactDetails, error) {
 	}
 	if checksum, exists := checksums[u.Variant]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:   checksum,
-			DownloadURL: baseURL + u.Variant,
-			Compression: u.Compression,
+			SHA256Sum:         checksum,
+			DownloadURL:       baseURL + u.Variant,
+			Compression:       u.Compression,
+			ImageArchitecture: getImageArchitecture(u.Arch),
 		}, nil
 	}
 	return nil, fmt.Errorf("file %q does not exist in the SHA256SUMS file: %v", u.Variant, err)
@@ -79,12 +80,22 @@ func (u *ubuntu) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(release string, additionalLabels map[string]string) *ubuntu {
+func New(release, arch string, additionalLabels map[string]string) *ubuntu {
 	return &ubuntu{
 		Version:          release,
-		Arch:             "x86_64",
-		Variant:          fmt.Sprintf("ubuntu-%v-server-cloudimg-amd64.img", release),
+		Arch:             arch,
+		Variant:          fmt.Sprintf("ubuntu-%v-server-cloudimg-%s.img", release, getImageArchitecture(arch)),
 		getter:           &http.HTTPGetter{},
 		AdditionalLabels: additionalLabels,
 	}
+}
+
+func getImageArchitecture(arch string) string {
+	if arch == "x86_64" {
+		return "amd64"
+	} else if arch == "aarch64" {
+		return "arm64"
+	}
+
+	return "unknown"
 }

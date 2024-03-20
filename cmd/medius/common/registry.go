@@ -16,7 +16,7 @@ import (
 )
 
 type Entry struct {
-	Artifact           api.Artifact
+	Artifacts          []api.Artifact
 	UseForDocs         bool
 	UseForLatest       bool
 	SkipWhenNotFocused bool
@@ -24,69 +24,80 @@ type Entry struct {
 
 var staticRegistry = []Entry{
 	{
-		Artifact:   centos.New("8.4", nil),
+		Artifacts: []api.Artifact{
+			centos.New("8.4", "x86_64", nil),
+			centos.New("8.4", "aarch64", nil),
+		},
 		UseForDocs: false,
 	},
 	{
-		Artifact: centos.New(
-			"7-2009",
-			defaultLabels("u1.small", "centos.7"),
-		),
+		Artifacts: []api.Artifact{
+			centos.New("7-2009", "x86_64", defaultLabels("u1.small", "centos.7")),
+			centos.New("7-2009", "aarch64", defaultLabels("u1.small", "centos.7")),
+		},
 		UseForDocs: true,
 	},
 	{
-		Artifact: centosstream.New(
-			"9",
-			&docs.UserData{
-				Username: "cloud-user",
-			},
-			defaultLabels("u1.small", "centos.stream9"),
-		),
+		Artifacts: []api.Artifact{
+			centosstream.New("9", "x86_64", &docs.UserData{Username: "cloud-user"}, defaultLabels("u1.small", "centos.stream9")),
+			centosstream.New("9", "aarch64", &docs.UserData{Username: "cloud-user"}, defaultLabels("u1.small", "centos.stream9")),
+		},
 		UseForDocs: true,
 	},
 	{
-		Artifact: centosstream.New(
-			"8",
-			&docs.UserData{
-				Username: "centos",
-			},
-			defaultLabels("u1.small", "centos.stream8"),
-		),
+		Artifacts: []api.Artifact{
+			centosstream.New("8", "x86_64", &docs.UserData{Username: "centos"}, defaultLabels("u1.small", "centos.stream8")),
+			centosstream.New("8", "aarch64", &docs.UserData{Username: "centos"}, defaultLabels("u1.small", "centos.stream8")),
+		},
 		UseForDocs: false,
 	},
 	{
-		Artifact: ubuntu.New(
-			"22.04",
-			defaultLabels("u1.small", "ubuntu"),
-		),
+		Artifacts: []api.Artifact{
+			ubuntu.New("22.04", "x86_64", defaultLabels("u1.small", "ubuntu")),
+			ubuntu.New("22.04", "aarch64", defaultLabels("u1.small", "ubuntu")),
+		},
 		UseForDocs: true,
 	},
 	{
-		Artifact: ubuntu.New(
-			"20.04",
-			defaultLabels("u1.small", "ubuntu"),
-		),
+		Artifacts: []api.Artifact{
+			ubuntu.New("20.04", "x86_64", defaultLabels("u1.small", "ubuntu")),
+			ubuntu.New("20.04", "aarch64", defaultLabels("u1.small", "ubuntu")),
+		},
 		UseForDocs: false,
 	},
 	{
-		Artifact: ubuntu.New(
-			"18.04",
-			defaultLabels("u1.small", "ubuntu"),
-		),
+		Artifacts: []api.Artifact{
+			ubuntu.New("18.04", "x86_64", defaultLabels("u1.small", "ubuntu")),
+			ubuntu.New("18.04", "aarch64", defaultLabels("u1.small", "ubuntu")),
+		},
 		UseForDocs: false,
 	},
 	// for testing only
 	{
-		Artifact: generic.New(
-			&api.ArtifactDetails{
-				SHA256Sum:   "cc704ab14342c1c8a8d91b66a7fc611d921c8b8f1aaf4695f9d6463d913fa8d1",
-				DownloadURL: "https://download.cirros-cloud.net/0.6.1/cirros-0.6.1-x86_64-disk.img",
-			},
-			&api.Metadata{
-				Name:    "cirros",
-				Version: "6.1",
-			},
-		),
+		Artifacts: []api.Artifact{
+			generic.New(
+				&api.ArtifactDetails{
+					SHA256Sum:         "cc704ab14342c1c8a8d91b66a7fc611d921c8b8f1aaf4695f9d6463d913fa8d1",
+					DownloadURL:       "https://download.cirros-cloud.net/0.6.1/cirros-0.6.1-x86_64-disk.img",
+					ImageArchitecture: "amd64",
+				},
+				&api.Metadata{
+					Name:    "cirros",
+					Version: "6.1",
+				},
+			),
+			generic.New(
+				&api.ArtifactDetails{
+					SHA256Sum:         "db9420c481c11dee17860aa46fb1a3efa05fa4fb152726d6344e24da03cb0ccf",
+					DownloadURL:       "https://download.cirros-cloud.net/0.6.1/cirros-0.6.1-aarch64-disk.img",
+					ImageArchitecture: "arm64",
+				},
+				&api.Metadata{
+					Name:    "cirros",
+					Version: "6.1",
+				},
+			),
+		},
 		SkipWhenNotFocused: true,
 		UseForDocs:         false,
 	},
@@ -100,7 +111,7 @@ func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 		} else {
 			for i := range artifacts {
 				*registry = append(*registry, Entry{
-					Artifact:     artifacts[i],
+					Artifacts:    []api.Artifact{artifacts[0][i]},
 					UseForDocs:   i == 0,
 					UseForLatest: i == 0,
 				})
@@ -120,7 +131,10 @@ func NewRegistry() []Entry {
 	registry := make([]Entry, len(staticRegistry))
 	copy(registry, staticRegistry)
 
-	gatherers := []api.ArtifactsGatherer{fedora.NewGatherer()}
+	gatherers := []api.ArtifactsGatherer{
+		fedora.NewGatherer("x86_64"),
+		fedora.NewGatherer("aarch64"),
+	}
 	gatherArtifacts(&registry, gatherers)
 
 	return registry
@@ -131,12 +145,16 @@ func ShouldSkip(focus string, entry *Entry) bool {
 		return entry.SkipWhenNotFocused
 	}
 
+	if len(entry.Artifacts) == 0 {
+		return true
+	}
+
 	focusSplit := strings.Split(focus, ":")
 	wildcardFocus := len(focusSplit) == 2 && focusSplit[1] == "*"
 
 	if wildcardFocus {
-		return focusSplit[0] != entry.Artifact.Metadata().Name
+		return focusSplit[0] != entry.Artifacts[0].Metadata().Name
 	}
 
-	return focus != entry.Artifact.Metadata().Describe()
+	return focus != entry.Artifacts[0].Metadata().Describe()
 }

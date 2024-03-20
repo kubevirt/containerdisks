@@ -71,17 +71,29 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 		if f.releaseMatches(&releases[i]) {
 			components := strings.Split(release.Link, "/")
 			fileName := components[len(components)-1]
-			additionalTag := strings.TrimSuffix(strings.TrimPrefix(fileName, "Fedora-Cloud-Base-"), ".x86_64.qcow2")
+			suffix := fmt.Sprintf(".%s.qcow2", f.Arch)
+			additionalTag := strings.TrimSuffix(strings.TrimPrefix(fileName, "Fedora-Cloud-Base-"), suffix)
 
 			return &api.ArtifactDetails{
 				SHA256Sum:            release.Sha256,
 				DownloadURL:          release.Link,
 				AdditionalUniqueTags: []string{additionalTag},
+				ImageArchitecture:    getImageArchitecture(f.Arch),
 			}, nil
 		}
 	}
 
 	return nil, fmt.Errorf("no release information in releases.json for fedora:%q found", f.Version)
+}
+
+func getImageArchitecture(arch string) string {
+	if arch == "x86_64" {
+		return "amd64"
+	} else if arch == "aarch64" {
+		return "arm64"
+	}
+
+	return "unknown"
 }
 
 func (f *fedora) VM(name, imgRef, userData string) *v1.VirtualMachine {
@@ -105,7 +117,7 @@ func (f *fedora) Tests() []api.ArtifactTest {
 	}
 }
 
-func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
+func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 	releases, err := getReleases(f.getter)
 	if err != nil {
 		return nil, fmt.Errorf("error getting releases: %v", err)
@@ -117,6 +129,7 @@ func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
 			artifacts = append(artifacts,
 				New(
 					release.Version,
+					release.Arch,
 					map[string]string{
 						instancetype.DefaultInstancetypeLabel: "u1.small",
 						instancetype.DefaultPreferenceLabel:   "fedora",
@@ -126,7 +139,7 @@ func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
 		}
 	}
 
-	return artifacts, nil
+	return [][]api.Artifact{artifacts}, nil
 }
 
 func getReleases(getter http.Getter) (Releases, error) {
@@ -158,19 +171,19 @@ func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 		strings.HasSuffix(release.Link, "qcow2")
 }
 
-func New(release string, additionalLabels map[string]string) *fedora {
+func New(release, arch string, additionalLabels map[string]string) *fedora {
 	return &fedora{
 		Version:          release,
-		Arch:             "x86_64",
+		Arch:             arch,
 		Variant:          "Cloud",
 		getter:           &http.HTTPGetter{},
 		AdditionalLabels: additionalLabels,
 	}
 }
 
-func NewGatherer() *fedoraGatherer {
+func NewGatherer(arch string) *fedoraGatherer {
 	return &fedoraGatherer{
-		Arch:    "x86_64",
+		Arch:    arch,
 		Variant: "Cloud",
 		getter:  &http.HTTPGetter{},
 	}
