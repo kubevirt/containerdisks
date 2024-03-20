@@ -42,7 +42,7 @@ func (c *centos) Metadata() *api.Metadata {
 }
 
 func (c *centos) Inspect() (*api.ArtifactDetails, error) {
-	baseURL, checksumURL, checksumFormat := getURLsAndChecksumFormat(c.Version)
+	baseURL, checksumURL, checksumFormat := getURLsAndChecksumFormat(c.Version, c.Arch)
 
 	raw, err := c.getter.GetAll(checksumURL)
 	if err != nil {
@@ -53,7 +53,7 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 		return nil, fmt.Errorf("error reading the centos checksum file: %v", err)
 	}
 
-	candidates := getCandidates(c.Version, c.Variant, checksums)
+	candidates := getCandidates(c.Version, c.Variant, c.Arch, checksums)
 	if len(candidates) == 0 {
 		return nil, fmt.Errorf("no candidates for version %q and variant %q found", c.Version, c.Variant)
 	}
@@ -63,18 +63,18 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 		return &api.ArtifactDetails{
 			SHA256Sum:            checksum,
 			DownloadURL:          baseURL + candidate,
-			AdditionalUniqueTags: getAdditionalTags(c.Version, c.Variant, candidate),
-			ImageArchitecture:    "amd64",
+			AdditionalUniqueTags: getAdditionalTags(c.Version, c.Variant, c.Arch, candidate),
+			ImageArchitecture:    getImageArchitecture(c.Arch),
 		}, nil
 	}
 
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)
 }
 
-func getURLsAndChecksumFormat(version string) (baseURL string, checksumURL string, checksumFormat hashsum.ChecksumFormat) {
+func getURLsAndChecksumFormat(version, arch string) (baseURL string, checksumURL string, checksumFormat hashsum.ChecksumFormat) {
 	switch {
 	case strings.HasPrefix(version, "8."):
-		baseURL = "https://cloud.centos.org/centos/8/x86_64/images/"
+		baseURL = fmt.Sprintf("https://cloud.centos.org/centos/8/%s/images/", arch)
 		checksumURL = baseURL + "CHECKSUM"
 		checksumFormat = hashsum.ChecksumFormatBSD
 	case strings.HasPrefix(version, "7-"):
@@ -88,7 +88,7 @@ func getURLsAndChecksumFormat(version string) (baseURL string, checksumURL strin
 	return
 }
 
-func getCandidates(version, variant string, checksums map[string]string) (candidates []string) {
+func getCandidates(version, variant, arch string, checksums map[string]string) (candidates []string) {
 	switch {
 	case strings.HasPrefix(version, "8."):
 		for fileName := range checksums {
@@ -99,7 +99,7 @@ func getCandidates(version, variant string, checksums map[string]string) (candid
 	case strings.HasPrefix(version, "7-"):
 		components := strings.Split(version, "-")
 		for fileName := range checksums {
-			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-7-x86_64-%s-%s.qcow2", variant, components[1])) &&
+			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-7-%s-%s-%s.qcow2", arch, variant, components[1])) &&
 				strings.HasSuffix(fileName, "qcow2") {
 				candidates = append(candidates, fileName)
 			}
@@ -111,12 +111,13 @@ func getCandidates(version, variant string, checksums map[string]string) (candid
 	return
 }
 
-func getAdditionalTags(version, variant, candidate string) (additionalTags []string) {
+func getAdditionalTags(version, variant, candidate, arch string) (additionalTags []string) {
 	// The CentOS 8 version is expected to contain one dash
 	const expectedCentos8VersionPartsCount = 2
 
 	if strings.HasPrefix(version, "8.") {
-		additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-8-%s-", variant)), ".x86_64.qcow2")
+		suffix := fmt.Sprintf(".%s.qcow2", arch)
+		additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-8-%s-", variant)), suffix)
 		additionalTags = append(additionalTags, additionalTag)
 		split := strings.Split(additionalTag, "-")
 		if len(split) == expectedCentos8VersionPartsCount {
@@ -125,6 +126,16 @@ func getAdditionalTags(version, variant, candidate string) (additionalTags []str
 	}
 
 	return
+}
+
+func getImageArchitecture(arch string) string {
+	if arch == "x86_64" {
+		return "amd64"
+	} else if arch == "aarch64" {
+		return "arm64"
+	}
+
+	return "unknown"
 }
 
 func (c *centos) VM(name, imgRef, userData string) *v1.VirtualMachine {
@@ -148,11 +159,11 @@ func (c *centos) Tests() []api.ArtifactTest {
 }
 
 // New accepts CentOS 7 and 8 versions. Example patterns are 7-2111, 7-2009, 8.3, 8.4, ...
-func New(release string, additionalLabels map[string]string) *centos {
+func New(release string, arch string, additionalLabels map[string]string) *centos {
 	return &centos{
 		Version:          release,
 		Variant:          "GenericCloud",
-		Arch:             "x86_64",
+		Arch:             arch,
 		getter:           &http.HTTPGetter{},
 		AdditionalLabels: additionalLabels,
 	}

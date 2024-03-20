@@ -49,7 +49,7 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	var baseURL string
 
 	if strings.HasPrefix(c.Version, "8") || strings.HasPrefix(c.Version, "9") {
-		baseURL = fmt.Sprintf("https://cloud.centos.org/centos/%s-stream/x86_64/images/", c.Version)
+		baseURL = fmt.Sprintf("https://cloud.centos.org/centos/%s-stream/%s/images/", c.Version, c.Arch)
 	} else {
 		panic(fmt.Sprintf("can't understand provided version: %q", c.Version))
 	}
@@ -81,7 +81,8 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	candidate := candidates[len(candidates)-1]
 
 	var additionalTags []string
-	additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-Stream-%s-", c.Variant)), ".x86_64.qcow2")
+	suffix := fmt.Sprintf(".%s.qcow2", c.Arch)
+	additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-Stream-%s-", c.Variant)), suffix)
 	additionalTags = append(additionalTags, additionalTag)
 
 	if checksum, exists := checksums[candidate]; exists {
@@ -89,11 +90,21 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 			SHA256Sum:            checksum,
 			DownloadURL:          baseURL + candidate,
 			AdditionalUniqueTags: additionalTags,
-			ImageArchitecture:    "amd64",
+			ImageArchitecture:    getImageArchitecture(c.Arch),
 		}, nil
 	}
 
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)
+}
+
+func getImageArchitecture(arch string) string {
+	if arch == "x86_64" {
+		return "amd64"
+	} else if arch == "aarch64" {
+		return "arm64"
+	}
+
+	return "unknown"
 }
 
 func (c *centos) VM(name, imgRef, userData string) *v1.VirtualMachine {
@@ -117,10 +128,10 @@ func (c *centos) Tests() []api.ArtifactTest {
 }
 
 // New accepts CentOS Stream 8 and 9 versions.
-func New(release string, exampleUserData *docs.UserData, additionalLabels map[string]string) *centos {
+func New(release, arch string, exampleUserData *docs.UserData, additionalLabels map[string]string) *centos {
 	return &centos{
 		Version:          release,
-		Arch:             "x86_64",
+		Arch:             arch,
 		Variant:          "GenericCloud",
 		getter:           &http.HTTPGetter{},
 		ExampleUserData:  exampleUserData,

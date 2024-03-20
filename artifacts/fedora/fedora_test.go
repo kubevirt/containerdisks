@@ -17,7 +17,7 @@ import (
 var _ = Describe("Fedora", func() {
 	DescribeTable("Inspect should be able to parse releases files",
 		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
-			c := New(release, additionalLabels)
+			c := New(release, "x86_64", additionalLabels)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -98,7 +98,7 @@ var _ = Describe("Fedora", func() {
 			},
 		}}
 
-		c := NewGatherer()
+		c := NewGatherer("x86_64")
 		c.getter = testutil.NewMockGetter("testdata/releases.json")
 		got, err := c.Gather()
 		Expect(err).NotTo(HaveOccurred())

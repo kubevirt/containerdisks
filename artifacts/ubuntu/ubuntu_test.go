@@ -16,7 +16,7 @@ import (
 var _ = Describe("Ubuntu", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
 		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
-			c := New(release, additionalLabels)
+			c := New(release, "x86_64", additionalLabels)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
