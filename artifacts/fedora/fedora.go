@@ -9,6 +9,7 @@ import (
 	v1 "kubevirt.io/api/core/v1"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/architecture"
 	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
@@ -36,7 +37,8 @@ type fedora struct {
 }
 
 type fedoraGatherer struct {
-	Arch    string
+	Version string
+	Archs   []string
 	Variant string
 	getter  http.Getter
 }
@@ -68,18 +70,21 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 	}
 
 	for i, release := range releases {
-		if f.releaseMatches(&releases[i]) {
-			components := strings.Split(release.Link, "/")
-			fileName := components[len(components)-1]
-			additionalTag := strings.TrimSuffix(strings.TrimPrefix(fileName, "Fedora-Cloud-Base-"), ".x86_64.qcow2")
-
-			return &api.ArtifactDetails{
-				SHA256Sum:            release.Sha256,
-				DownloadURL:          release.Link,
-				AdditionalUniqueTags: []string{additionalTag},
-				ImageArchitecture:    "amd64",
-			}, nil
+		if !f.releaseMatches(&releases[i]) {
+			continue
 		}
+
+		components := strings.Split(release.Link, "/")
+		fileName := components[len(components)-1]
+		suffix := fmt.Sprintf(".%s.qcow2", f.Arch)
+		additionalTag := strings.TrimSuffix(strings.TrimPrefix(fileName, "Fedora-Cloud-Base-"), suffix)
+
+		return &api.ArtifactDetails{
+			SHA256Sum:            release.Sha256,
+			DownloadURL:          release.Link,
+			AdditionalUniqueTags: []string{additionalTag},
+			ImageArchitecture:    architecture.GetImageArchitecture(f.Arch),
+		}, nil
 	}
 
 	return nil, fmt.Errorf("no release information in releases.json for fedora:%q found", f.Version)
@@ -112,23 +117,31 @@ func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 		return nil, fmt.Errorf("error getting releases: %v", err)
 	}
 
-	artifacts := [][]api.Artifact{}
-	for i, release := range releases {
-		if f.releaseMatches(&releases[i]) {
-			artifacts = append(artifacts,
-				[]api.Artifact{
-					New(
-						release.Version,
-						map[string]string{
-							common.DefaultInstancetypeEnv: "u1.small",
-							common.DefaultPreferenceEnv:   "fedora",
-						},
-					),
-				},
-			)
+	versions := map[string][]Release{}
+	for i := range releases {
+		release := releases[i]
+		if f.releaseMatches(&release) {
+			versions[release.Version] = append(versions[release.Version], release)
 		}
 	}
 
+	var artifacts [][]api.Artifact
+	for _, releases := range versions {
+		var items []api.Artifact
+		for _, release := range releases {
+			items = append(items,
+				New(
+					release.Version,
+					release.Arch,
+					map[string]string{
+						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultPreferenceEnv:   "fedora",
+					},
+				),
+			)
+		}
+		artifacts = append(artifacts, items)
+	}
 	return artifacts, nil
 }
 
@@ -155,16 +168,25 @@ func (f *fedora) releaseMatches(release *Release) bool {
 
 func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 	version, err := strconv.Atoi(release.Version)
-	return err == nil && version >= minimumVersion &&
-		release.Arch == f.Arch &&
-		release.Variant == f.Variant &&
-		strings.HasSuffix(release.Link, "qcow2")
+	if err != nil {
+		return false
+	}
+
+	for _, arch := range f.Archs {
+		if release.Arch == arch {
+			return version >= minimumVersion &&
+				release.Variant == f.Variant &&
+				strings.HasSuffix(release.Link, "qcow2")
+		}
+	}
+
+	return false
 }
 
-func New(release string, envVariables map[string]string) *fedora {
+func New(release, arch string, envVariables map[string]string) *fedora {
 	return &fedora{
 		Version:      release,
-		Arch:         "x86_64",
+		Arch:         arch,
 		Variant:      "Cloud",
 		getter:       &http.HTTPGetter{},
 		EnvVariables: envVariables,
@@ -173,7 +195,7 @@ func New(release string, envVariables map[string]string) *fedora {
 
 func NewGatherer() *fedoraGatherer {
 	return &fedoraGatherer{
-		Arch:    "x86_64",
+		Archs:   []string{"x86_64", "aarch64"},
 		Variant: "Cloud",
 		getter:  &http.HTTPGetter{},
 	}
