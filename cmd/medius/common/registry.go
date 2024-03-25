@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	"kubevirt.io/api/instancetype"
 
 	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/centosstream"
@@ -12,6 +11,7 @@ import (
 	"kubevirt.io/containerdisks/artifacts/generic"
 	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 )
 
@@ -30,7 +30,7 @@ var staticRegistry = []Entry{
 	{
 		Artifact: centos.New(
 			"7-2009",
-			defaultLabels("u1.small", "centos.7"),
+			defaultEnvVariables("u1.small", "centos.7"),
 		),
 		UseForDocs: true,
 	},
@@ -40,7 +40,7 @@ var staticRegistry = []Entry{
 			&docs.UserData{
 				Username: "cloud-user",
 			},
-			defaultLabels("u1.small", "centos.stream9"),
+			defaultEnvVariables("u1.small", "centos.stream9"),
 		),
 		UseForDocs: true,
 	},
@@ -50,28 +50,28 @@ var staticRegistry = []Entry{
 			&docs.UserData{
 				Username: "centos",
 			},
-			defaultLabels("u1.small", "centos.stream8"),
+			defaultEnvVariables("u1.small", "centos.stream8"),
 		),
 		UseForDocs: false,
 	},
 	{
 		Artifact: ubuntu.New(
 			"22.04",
-			defaultLabels("u1.small", "ubuntu"),
+			defaultEnvVariables("u1.small", "ubuntu"),
 		),
 		UseForDocs: true,
 	},
 	{
 		Artifact: ubuntu.New(
 			"20.04",
-			defaultLabels("u1.small", "ubuntu"),
+			defaultEnvVariables("u1.small", "ubuntu"),
 		),
 		UseForDocs: false,
 	},
 	{
 		Artifact: ubuntu.New(
 			"18.04",
-			defaultLabels("u1.small", "ubuntu"),
+			defaultEnvVariables("u1.small", "ubuntu"),
 		),
 		UseForDocs: false,
 	},
@@ -109,10 +109,10 @@ func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 	}
 }
 
-func defaultLabels(defaultInstancetype, defaultPreference string) map[string]string {
+func defaultEnvVariables(defaultInstancetype, defaultPreference string) map[string]string {
 	return map[string]string{
-		instancetype.DefaultInstancetypeLabel: defaultInstancetype,
-		instancetype.DefaultPreferenceLabel:   defaultPreference,
+		common.DefaultInstancetypeEnv: defaultInstancetype,
+		common.DefaultPreferenceEnv:   defaultPreference,
 	}
 }
 

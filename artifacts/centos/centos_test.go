@@ -6,17 +6,16 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"kubevirt.io/api/instancetype"
-
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
 )
 
 var _ = Describe("Centos", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
-		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
-			c := New(release, additionalLabels)
+		func(release, mockFile string, details *api.ArtifactDetails, envVariables map[string]string, metadata *api.Metadata) {
+			c := New(release, envVariables)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -31,7 +30,7 @@ var _ = Describe("Centos", func() {
 				AdditionalUniqueTags: []string{"8.4.2105-20210603.0", "8.4.2105"},
 			},
 			map[string]string{
-				"test-label": "test-value",
+				"TEST_ENV_VAR": "test-value",
 			},
 			&api.Metadata{
 				Name:        "centos",
@@ -40,8 +39,8 @@ var _ = Describe("Centos", func() {
 				ExampleUserData: docs.UserData{
 					Username: "centos",
 				},
-				AdditionalLabels: map[string]string{
-					"test-label": "test-value",
+				EnvVariables: map[string]string{
+					"TEST_ENV_VAR": "test-value",
 				},
 			},
 		),
@@ -53,7 +52,7 @@ var _ = Describe("Centos", func() {
 				AdditionalUniqueTags: []string{"8.3.2011-20201204.2", "8.3.2011"},
 			},
 			map[string]string{
-				"test-label": "test-value",
+				"TEST_ENV_VAR": "test-value",
 			},
 			&api.Metadata{
 				Name:        "centos",
@@ -62,8 +61,8 @@ var _ = Describe("Centos", func() {
 				ExampleUserData: docs.UserData{
 					Username: "centos",
 				},
-				AdditionalLabels: map[string]string{
-					"test-label": "test-value",
+				EnvVariables: map[string]string{
+					"TEST_ENV_VAR": "test-value",
 				},
 			},
 		),
@@ -73,8 +72,8 @@ var _ = Describe("Centos", func() {
 				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-2009.qcow2",
 			},
 			map[string]string{
-				instancetype.DefaultInstancetypeLabel: "u1.small",
-				instancetype.DefaultPreferenceLabel:   "centos.7",
+				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultPreferenceEnv:   "centos.7",
 			},
 			&api.Metadata{
 				Name:        "centos",
@@ -83,9 +82,9 @@ var _ = Describe("Centos", func() {
 				ExampleUserData: docs.UserData{
 					Username: "centos",
 				},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "centos.7",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "centos.7",
 				},
 			},
 		),
@@ -95,8 +94,8 @@ var _ = Describe("Centos", func() {
 				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1809.qcow2",
 			},
 			map[string]string{
-				instancetype.DefaultInstancetypeLabel: "u1.small",
-				instancetype.DefaultPreferenceLabel:   "centos.7",
+				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultPreferenceEnv:   "centos.7",
 			},
 			&api.Metadata{
 				Name:        "centos",
@@ -105,9 +104,9 @@ var _ = Describe("Centos", func() {
 				ExampleUserData: docs.UserData{
 					Username: "centos",
 				},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "centos.7",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "centos.7",
 				},
 			},
 		),

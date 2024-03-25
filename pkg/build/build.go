@@ -2,7 +2,6 @@ package build
 
 import (
 	"fmt"
-	"strings"
 
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
@@ -15,20 +14,14 @@ const (
 	ImageArchitecture = "amd64"
 )
 
-func ContainerDiskConfig(checksum string, additionalLabels map[string]string) v1.Config {
+func ContainerDiskConfig(checksum string, envVariables map[string]string) v1.Config {
 	labels := map[string]string{
 		LabelShaSum: checksum,
 	}
-	for k, v := range additionalLabels {
-		labels[k] = v
-	}
 
-	// Add all labels also as ENV variable for compatibility with crun-vm
-	// Replace illegal characters with underscore
 	var env []string
-	r := strings.NewReplacer(".", "_", "/", "_", "-", "_")
-	for k, v := range labels {
-		env = append(env, fmt.Sprintf("%s=%s", strings.ToUpper(r.Replace(k)), v))
+	for k, v := range envVariables {
+		env = append(env, fmt.Sprintf("%s=%s", k, v))
 	}
 
 	return v1.Config{Labels: labels, Env: env}

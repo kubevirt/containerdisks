@@ -6,9 +6,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"kubevirt.io/api/instancetype"
-
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
 	"kubevirt.io/containerdisks/testutil"
@@ -16,8 +15,8 @@ import (
 
 var _ = Describe("Fedora", func() {
 	DescribeTable("Inspect should be able to parse releases files",
-		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
-			c := New(release, additionalLabels)
+		func(release, mockFile string, details *api.ArtifactDetails, envVariables map[string]string, metadata *api.Metadata) {
+			c := New(release, envVariables)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -31,8 +30,8 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"35-1.2"},
 			},
 			map[string]string{
-				instancetype.DefaultInstancetypeLabel: "u1.small",
-				instancetype.DefaultPreferenceLabel:   "fedora",
+				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultPreferenceEnv:   "fedora",
 			},
 			&api.Metadata{
 				Name:        "fedora",
@@ -41,9 +40,9 @@ var _ = Describe("Fedora", func() {
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "fedora",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
 		),
@@ -54,8 +53,8 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"34-1.2"},
 			},
 			map[string]string{
-				instancetype.DefaultInstancetypeLabel: "u1.small",
-				instancetype.DefaultPreferenceLabel:   "fedora",
+				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultPreferenceEnv:   "fedora",
 			},
 			&api.Metadata{
 				Name:        "fedora",
@@ -64,9 +63,9 @@ var _ = Describe("Fedora", func() {
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "fedora",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
 		),
@@ -79,9 +78,9 @@ var _ = Describe("Fedora", func() {
 				Arch:    "x86_64",
 				Variant: "Cloud",
 				getter:  &http.HTTPGetter{},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "fedora",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
 			&fedora{
@@ -89,9 +88,9 @@ var _ = Describe("Fedora", func() {
 				Arch:    "x86_64",
 				Variant: "Cloud",
 				getter:  &http.HTTPGetter{},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "fedora",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
 		}

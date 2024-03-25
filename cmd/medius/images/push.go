@@ -134,7 +134,7 @@ func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string
 	defer os.Remove(file)
 
 	b.Log.Info("Building containerdisk ...")
-	containerDisk, err := build.ContainerDisk(file, build.ContainerDiskConfig(artifactInfo.SHA256Sum, metadata.AdditionalLabels))
+	containerDisk, err := build.ContainerDisk(file, build.ContainerDiskConfig(artifactInfo.SHA256Sum, metadata.EnvVariables))
 	if err != nil {
 		return nil, fmt.Errorf("error creating the containerdisk : %v", err)
 	}

@@ -6,9 +6,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"kubevirt.io/api/instancetype"
-
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
 )
@@ -16,8 +15,8 @@ import (
 var _ = Describe("CentosStream", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
 		func(release, mockFile string, details *api.ArtifactDetails,
-			exampleUserData *docs.UserData, additionalLabels map[string]string, metadata *api.Metadata) {
-			c := New(release, exampleUserData, additionalLabels)
+			exampleUserData *docs.UserData, envVariables map[string]string, metadata *api.Metadata) {
+			c := New(release, exampleUserData, envVariables)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -34,8 +33,8 @@ var _ = Describe("CentosStream", func() {
 				Username: "centos",
 			},
 			map[string]string{
-				instancetype.DefaultInstancetypeLabel: "u1.small",
-				instancetype.DefaultPreferenceLabel:   "centos.stream8",
+				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultPreferenceEnv:   "centos.stream8",
 			},
 			&api.Metadata{
 				Name:        "centos-stream",
@@ -44,9 +43,9 @@ var _ = Describe("CentosStream", func() {
 				ExampleUserData: docs.UserData{
 					Username: "centos",
 				},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "centos.stream8",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "centos.stream8",
 				},
 			},
 		),
@@ -60,8 +59,8 @@ var _ = Describe("CentosStream", func() {
 				Username: "cloud-user",
 			},
 			map[string]string{
-				instancetype.DefaultInstancetypeLabel: "u1.small",
-				instancetype.DefaultPreferenceLabel:   "centos.stream9",
+				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultPreferenceEnv:   "centos.stream9",
 			},
 			&api.Metadata{
 				Name:        "centos-stream",
@@ -70,9 +69,9 @@ var _ = Describe("CentosStream", func() {
 				ExampleUserData: docs.UserData{
 					Username: "cloud-user",
 				},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "centos.stream9",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "centos.stream9",
 				},
 			},
 		),

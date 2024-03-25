@@ -14,12 +14,12 @@ import (
 )
 
 type ubuntu struct {
-	Version          string
-	Variant          string
-	getter           http.Getter
-	Arch             string
-	Compression      string
-	AdditionalLabels map[string]string
+	Version      string
+	Variant      string
+	getter       http.Getter
+	Arch         string
+	Compression  string
+	EnvVariables map[string]string
 }
 
 const description = `Ubuntu images for KubeVirt.
@@ -35,7 +35,7 @@ func (u *ubuntu) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "ubuntu",
 		},
-		AdditionalLabels: u.AdditionalLabels,
+		EnvVariables: u.EnvVariables,
 	}
 }
 
@@ -79,12 +79,12 @@ func (u *ubuntu) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(release string, additionalLabels map[string]string) *ubuntu {
+func New(release string, envVariables map[string]string) *ubuntu {
 	return &ubuntu{
-		Version:          release,
-		Arch:             "x86_64",
-		Variant:          fmt.Sprintf("ubuntu-%v-server-cloudimg-amd64.img", release),
-		getter:           &http.HTTPGetter{},
-		AdditionalLabels: additionalLabels,
+		Version:      release,
+		Arch:         "x86_64",
+		Variant:      fmt.Sprintf("ubuntu-%v-server-cloudimg-amd64.img", release),
+		getter:       &http.HTTPGetter{},
+		EnvVariables: envVariables,
 	}
 }
