@@ -6,17 +6,16 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"kubevirt.io/api/instancetype"
-
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
 )
 
 var _ = Describe("Ubuntu", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
-		func(release, mockFile string, details *api.ArtifactDetails, additionalLabels map[string]string, metadata *api.Metadata) {
-			c := New(release, additionalLabels)
+		func(release, mockFile string, details *api.ArtifactDetails, envVariables map[string]string, metadata *api.Metadata) {
+			c := New(release, envVariables)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -29,8 +28,8 @@ var _ = Describe("Ubuntu", func() {
 				DownloadURL: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img",
 			},
 			map[string]string{
-				instancetype.DefaultInstancetypeLabel: "u1.small",
-				instancetype.DefaultPreferenceLabel:   "ubuntu",
+				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultPreferenceEnv:   "ubuntu",
 			},
 			&api.Metadata{
 				Name:        "ubuntu",
@@ -39,9 +38,9 @@ var _ = Describe("Ubuntu", func() {
 				ExampleUserData: docs.UserData{
 					Username: "ubuntu",
 				},
-				AdditionalLabels: map[string]string{
-					instancetype.DefaultInstancetypeLabel: "u1.small",
-					instancetype.DefaultPreferenceLabel:   "ubuntu",
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultPreferenceEnv:   "ubuntu",
 				},
 			},
 		),

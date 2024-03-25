@@ -22,20 +22,20 @@ const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/th
 Visit [centos.org](https://www.centos.org/) to learn more about the CentOS project.`
 
 type centos struct {
-	Version          string
-	Variant          string
-	getter           http.Getter
-	Arch             string
-	ExampleUserData  *docs.UserData
-	AdditionalLabels map[string]string
+	Version         string
+	Variant         string
+	getter          http.Getter
+	Arch            string
+	ExampleUserData *docs.UserData
+	EnvVariables    map[string]string
 }
 
 func (c *centos) Metadata() *api.Metadata {
 	metadata := &api.Metadata{
-		Name:             "centos-stream",
-		Version:          c.Version,
-		Description:      description,
-		AdditionalLabels: c.AdditionalLabels,
+		Name:         "centos-stream",
+		Version:      c.Version,
+		Description:  description,
+		EnvVariables: c.EnvVariables,
 	}
 
 	if c.ExampleUserData != nil {
@@ -116,13 +116,13 @@ func (c *centos) Tests() []api.ArtifactTest {
 }
 
 // New accepts CentOS Stream 8 and 9 versions.
-func New(release string, exampleUserData *docs.UserData, additionalLabels map[string]string) *centos {
+func New(release string, exampleUserData *docs.UserData, envVariables map[string]string) *centos {
 	return &centos{
-		Version:          release,
-		Arch:             "x86_64",
-		Variant:          "GenericCloud",
-		getter:           &http.HTTPGetter{},
-		ExampleUserData:  exampleUserData,
-		AdditionalLabels: additionalLabels,
+		Version:         release,
+		Arch:            "x86_64",
+		Variant:         "GenericCloud",
+		getter:          &http.HTTPGetter{},
+		ExampleUserData: exampleUserData,
+		EnvVariables:    envVariables,
 	}
 }

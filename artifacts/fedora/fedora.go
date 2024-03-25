@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	v1 "kubevirt.io/api/core/v1"
-	"kubevirt.io/api/instancetype"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
 	"kubevirt.io/containerdisks/pkg/tests"
@@ -28,11 +28,11 @@ type Release struct {
 }
 
 type fedora struct {
-	Version          string
-	Arch             string
-	Variant          string
-	getter           http.Getter
-	AdditionalLabels map[string]string
+	Version      string
+	Arch         string
+	Variant      string
+	getter       http.Getter
+	EnvVariables map[string]string
 }
 
 type fedoraGatherer struct {
@@ -57,7 +57,7 @@ func (f *fedora) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "fedora",
 		},
-		AdditionalLabels: f.AdditionalLabels,
+		EnvVariables: f.EnvVariables,
 	}
 }
 
@@ -118,8 +118,8 @@ func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
 				New(
 					release.Version,
 					map[string]string{
-						instancetype.DefaultInstancetypeLabel: "u1.small",
-						instancetype.DefaultPreferenceLabel:   "fedora",
+						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultPreferenceEnv:   "fedora",
 					},
 				),
 			)
@@ -158,13 +158,13 @@ func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 		strings.HasSuffix(release.Link, "qcow2")
 }
 
-func New(release string, additionalLabels map[string]string) *fedora {
+func New(release string, envVariables map[string]string) *fedora {
 	return &fedora{
-		Version:          release,
-		Arch:             "x86_64",
-		Variant:          "Cloud",
-		getter:           &http.HTTPGetter{},
-		AdditionalLabels: additionalLabels,
+		Version:      release,
+		Arch:         "x86_64",
+		Variant:      "Cloud",
+		getter:       &http.HTTPGetter{},
+		EnvVariables: envVariables,
 	}
 }
 
