@@ -40,7 +40,7 @@ linters-settings:
         # don't include the "operation" and "assign"
         checks: argument,case,condition,return
   govet:
-    check-shadowing: true
+    shadow: true
   lll:
     line-length: 140
   maligned:

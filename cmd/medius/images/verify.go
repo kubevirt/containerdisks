@@ -225,7 +225,7 @@ func randName(name string) string {
 }
 
 func waitVMReady(ctx context.Context, name string, client kvirtcli.VirtualMachineInterface, timeout int) error {
-	return wait.PollImmediateWithContext(ctx, time.Second, time.Duration(timeout)*time.Second, func(_ context.Context) (bool, error) {
+	return wait.PollUntilContextTimeout(ctx, time.Second, time.Duration(timeout)*time.Second, true, func(_ context.Context) (bool, error) {
 		vm, err := client.Get(ctx, name, &metav1.GetOptions{})
 
 		if err != nil {
