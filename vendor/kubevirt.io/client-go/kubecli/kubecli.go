@@ -75,7 +75,7 @@ func init() {
 	// registering a single version
 	registerVersion := os.Getenv(v1.KubeVirtClientGoSchemeRegistrationVersionEnvVar)
 	if registerVersion != "" {
-		SchemeBuilder = runtime.NewSchemeBuilder(v1.AddKnownTypesGenerator([]schema.GroupVersion{{Group: core.GroupName, Version: registerVersion}}))
+		SchemeBuilder = runtime.NewSchemeBuilder(v1.AddKnownTypesGenerator([]schema.GroupVersion{schema.GroupVersion{Group: core.GroupName, Version: registerVersion}}))
 	} else {
 		SchemeBuilder = runtime.NewSchemeBuilder(v1.AddKnownTypesGenerator(v1.GroupVersions))
 	}

@@ -27,7 +27,7 @@ lint:
 	test -s $(GOLANGCI_LINT) || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(LOCALBIN) $(GOLANGCI_LINT_VERSION)
 	CGO_ENABLED=0 $(GOLANGCI_LINT) run --timeout 5m
 
-GINKGO_VERSION ?= v2.15.0
+GINKGO_VERSION ?= v2.17.1
 GINKGO_TIMEOUT ?= 2h
 
 .PHONY: getginkgo
