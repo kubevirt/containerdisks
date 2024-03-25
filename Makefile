@@ -20,7 +20,7 @@ vendor:
 	go mod vendor
 
 GOLANGCI_LINT ?= $(LOCALBIN)/golangci-lint
-GOLANGCI_LINT_VERSION ?= v1.55.2
+GOLANGCI_LINT_VERSION ?= v1.57.1
 
 .PHONY: lint
 lint:
