@@ -77,6 +77,7 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 				SHA256Sum:            release.Sha256,
 				DownloadURL:          release.Link,
 				AdditionalUniqueTags: []string{additionalTag},
+				ImageArchitecture:    "amd64",
 			}, nil
 		}
 	}
@@ -105,7 +106,7 @@ func (f *fedora) Tests() []api.ArtifactTest {
 	}
 }
 
-func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
+func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 	releases, err := getReleases(f.getter)
 	if err != nil {
 		return nil, fmt.Errorf("error getting releases: %v", err)
@@ -126,7 +127,7 @@ func (f *fedoraGatherer) Gather() ([]api.Artifact, error) {
 		}
 	}
 
-	return artifacts, nil
+	return [][]api.Artifact{artifacts}, nil
 }
 
 func getReleases(getter http.Getter) (Releases, error) {
