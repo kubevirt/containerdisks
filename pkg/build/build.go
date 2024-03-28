@@ -8,6 +8,7 @@ import (
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 	"github.com/google/go-containerregistry/pkg/v1/partial"
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
+	"github.com/google/go-containerregistry/pkg/v1/types"
 )
 
 const (
@@ -29,12 +30,12 @@ func ContainerDiskConfig(checksum string, envVariables map[string]string) v1.Con
 }
 
 func ContainerDisk(imgPath, imgArch string, config v1.Config) (v1.Image, error) {
-	img := empty.Image
 	layer, err := tarball.LayerFromOpener(StreamLayerOpener(imgPath))
 	if err != nil {
 		return nil, fmt.Errorf("error creating an image layer from disk: %v", err)
 	}
 
+	img := mutate.MediaType(empty.Image, types.DockerManifestSchema2)
 	img, err = mutate.AppendLayers(img, layer)
 	if err != nil {
 		return nil, fmt.Errorf("error appending the image layer: %v", err)
@@ -79,5 +80,6 @@ func ContainerDiskIndex(images []v1.Image) (v1.ImageIndex, error) {
 		})
 	}
 
-	return mutate.AppendManifests(empty.Index, indexAddendum...), nil
+	idx := mutate.IndexMediaType(empty.Index, types.DockerManifestList)
+	return mutate.AppendManifests(idx, indexAddendum...), nil
 }
