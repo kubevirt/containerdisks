@@ -6,12 +6,14 @@ import (
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
+	"github.com/google/go-containerregistry/pkg/v1/partial"
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
+	"github.com/google/go-containerregistry/pkg/v1/types"
 )
 
 const (
-	LabelShaSum       = "shasum"
-	ImageArchitecture = "amd64"
+	LabelShaSum = "shasum"
+	ImageOS     = "linux"
 )
 
 func ContainerDiskConfig(checksum string, envVariables map[string]string) v1.Config {
@@ -27,13 +29,13 @@ func ContainerDiskConfig(checksum string, envVariables map[string]string) v1.Con
 	return v1.Config{Labels: labels, Env: env}
 }
 
-func ContainerDisk(imgPath string, config v1.Config) (v1.Image, error) {
-	img := empty.Image
+func ContainerDisk(imgPath, imgArch string, config v1.Config) (v1.Image, error) {
 	layer, err := tarball.LayerFromOpener(StreamLayerOpener(imgPath))
 	if err != nil {
 		return nil, fmt.Errorf("error creating an image layer from disk: %v", err)
 	}
 
+	img := mutate.MediaType(empty.Image, types.DockerManifestSchema2)
 	img, err = mutate.AppendLayers(img, layer)
 	if err != nil {
 		return nil, fmt.Errorf("error appending the image layer: %v", err)
@@ -45,7 +47,8 @@ func ContainerDisk(imgPath string, config v1.Config) (v1.Image, error) {
 	}
 
 	// Modify the config file
-	cf.Architecture = ImageArchitecture
+	cf.Architecture = imgArch
+	cf.OS = ImageOS
 	cf.Config = config
 
 	img, err = mutate.ConfigFile(img, cf)
@@ -54,4 +57,29 @@ func ContainerDisk(imgPath string, config v1.Config) (v1.Image, error) {
 	}
 
 	return img, nil
+}
+
+func ContainerDiskIndex(images []v1.Image) (v1.ImageIndex, error) {
+	var indexAddendum []mutate.IndexAddendum
+
+	for _, image := range images {
+		configFile, err := image.ConfigFile()
+		if err != nil {
+			return nil, err
+		}
+
+		descriptor, err := partial.Descriptor(image)
+		if err != nil {
+			return nil, err
+		}
+		descriptor.Platform = configFile.Platform()
+
+		indexAddendum = append(indexAddendum, mutate.IndexAddendum{
+			Add:        image,
+			Descriptor: *descriptor,
+		})
+	}
+
+	idx := mutate.IndexMediaType(empty.Index, types.DockerManifestList)
+	return mutate.AppendManifests(idx, indexAddendum...), nil
 }

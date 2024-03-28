@@ -28,6 +28,7 @@ var _ = Describe("Centos", func() {
 				DownloadURL:          "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2",
 				Compression:          "",
 				AdditionalUniqueTags: []string{"8.4.2105-20210603.0", "8.4.2105"},
+				ImageArchitecture:    "amd64",
 			},
 			map[string]string{
 				"TEST_ENV_VAR": "test-value",
@@ -50,6 +51,7 @@ var _ = Describe("Centos", func() {
 				DownloadURL:          "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2",
 				Compression:          "",
 				AdditionalUniqueTags: []string{"8.3.2011-20201204.2", "8.3.2011"},
+				ImageArchitecture:    "amd64",
 			},
 			map[string]string{
 				"TEST_ENV_VAR": "test-value",
@@ -68,8 +70,9 @@ var _ = Describe("Centos", func() {
 		),
 		Entry("centos:7-2009", "7-2009", "testdata/centos7.checksum",
 			&api.ArtifactDetails{
-				SHA256Sum:   "e38bab0475cc6d004d2e17015969c659e5a308111851b0e2715e84646035bdd3",
-				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-2009.qcow2",
+				SHA256Sum:         "e38bab0475cc6d004d2e17015969c659e5a308111851b0e2715e84646035bdd3",
+				DownloadURL:       "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-2009.qcow2",
+				ImageArchitecture: "amd64",
 			},
 			map[string]string{
 				common.DefaultInstancetypeEnv: "u1.small",
@@ -90,8 +93,9 @@ var _ = Describe("Centos", func() {
 		),
 		Entry("centos:7-1809", "7-1809", "testdata/centos7.checksum",
 			&api.ArtifactDetails{
-				SHA256Sum:   "42c062df8a8c36991ec0282009dd52ac488461a3f7ee114fc21a765bfc2671c2",
-				DownloadURL: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1809.qcow2",
+				SHA256Sum:         "42c062df8a8c36991ec0282009dd52ac488461a3f7ee114fc21a765bfc2671c2",
+				DownloadURL:       "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1809.qcow2",
+				ImageArchitecture: "amd64",
 			},
 			map[string]string{
 				common.DefaultInstancetypeEnv: "u1.small",

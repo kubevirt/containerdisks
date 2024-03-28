@@ -28,6 +28,7 @@ var _ = Describe("Fedora", func() {
 				SHA256Sum:            "fe84502779b3477284a8d4c86731f642ca10dd3984d2b5eccdf82630a9ca2de6",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"35-1.2"},
+				ImageArchitecture:    "amd64",
 			},
 			map[string]string{
 				common.DefaultInstancetypeEnv: "u1.small",
@@ -51,6 +52,7 @@ var _ = Describe("Fedora", func() {
 				SHA256Sum:            "b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"34-1.2"},
+				ImageArchitecture:    "amd64",
 			},
 			map[string]string{
 				common.DefaultInstancetypeEnv: "u1.small",
@@ -72,25 +74,29 @@ var _ = Describe("Fedora", func() {
 	)
 
 	It("Gather should be able to parse releases files", func() {
-		artifacts := []api.Artifact{
-			&fedora{
-				Version: "36",
-				Arch:    "x86_64",
-				Variant: "Cloud",
-				getter:  &http.HTTPGetter{},
-				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
-					common.DefaultPreferenceEnv:   "fedora",
+		artifacts := [][]api.Artifact{
+			{
+				&fedora{
+					Version: "36",
+					Arch:    "x86_64",
+					Variant: "Cloud",
+					getter:  &http.HTTPGetter{},
+					EnvVariables: map[string]string{
+						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultPreferenceEnv:   "fedora",
+					},
 				},
 			},
-			&fedora{
-				Version: "35",
-				Arch:    "x86_64",
-				Variant: "Cloud",
-				getter:  &http.HTTPGetter{},
-				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
-					common.DefaultPreferenceEnv:   "fedora",
+			{
+				&fedora{
+					Version: "35",
+					Arch:    "x86_64",
+					Variant: "Cloud",
+					getter:  &http.HTTPGetter{},
+					EnvVariables: map[string]string{
+						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultPreferenceEnv:   "fedora",
+					},
 				},
 			},
 		}
