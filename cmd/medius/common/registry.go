@@ -31,37 +31,37 @@ var staticRegistry = []Entry{
 	},
 	{
 		Artifacts: []api.Artifact{
-			centos.New("7-2009", defaultEnvVariables("u1.small", "centos.7")),
+			centos.New("7-2009", defaultEnvVariables("u1.medium", "centos.7")),
 		},
 		UseForDocs: true,
 	},
 	{
 		Artifacts: []api.Artifact{
-			centosstream.New("9", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.small", "centos.stream9")),
+			centosstream.New("9", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream9")),
 		},
 		UseForDocs: true,
 	},
 	{
 		Artifacts: []api.Artifact{
-			centosstream.New("8", &docs.UserData{Username: "centos"}, defaultEnvVariables("u1.small", "centos.stream8")),
+			centosstream.New("8", &docs.UserData{Username: "centos"}, defaultEnvVariables("u1.medium", "centos.stream8")),
 		},
 		UseForDocs: false,
 	},
 	{
 		Artifacts: []api.Artifact{
-			ubuntu.New("22.04", defaultEnvVariables("u1.small", "ubuntu")),
+			ubuntu.New("22.04", defaultEnvVariables("u1.medium", "ubuntu")),
 		},
 		UseForDocs: true,
 	},
 	{
 		Artifacts: []api.Artifact{
-			ubuntu.New("20.04", defaultEnvVariables("u1.small", "ubuntu")),
+			ubuntu.New("20.04", defaultEnvVariables("u1.medium", "ubuntu")),
 		},
 		UseForDocs: false,
 	},
 	{
 		Artifacts: []api.Artifact{
-			ubuntu.New("18.04", defaultEnvVariables("u1.small", "ubuntu")),
+			ubuntu.New("18.04", defaultEnvVariables("u1.medium", "ubuntu")),
 		},
 		UseForDocs: false,
 	},
