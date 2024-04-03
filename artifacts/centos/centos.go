@@ -61,10 +61,9 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	candidate := candidates[len(candidates)-1]
 	if checksum, exists := checksums[candidate]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:            checksum,
-			DownloadURL:          baseURL + candidate,
-			AdditionalUniqueTags: getAdditionalTags(c.Version, c.Variant, candidate),
-			ImageArchitecture:    "amd64",
+			SHA256Sum:         checksum,
+			DownloadURL:       baseURL + candidate,
+			ImageArchitecture: "amd64",
 		}, nil
 	}
 
@@ -73,10 +72,6 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 
 func getURLsAndChecksumFormat(version string) (baseURL string, checksumURL string, checksumFormat hashsum.ChecksumFormat) {
 	switch {
-	case strings.HasPrefix(version, "8."):
-		baseURL = "https://cloud.centos.org/centos/8/x86_64/images/"
-		checksumURL = baseURL + "CHECKSUM"
-		checksumFormat = hashsum.ChecksumFormatBSD
 	case strings.HasPrefix(version, "7-"):
 		baseURL = "https://cloud.centos.org/centos/7/images/"
 		checksumURL = baseURL + "sha256sum.txt"
@@ -84,19 +79,11 @@ func getURLsAndChecksumFormat(version string) (baseURL string, checksumURL strin
 	default:
 		panic(fmt.Sprintf("can't understand provided version: %q", version))
 	}
-
 	return
 }
 
 func getCandidates(version, variant string, checksums map[string]string) (candidates []string) {
-	switch {
-	case strings.HasPrefix(version, "8."):
-		for fileName := range checksums {
-			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-8-%s-%s", variant, version)) && strings.HasSuffix(fileName, "qcow2") {
-				candidates = append(candidates, fileName)
-			}
-		}
-	case strings.HasPrefix(version, "7-"):
+	if strings.HasPrefix(version, "7-") {
 		components := strings.Split(version, "-")
 		for fileName := range checksums {
 			if strings.HasPrefix(fileName, fmt.Sprintf("CentOS-7-x86_64-%s-%s.qcow2", variant, components[1])) &&
@@ -105,25 +92,7 @@ func getCandidates(version, variant string, checksums map[string]string) (candid
 			}
 		}
 	}
-
 	sort.Strings(candidates)
-
-	return
-}
-
-func getAdditionalTags(version, variant, candidate string) (additionalTags []string) {
-	// The CentOS 8 version is expected to contain one dash
-	const expectedCentos8VersionPartsCount = 2
-
-	if strings.HasPrefix(version, "8.") {
-		additionalTag := strings.TrimSuffix(strings.TrimPrefix(candidate, fmt.Sprintf("CentOS-8-%s-", variant)), ".x86_64.qcow2")
-		additionalTags = append(additionalTags, additionalTag)
-		split := strings.Split(additionalTag, "-")
-		if len(split) == expectedCentos8VersionPartsCount {
-			additionalTags = append(additionalTags, split[0])
-		}
-	}
-
 	return
 }
 
