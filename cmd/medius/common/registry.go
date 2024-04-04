@@ -25,12 +25,6 @@ type Entry struct {
 var staticRegistry = []Entry{
 	{
 		Artifacts: []api.Artifact{
-			centos.New("8.4", nil),
-		},
-		UseForDocs: false,
-	},
-	{
-		Artifacts: []api.Artifact{
 			centos.New("7-2009", defaultEnvVariables("u1.medium", "centos.7")),
 		},
 		UseForDocs: true,
@@ -56,12 +50,6 @@ var staticRegistry = []Entry{
 	{
 		Artifacts: []api.Artifact{
 			ubuntu.New("20.04", defaultEnvVariables("u1.medium", "ubuntu")),
-		},
-		UseForDocs: false,
-	},
-	{
-		Artifacts: []api.Artifact{
-			ubuntu.New("18.04", defaultEnvVariables("u1.medium", "ubuntu")),
 		},
 		UseForDocs: false,
 	},

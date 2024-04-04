@@ -22,52 +22,6 @@ var _ = Describe("Centos", func() {
 			Expect(got).To(Equal(details))
 			Expect(c.Metadata()).To(Equal(metadata))
 		},
-		Entry("centos:8.4", "8.4", "testdata/centos8.checksum",
-			&api.ArtifactDetails{
-				SHA256Sum:            "3510fc7deb3e1939dbf3fe6f65a02ab1efcc763480bc352e4c06eca2e4f7c2a2",
-				DownloadURL:          "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2",
-				Compression:          "",
-				AdditionalUniqueTags: []string{"8.4.2105-20210603.0", "8.4.2105"},
-				ImageArchitecture:    "amd64",
-			},
-			map[string]string{
-				"TEST_ENV_VAR": "test-value",
-			},
-			&api.Metadata{
-				Name:        "centos",
-				Version:     "8.4",
-				Description: description,
-				ExampleUserData: docs.UserData{
-					Username: "centos",
-				},
-				EnvVariables: map[string]string{
-					"TEST_ENV_VAR": "test-value",
-				},
-			},
-		),
-		Entry("centos:8.3", "8.3", "testdata/centos8.checksum",
-			&api.ArtifactDetails{
-				SHA256Sum:            "7ec97062618dc0a7ebf211864abf63629da1f325578868579ee70c495bed3ba0",
-				DownloadURL:          "https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2",
-				Compression:          "",
-				AdditionalUniqueTags: []string{"8.3.2011-20201204.2", "8.3.2011"},
-				ImageArchitecture:    "amd64",
-			},
-			map[string]string{
-				"TEST_ENV_VAR": "test-value",
-			},
-			&api.Metadata{
-				Name:        "centos",
-				Version:     "8.3",
-				Description: description,
-				ExampleUserData: docs.UserData{
-					Username: "centos",
-				},
-				EnvVariables: map[string]string{
-					"TEST_ENV_VAR": "test-value",
-				},
-			},
-		),
 		Entry("centos:7-2009", "7-2009", "testdata/centos7.checksum",
 			&api.ArtifactDetails{
 				SHA256Sum:         "e38bab0475cc6d004d2e17015969c659e5a308111851b0e2715e84646035bdd3",
