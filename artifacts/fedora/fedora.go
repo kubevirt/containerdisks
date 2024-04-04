@@ -3,6 +3,7 @@ package fedora
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -125,8 +126,16 @@ func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 		}
 	}
 
+	// Ensure versions are always sorted with the latest first
+	versionKeys := make([]string, 0, len(versions))
+	for key := range versions {
+		versionKeys = append(versionKeys, key)
+	}
+	sort.Sort(sort.Reverse(sort.StringSlice(versionKeys)))
+
 	var artifacts [][]api.Artifact
-	for _, releases := range versions {
+	for _, key := range versionKeys {
+		releases := versions[key]
 		var items []api.Artifact
 		for _, release := range releases {
 			items = append(items,
