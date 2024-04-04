@@ -29,7 +29,7 @@ var _ = Describe("Ubuntu", func() {
 				ImageArchitecture: "amd64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "ubuntu",
 			},
 			&api.Metadata{
@@ -40,7 +40,7 @@ var _ = Describe("Ubuntu", func() {
 					Username: "ubuntu",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "ubuntu",
 				},
 			},
@@ -52,7 +52,7 @@ var _ = Describe("Ubuntu", func() {
 				ImageArchitecture: "arm64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "ubuntu",
 			},
 			&api.Metadata{
@@ -63,7 +63,7 @@ var _ = Describe("Ubuntu", func() {
 					Username: "ubuntu",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "ubuntu",
 				},
 			},

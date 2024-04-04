@@ -29,7 +29,7 @@ var _ = Describe("Centos", func() {
 				ImageArchitecture: "amd64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "centos.7",
 			},
 			&api.Metadata{
@@ -40,7 +40,7 @@ var _ = Describe("Centos", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "centos.7",
 				},
 			},
@@ -52,7 +52,7 @@ var _ = Describe("Centos", func() {
 				ImageArchitecture: "amd64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "centos.7",
 			},
 			&api.Metadata{
@@ -63,7 +63,7 @@ var _ = Describe("Centos", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "centos.7",
 				},
 			},

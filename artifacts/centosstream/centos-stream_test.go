@@ -34,7 +34,7 @@ var _ = Describe("CentosStream", func() {
 				Username: "centos",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "centos.stream8",
 			},
 			&api.Metadata{
@@ -45,7 +45,7 @@ var _ = Describe("CentosStream", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "centos.stream8",
 				},
 			},
@@ -61,7 +61,7 @@ var _ = Describe("CentosStream", func() {
 				Username: "centos",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "centos.stream8",
 			},
 			&api.Metadata{
@@ -72,7 +72,7 @@ var _ = Describe("CentosStream", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "centos.stream8",
 				},
 			},
@@ -88,7 +88,7 @@ var _ = Describe("CentosStream", func() {
 				Username: "cloud-user",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "centos.stream9",
 			},
 			&api.Metadata{
@@ -99,7 +99,7 @@ var _ = Describe("CentosStream", func() {
 					Username: "cloud-user",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "centos.stream9",
 				},
 			},
@@ -115,7 +115,7 @@ var _ = Describe("CentosStream", func() {
 				Username: "cloud-user",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "centos.stream9",
 			},
 			&api.Metadata{
@@ -126,7 +126,7 @@ var _ = Describe("CentosStream", func() {
 					Username: "cloud-user",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "centos.stream9",
 				},
 			},

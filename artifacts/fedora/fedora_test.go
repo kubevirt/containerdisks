@@ -31,7 +31,7 @@ var _ = Describe("Fedora", func() {
 				ImageArchitecture:    "amd64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "fedora",
 			},
 			&api.Metadata{
@@ -42,7 +42,7 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
@@ -55,7 +55,7 @@ var _ = Describe("Fedora", func() {
 				ImageArchitecture:    "arm64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "fedora",
 			},
 			&api.Metadata{
@@ -66,7 +66,7 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
@@ -79,7 +79,7 @@ var _ = Describe("Fedora", func() {
 				ImageArchitecture:    "amd64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "fedora",
 			},
 			&api.Metadata{
@@ -90,7 +90,7 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
@@ -103,7 +103,7 @@ var _ = Describe("Fedora", func() {
 				ImageArchitecture:    "arm64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
+				common.DefaultInstancetypeEnv: "u1.medium",
 				common.DefaultPreferenceEnv:   "fedora",
 			},
 			&api.Metadata{
@@ -114,7 +114,7 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
+					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
@@ -130,7 +130,7 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultInstancetypeEnv: "u1.medium",
 						common.DefaultPreferenceEnv:   "fedora",
 					},
 				},
@@ -140,7 +140,7 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultInstancetypeEnv: "u1.medium",
 						common.DefaultPreferenceEnv:   "fedora",
 					},
 				},
@@ -152,7 +152,7 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultInstancetypeEnv: "u1.medium",
 						common.DefaultPreferenceEnv:   "fedora",
 					},
 				},
@@ -162,7 +162,7 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultInstancetypeEnv: "u1.medium",
 						common.DefaultPreferenceEnv:   "fedora",
 					},
 				},

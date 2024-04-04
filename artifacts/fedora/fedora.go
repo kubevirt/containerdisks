@@ -134,7 +134,7 @@ func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 					release.Version,
 					release.Arch,
 					map[string]string{
-						common.DefaultInstancetypeEnv: "u1.small",
+						common.DefaultInstancetypeEnv: "u1.medium",
 						common.DefaultPreferenceEnv:   "fedora",
 					},
 				),
