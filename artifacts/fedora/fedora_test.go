@@ -15,59 +15,83 @@ import (
 
 var _ = Describe("Fedora", func() {
 	DescribeTable("Inspect should be able to parse releases files",
-		func(release, mockFile string, details *api.ArtifactDetails, envVariables map[string]string, metadata *api.Metadata) {
-			c := New(release, envVariables)
+		func(release, arch, mockFile string, details *api.ArtifactDetails, metadata *api.Metadata) {
+			c := New(release, arch)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
 			Expect(got).To(Equal(details))
 			Expect(c.Metadata()).To(Equal(metadata))
 		},
-		Entry("fedora:35", "35", "testdata/releases.json",
+		Entry("fedora:39 x86_64", "39", "x86_64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "fe84502779b3477284a8d4c86731f642ca10dd3984d2b5eccdf82630a9ca2de6",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2", //nolint:lll
-				AdditionalUniqueTags: []string{"35-1.2"},
+				SHA256Sum:            "ab5be5058c5c839528a7d6373934e0ce5ad6c8f80bd71ed3390032027da52f37",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"39-1.5"},
 				ImageArchitecture:    "amd64",
-			},
-			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
-				common.DefaultPreferenceEnv:   "fedora",
 			},
 			&api.Metadata{
 				Name:        "fedora",
-				Version:     "35",
+				Version:     "39",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
-					common.DefaultPreferenceEnv:   "fedora",
+					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 				},
 			},
 		),
-		Entry("fedora:34", "34", "testdata/releases.json",
+		Entry("fedora:39 aarch64", "39", "aarch64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2", //nolint:lll
-				AdditionalUniqueTags: []string{"34-1.2"},
-				ImageArchitecture:    "amd64",
-			},
-			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.small",
-				common.DefaultPreferenceEnv:   "fedora",
+				SHA256Sum:            "765996d5b77481ca02d0ac06405641bf134ac920cfc1e60d981c64d7971162dc",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/aarch64/images/Fedora-Cloud-Base-39-1.5.aarch64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"39-1.5"},
+				ImageArchitecture:    "arm64",
 			},
 			&api.Metadata{
 				Name:        "fedora",
-				Version:     "34",
+				Version:     "39",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "fedora",
+				},
+			},
+		),
+		Entry("fedora:38 x86_64", "38", "x86_64", "testdata/releases.json",
+			&api.ArtifactDetails{
+				SHA256Sum:            "d334670401ff3d5b4129fcc662cf64f5a6e568228af59076cc449a4945318482",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Cloud/x86_64/images/Fedora-Cloud-Base-38-1.6.x86_64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"38-1.6"},
+				ImageArchitecture:    "amd64",
+			},
+			&api.Metadata{
+				Name:        "fedora",
+				Version:     "38",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.small",
-					common.DefaultPreferenceEnv:   "fedora",
+					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+				},
+			},
+		),
+		Entry("fedora:38 aarch64", "38", "aarch64", "testdata/releases.json",
+			&api.ArtifactDetails{
+				SHA256Sum:            "ad71d22104a16e4f9efa93e61e8c7bce28de693f59c802586abbe85e9db55a65",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Cloud/aarch64/images/Fedora-Cloud-Base-38-1.6.aarch64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"38-1.6"},
+				ImageArchitecture:    "arm64",
+			},
+			&api.Metadata{
+				Name:        "fedora",
+				Version:     "38",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "fedora",
 				},
 			},
 		),
@@ -77,26 +101,38 @@ var _ = Describe("Fedora", func() {
 		artifacts := [][]api.Artifact{
 			{
 				&fedora{
-					Version: "36",
+					Version: "39",
 					Arch:    "x86_64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.small",
-						common.DefaultPreferenceEnv:   "fedora",
+						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
+				},
+				&fedora{
+					Version: "39",
+					Arch:    "aarch64",
+					Variant: "Cloud",
+					getter:  &http.HTTPGetter{},
 				},
 			},
 			{
 				&fedora{
-					Version: "35",
+					Version: "38",
 					Arch:    "x86_64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.small",
-						common.DefaultPreferenceEnv:   "fedora",
+						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
+				},
+				&fedora{
+					Version: "38",
+					Arch:    "aarch64",
+					Variant: "Cloud",
+					getter:  &http.HTTPGetter{},
 				},
 			},
 		}

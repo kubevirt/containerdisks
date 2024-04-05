@@ -7,6 +7,7 @@ import (
 	v1 "kubevirt.io/api/core/v1"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/architecture"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/hashsum"
 	"kubevirt.io/containerdisks/pkg/http"
@@ -55,7 +56,7 @@ func (u *ubuntu) Inspect() (*api.ArtifactDetails, error) {
 			SHA256Sum:         checksum,
 			DownloadURL:       baseURL + u.Variant,
 			Compression:       u.Compression,
-			ImageArchitecture: "amd64",
+			ImageArchitecture: architecture.GetImageArchitecture(u.Arch),
 		}, nil
 	}
 	return nil, fmt.Errorf("file %q does not exist in the SHA256SUMS file: %v", u.Variant, err)
@@ -80,11 +81,11 @@ func (u *ubuntu) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(release string, envVariables map[string]string) *ubuntu {
+func New(release, arch string, envVariables map[string]string) *ubuntu {
 	return &ubuntu{
 		Version:      release,
-		Arch:         "x86_64",
-		Variant:      fmt.Sprintf("ubuntu-%v-server-cloudimg-amd64.img", release),
+		Arch:         arch,
+		Variant:      fmt.Sprintf("ubuntu-%v-server-cloudimg-%s.img", release, architecture.GetImageArchitecture(arch)),
 		getter:       &http.HTTPGetter{},
 		EnvVariables: envVariables,
 	}
