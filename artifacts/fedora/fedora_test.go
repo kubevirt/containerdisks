@@ -15,8 +15,8 @@ import (
 
 var _ = Describe("Fedora", func() {
 	DescribeTable("Inspect should be able to parse releases files",
-		func(release, arch, mockFile string, details *api.ArtifactDetails, envVariables map[string]string, metadata *api.Metadata) {
-			c := New(release, arch, envVariables)
+		func(release, arch, mockFile string, details *api.ArtifactDetails, metadata *api.Metadata) {
+			c := New(release, arch)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
@@ -30,10 +30,6 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"35-1.2"},
 				ImageArchitecture:    "amd64",
 			},
-			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "fedora",
-			},
 			&api.Metadata{
 				Name:        "fedora",
 				Version:     "35",
@@ -42,8 +38,8 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "fedora",
+					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 				},
 			},
 		),
@@ -54,20 +50,12 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"35-1.2"},
 				ImageArchitecture:    "arm64",
 			},
-			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "fedora",
-			},
 			&api.Metadata{
 				Name:        "fedora",
 				Version:     "35",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
-				},
-				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
 		),
@@ -78,10 +66,6 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"34-1.2"},
 				ImageArchitecture:    "amd64",
 			},
-			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "fedora",
-			},
 			&api.Metadata{
 				Name:        "fedora",
 				Version:     "34",
@@ -90,8 +74,8 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "fedora",
+					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 				},
 			},
 		),
@@ -102,20 +86,12 @@ var _ = Describe("Fedora", func() {
 				AdditionalUniqueTags: []string{"34-1.2"},
 				ImageArchitecture:    "arm64",
 			},
-			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "fedora",
-			},
 			&api.Metadata{
 				Name:        "fedora",
 				Version:     "34",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
-				},
-				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "fedora",
 				},
 			},
 		),
@@ -130,8 +106,8 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.medium",
-						common.DefaultPreferenceEnv:   "fedora",
+						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
 				},
 				&fedora{
@@ -139,10 +115,6 @@ var _ = Describe("Fedora", func() {
 					Arch:    "aarch64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
-					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.medium",
-						common.DefaultPreferenceEnv:   "fedora",
-					},
 				},
 			},
 			{
@@ -152,8 +124,8 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.medium",
-						common.DefaultPreferenceEnv:   "fedora",
+						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
 				},
 				&fedora{
@@ -161,10 +133,6 @@ var _ = Describe("Fedora", func() {
 					Arch:    "aarch64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
-					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: "u1.medium",
-						common.DefaultPreferenceEnv:   "fedora",
-					},
 				},
 			},
 		}

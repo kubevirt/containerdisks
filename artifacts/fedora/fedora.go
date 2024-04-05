@@ -136,20 +136,12 @@ func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 	var artifacts [][]api.Artifact
 	for _, key := range versionKeys {
 		releases := versions[key]
-		var items []api.Artifact
+		var releaseArtifcats []api.Artifact
 		for _, release := range releases {
-			items = append(items,
-				New(
-					release.Version,
-					release.Arch,
-					map[string]string{
-						common.DefaultInstancetypeEnv: "u1.medium",
-						common.DefaultPreferenceEnv:   "fedora",
-					},
-				),
-			)
+			artifact := New(release.Version, release.Arch)
+			releaseArtifcats = append(releaseArtifcats, artifact)
 		}
-		artifacts = append(artifacts, items)
+		artifacts = append(artifacts, releaseArtifcats)
 	}
 	return artifacts, nil
 }
@@ -192,14 +184,29 @@ func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 	return false
 }
 
-func New(release, arch string, envVariables map[string]string) *fedora {
-	return &fedora{
-		Version:      release,
-		Arch:         arch,
-		Variant:      "Cloud",
-		getter:       &http.HTTPGetter{},
-		EnvVariables: envVariables,
+const (
+	defaultInstancetypeX86_64 = "u1.medium"
+	defaultPreferenceX86_64   = "fedora"
+)
+
+func (f *fedora) setEnvVariables() {
+	if f.Arch == "x86_64" {
+		f.EnvVariables = map[string]string{
+			common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+			common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+		}
 	}
+}
+
+func New(release, arch string) *fedora {
+	f := &fedora{
+		Version: release,
+		Arch:    arch,
+		Variant: "Cloud",
+		getter:  &http.HTTPGetter{},
+	}
+	f.setEnvVariables()
+	return f
 }
 
 func NewGatherer() *fedoraGatherer {
