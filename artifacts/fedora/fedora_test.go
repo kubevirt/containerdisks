@@ -23,16 +23,16 @@ var _ = Describe("Fedora", func() {
 			Expect(got).To(Equal(details))
 			Expect(c.Metadata()).To(Equal(metadata))
 		},
-		Entry("fedora:35 x86_64", "35", "x86_64", "testdata/releases.json",
+		Entry("fedora:39 x86_64", "39", "x86_64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "fe84502779b3477284a8d4c86731f642ca10dd3984d2b5eccdf82630a9ca2de6",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/x86_64/images/Fedora-Cloud-Base-35-1.2.x86_64.qcow2", //nolint:lll
-				AdditionalUniqueTags: []string{"35-1.2"},
+				SHA256Sum:            "ab5be5058c5c839528a7d6373934e0ce5ad6c8f80bd71ed3390032027da52f37",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"39-1.5"},
 				ImageArchitecture:    "amd64",
 			},
 			&api.Metadata{
 				Name:        "fedora",
-				Version:     "35",
+				Version:     "39",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
@@ -43,32 +43,32 @@ var _ = Describe("Fedora", func() {
 				},
 			},
 		),
-		Entry("fedora:35 aarch64", "35", "aarch64", "testdata/releases.json",
+		Entry("fedora:39 aarch64", "39", "aarch64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "c71f2e6ce75b516d565e2c297ea9994c69b946cb3eaa0a4bbea400dbd6f59ae6",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/35/Cloud/aarch64/images/Fedora-Cloud-Base-35-1.2.aarch64.qcow2", //nolint:lll
-				AdditionalUniqueTags: []string{"35-1.2"},
+				SHA256Sum:            "765996d5b77481ca02d0ac06405641bf134ac920cfc1e60d981c64d7971162dc",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/aarch64/images/Fedora-Cloud-Base-39-1.5.aarch64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"39-1.5"},
 				ImageArchitecture:    "arm64",
 			},
 			&api.Metadata{
 				Name:        "fedora",
-				Version:     "35",
+				Version:     "39",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
 			},
 		),
-		Entry("fedora:34 x86_64", "34", "x86_64", "testdata/releases.json",
+		Entry("fedora:38 x86_64", "38", "x86_64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "b9b621b26725ba95442d9a56cbaa054784e0779a9522ec6eafff07c6e6f717ea",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.qcow2", //nolint:lll
-				AdditionalUniqueTags: []string{"34-1.2"},
+				SHA256Sum:            "d334670401ff3d5b4129fcc662cf64f5a6e568228af59076cc449a4945318482",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Cloud/x86_64/images/Fedora-Cloud-Base-38-1.6.x86_64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"38-1.6"},
 				ImageArchitecture:    "amd64",
 			},
 			&api.Metadata{
 				Name:        "fedora",
-				Version:     "34",
+				Version:     "38",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
@@ -79,16 +79,16 @@ var _ = Describe("Fedora", func() {
 				},
 			},
 		),
-		Entry("fedora:34 aarch64", "34", "aarch64", "testdata/releases.json",
+		Entry("fedora:38 aarch64", "38", "aarch64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "141f16f52bfbe159947267658a0dbfbbe96fd5b988a95d1271f9c9ed61156da2",
-				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/34/Cloud/aarch64/images/Fedora-Cloud-Base-34-1.2.aarch64.qcow2", //nolint:lll
-				AdditionalUniqueTags: []string{"34-1.2"},
+				SHA256Sum:            "ad71d22104a16e4f9efa93e61e8c7bce28de693f59c802586abbe85e9db55a65",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Cloud/aarch64/images/Fedora-Cloud-Base-38-1.6.aarch64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"38-1.6"},
 				ImageArchitecture:    "arm64",
 			},
 			&api.Metadata{
 				Name:        "fedora",
-				Version:     "34",
+				Version:     "38",
 				Description: description,
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
@@ -101,7 +101,7 @@ var _ = Describe("Fedora", func() {
 		artifacts := [][]api.Artifact{
 			{
 				&fedora{
-					Version: "36",
+					Version: "39",
 					Arch:    "x86_64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
@@ -111,7 +111,7 @@ var _ = Describe("Fedora", func() {
 					},
 				},
 				&fedora{
-					Version: "36",
+					Version: "39",
 					Arch:    "aarch64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
@@ -119,7 +119,7 @@ var _ = Describe("Fedora", func() {
 			},
 			{
 				&fedora{
-					Version: "35",
+					Version: "38",
 					Arch:    "x86_64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
@@ -129,7 +129,7 @@ var _ = Describe("Fedora", func() {
 					},
 				},
 				&fedora{
-					Version: "35",
+					Version: "38",
 					Arch:    "aarch64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},

@@ -44,7 +44,7 @@ type fedoraGatherer struct {
 	getter  http.Getter
 }
 
-const minimumVersion = 35
+const minimumVersion = 38
 
 //nolint:lll
 const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/240px-Fedora_logo.svg.png" alt="drawing" width="15"/> Fedora [Cloud](https://alt.fedoraproject.org/cloud/) images for KubeVirt.
