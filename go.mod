@@ -1,6 +1,6 @@
 module kubevirt.io/containerdisks
 
-go 1.21
+go 1.22.2
 
 replace (
 	// Fixed to versions v0.26.x for kubevirt.io/client-go v1.2.x
