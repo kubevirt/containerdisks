@@ -1,6 +1,7 @@
 module kubevirt.io/containerdisks
 
 go 1.21
+toolchain go1.22.2
 
 replace (
 	// Fixed to versions v0.26.x for kubevirt.io/client-go v1.2.x
@@ -13,7 +14,7 @@ require (
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/google/go-containerregistry v0.19.1
 	github.com/onsi/ginkgo/v2 v2.17.1
-	github.com/onsi/gomega v1.32.0
+	github.com/onsi/gomega v1.33.0
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
@@ -21,7 +22,7 @@ require (
 	golang.org/x/crypto v0.22.0
 	golang.org/x/text v0.14.0
 	k8s.io/api v0.29.3
-	k8s.io/apimachinery v0.29.4
+	k8s.io/apimachinery v0.30.0
 	k8s.io/utils v0.0.0-20240310230437-4693a0247e57
 	kubevirt.io/api v1.2.0
 	kubevirt.io/client-go v1.2.0
@@ -45,8 +46,8 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v26.0.1+incompatible // indirect
-	github.com/docker/docker v26.0.1+incompatible // indirect
+	github.com/docker/cli v26.0.2+incompatible // indirect
+	github.com/docker/docker v26.0.2+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.1 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
