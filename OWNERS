@@ -1,14 +1,14 @@
 approvers:
   - 0xFelix
-  - davidvossel
   - dominikholler
   - lyarwood
+emeritus_approvers:
+  - davidvossel
   - rmohr
 reviewers:
   - 0xFelix
   - akrejcir
+  - codingben
   - ksimon1
   - lyarwood
   - jcanocan
-  - opokornyy
-
