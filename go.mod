@@ -23,8 +23,8 @@ require (
 	k8s.io/api v0.29.5
 	k8s.io/apimachinery v0.30.1
 	k8s.io/utils v0.0.0-20240310230437-4693a0247e57
-	kubevirt.io/api v1.2.0
-	kubevirt.io/client-go v1.2.0
+	kubevirt.io/api v1.2.1
+	kubevirt.io/client-go v1.2.1
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -48,7 +48,7 @@ require (
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
-	github.com/emicklei/go-restful/v3 v3.12.0 // indirect
+	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-kit/kit v0.13.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
