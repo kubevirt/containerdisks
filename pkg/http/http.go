@@ -22,8 +22,7 @@ type ReadCloserWithChecksum interface {
 	Checksum() string
 }
 
-type HTTPGetter struct {
-}
+type HTTPGetter struct{}
 
 func (h *HTTPGetter) GetAll(fileURL string) ([]byte, error) {
 	return h.GetAllWithContext(context.Background(), fileURL)

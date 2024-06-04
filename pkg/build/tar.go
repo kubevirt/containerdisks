@@ -59,7 +59,7 @@ func addFileToTarWriter(file io.Reader, stat os.FileInfo, modTime time.Time, tar
 	header := &tar.Header{
 		Typeflag: tar.TypeDir,
 		Name:     "disk/",
-		Mode:     0555,
+		Mode:     0o555,
 		Uid:      107,
 		Gid:      107,
 		Uname:    "qemu",
@@ -80,7 +80,7 @@ func addFileToTarWriter(file io.Reader, stat os.FileInfo, modTime time.Time, tar
 		Gname:    "qemu",
 		Name:     "disk/disk.img",
 		Size:     stat.Size(),
-		Mode:     0444,
+		Mode:     0o444,
 		ModTime:  stat.ModTime(),
 	}
 

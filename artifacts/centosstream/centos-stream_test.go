@@ -15,7 +15,8 @@ import (
 var _ = Describe("CentosStream", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
 		func(release, arch, mockFile string, details *api.ArtifactDetails,
-			exampleUserData *docs.UserData, envVariables map[string]string, metadata *api.Metadata) {
+			exampleUserData *docs.UserData, envVariables map[string]string, metadata *api.Metadata,
+		) {
 			c := New(release, arch, exampleUserData, envVariables)
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
