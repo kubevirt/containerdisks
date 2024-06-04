@@ -70,7 +70,7 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	return nil, fmt.Errorf("file %q does not exist in the sha256sum file: %v", c.Variant, err)
 }
 
-func getURLsAndChecksumFormat(version string) (baseURL string, checksumURL string, checksumFormat hashsum.ChecksumFormat) {
+func getURLsAndChecksumFormat(version string) (baseURL, checksumURL string, checksumFormat hashsum.ChecksumFormat) {
 	switch {
 	case strings.HasPrefix(version, "7-"):
 		baseURL = "https://cloud.centos.org/centos/7/images/"

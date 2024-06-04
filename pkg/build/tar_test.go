@@ -16,7 +16,7 @@ var _ = Describe("Tar", func() {
 		const imageContent = "hello"
 
 		imageName := filepath.Join(GinkgoT().TempDir(), "image")
-		err := os.WriteFile(imageName, []byte(imageContent), 0600)
+		err := os.WriteFile(imageName, []byte(imageContent), 0o600)
 		Expect(err).ToNot(HaveOccurred())
 
 		imageStat, err := os.Stat(imageName)

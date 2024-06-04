@@ -14,7 +14,7 @@ import (
 )
 
 type QuayClient interface {
-	Update(ctx context.Context, repository string, description string, public bool) error
+	Update(ctx context.Context, repository, description string, public bool) error
 }
 
 type quayClient struct {
@@ -41,7 +41,7 @@ func (q *quayClient) header() (http.Header, error) {
 	return header, nil
 }
 
-func (q *quayClient) json(ctx context.Context, method string, repo string, subresource string, jsonObj interface{}) error {
+func (q *quayClient) json(ctx context.Context, method, repo, subresource string, jsonObj interface{}) error {
 	content, err := json.Marshal(jsonObj)
 	if err != nil {
 		return fmt.Errorf("failed unmarshalling struct: %v", err)
@@ -67,7 +67,7 @@ func (q *quayClient) json(ctx context.Context, method string, repo string, subre
 	return nil
 }
 
-func (q *quayClient) Update(ctx context.Context, repository string, description string) error {
+func (q *quayClient) Update(ctx context.Context, repository, description string) error {
 	if err := q.json(ctx, http.MethodPut, repository, "", &Description{Description: description}); err != nil {
 		return fmt.Errorf("error updating the repository description: %v", err)
 	}
@@ -78,7 +78,7 @@ func (q *quayClient) Update(ctx context.Context, repository string, description 
 	return nil
 }
 
-func NewQuayClient(tokenFile string, org string) *quayClient {
+func NewQuayClient(tokenFile, org string) *quayClient {
 	return &quayClient{tokenFile: tokenFile, org: org}
 }
 

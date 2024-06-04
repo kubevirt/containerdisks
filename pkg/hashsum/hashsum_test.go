@@ -95,7 +95,6 @@ var _ = Describe("Hashsum", func() {
 		Entry("RHCOS", "testdata/gnu.checksum", ChecksumFormatGNU, checksumGNUExpected),
 		Entry("CentOS-Stream Broken", "testdata/broken.checksum", ChecksumFormatBSD, checksumBrokenExpected),
 	)
-
 })
 
 func TestHashsum(t *testing.T) {

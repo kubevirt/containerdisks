@@ -3,6 +3,9 @@ LOCALBIN ?= $(shell pwd)/bin
 $(LOCALBIN):
 	mkdir -p $(LOCALBIN)
 
+## Tool Binaries
+GOFUMPT ?= $(LOCALBIN)/gofumpt
+
 all: test medius
 
 clean:
@@ -11,23 +14,23 @@ clean:
 medius:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/medius kubevirt.io/containerdisks/cmd/medius
 
-fmt:
+fmt: gofumpt
 	go mod tidy -compat=1.22
-	gofmt -s -w .
+	$(GOFUMPT) -w -extra .
 
 .PHONY: vendor
 vendor:
 	go mod vendor
 
 GOLANGCI_LINT ?= $(LOCALBIN)/golangci-lint
-GOLANGCI_LINT_VERSION ?= v1.57.1
+GOLANGCI_LINT_VERSION ?= v1.57.2
 
 .PHONY: lint
 lint:
 	test -s $(GOLANGCI_LINT) || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(LOCALBIN) $(GOLANGCI_LINT_VERSION)
 	CGO_ENABLED=0 $(GOLANGCI_LINT) run --timeout 5m
 
-GINKGO_VERSION ?= v2.17.1
+GINKGO_VERSION ?= v2.19.0
 GINKGO_TIMEOUT ?= 2h
 
 .PHONY: getginkgo
@@ -36,6 +39,11 @@ getginkgo:
 
 test: lint
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go run github.com/onsi/ginkgo/v2/ginkgo@$(GINKGO_VERSION) -v -timeout $(GINKGO_TIMEOUT) ./...
+
+.PHONY: gofumpt
+gofumpt: $(GOFUMPT) ## Download gofumpt locally if necessary.
+$(GOFUMPT): $(LOCALBIN)
+	test -s $(LOCALBIN)/gofumpt || GOBIN=$(LOCALBIN) go install mvdan.cc/gofumpt@latest
 
 .PHONY: cluster-up
 cluster-up:

@@ -134,13 +134,13 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 
 	vmClient := client.VirtualMachine(o.VerifyImagesOptions.Namespace)
 	log.Info("Creating VM")
-	if vm, err = vmClient.Create(ctx, vm); err != nil {
+	if vm, err = vmClient.Create(ctx, vm, metav1.CreateOptions{}); err != nil {
 		log.WithError(err).Error("Failed to create VM")
 		return err
 	}
 
 	defer func() {
-		if err = vmClient.Delete(ctx, vm.Name, &metav1.DeleteOptions{GracePeriodSeconds: ptr.To[int64](0)}); err != nil {
+		if err = vmClient.Delete(ctx, vm.Name, metav1.DeleteOptions{GracePeriodSeconds: ptr.To[int64](0)}); err != nil {
 			log.WithError(err).Error("Failed to delete VM")
 		}
 	}()
@@ -159,7 +159,7 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 		return err
 	}
 
-	vmi, err := client.VirtualMachineInstance(o.VerifyImagesOptions.Namespace).Get(ctx, vm.Name, &metav1.GetOptions{})
+	vmi, err := client.VirtualMachineInstance(o.VerifyImagesOptions.Namespace).Get(ctx, vm.Name, metav1.GetOptions{})
 	if err != nil {
 		log.WithError(err).Error("Failed to get VMI")
 		return err
@@ -227,8 +227,7 @@ func randName(name string) string {
 
 func waitVMReady(ctx context.Context, name string, client kvirtcli.VirtualMachineInterface, timeout int) error {
 	return wait.PollUntilContextTimeout(ctx, time.Second, time.Duration(timeout)*time.Second, true, func(_ context.Context) (bool, error) {
-		vm, err := client.Get(ctx, name, &metav1.GetOptions{})
-
+		vm, err := client.Get(ctx, name, metav1.GetOptions{})
 		if err != nil {
 			return false, err
 		}

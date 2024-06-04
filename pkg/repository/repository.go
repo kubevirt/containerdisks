@@ -36,8 +36,7 @@ type Repository interface {
 	CopyImage(ctx context.Context, srcRef, dstRef string, insecure bool) error
 }
 
-type RepositoryImpl struct {
-}
+type RepositoryImpl struct{}
 
 func (r RepositoryImpl) ImageMetadata(imgRef, arch string, insecure bool) (imageInfo *ImageInfo, retErr error) {
 	sys := &types.SystemContext{

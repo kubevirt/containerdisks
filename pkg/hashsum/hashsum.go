@@ -14,8 +14,10 @@ const (
 	ChecksumFormatGNU
 )
 
-var bsdLineRex = regexp.MustCompile(`^SHA256 +\((?P<name>[^)]+)\) += +(?P<checksum>[a-z0-9]+)$`)
-var gnuLineRex = regexp.MustCompile(`^(?P<checksum>[0-9a-z]+) +(?P<name>\S+)$`)
+var (
+	bsdLineRex = regexp.MustCompile(`^SHA256 +\((?P<name>[^)]+)\) += +(?P<checksum>[a-z0-9]+)$`)
+	gnuLineRex = regexp.MustCompile(`^(?P<checksum>[0-9a-z]+) +(?P<name>\S+)$`)
+)
 
 func Parse(stream io.Reader, format ChecksumFormat) (map[string]string, error) {
 	// The regex should match the group as a whole and both subgroups

@@ -25,7 +25,8 @@ type workerResult struct {
 }
 
 func spawnWorkers(ctx context.Context, o *common.Options,
-	fn func(*common.Entry) (*api.ArtifactResult, error)) (matched bool, resultsChan chan workerResult, err error) {
+	fn func(*common.Entry) (*api.ArtifactResult, error),
+) (matched bool, resultsChan chan workerResult, err error) {
 	registry := common.NewRegistry()
 	count := len(registry)
 	errChan := make(chan error, count)
@@ -89,7 +90,7 @@ func writeResultsFile(fileName string, results map[string]api.ArtifactResult) er
 		return err
 	}
 
-	const permissionUserReadWrite = 0600
+	const permissionUserReadWrite = 0o600
 	err = os.WriteFile(fileName, data, permissionUserReadWrite)
 	if err != nil {
 		return err
