@@ -38,10 +38,11 @@ type fedora struct {
 }
 
 type fedoraGatherer struct {
-	Version string
-	Archs   []string
-	Variant string
-	getter  http.Getter
+	Version    string
+	Archs      []string
+	Variant    string
+	Subvariant string
+	getter     http.Getter
 }
 
 const minimumVersion = 38
@@ -177,6 +178,7 @@ func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 		if release.Arch == arch {
 			return version >= minimumVersion &&
 				release.Variant == f.Variant &&
+				release.Subvariant == f.Subvariant &&
 				strings.HasSuffix(release.Link, "qcow2")
 		}
 	}
@@ -211,8 +213,9 @@ func New(release, arch string) *fedora {
 
 func NewGatherer() *fedoraGatherer {
 	return &fedoraGatherer{
-		Archs:   []string{"x86_64", "aarch64"},
-		Variant: "Cloud",
-		getter:  &http.HTTPGetter{},
+		Archs:      []string{"x86_64", "aarch64"},
+		Variant:    "Cloud",
+		Subvariant: "Cloud_Base",
+		getter:     &http.HTTPGetter{},
 	}
 }
