@@ -3,6 +3,7 @@ package fedora
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -53,6 +54,8 @@ const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/th
 <br />
 Visit [getfedora.org](https://getfedora.org/) to learn more about the Fedora project.`
 
+var additionalUniqueTagRegExp = regexp.MustCompile(`\d+-\d+\.\d+`)
+
 func (f *fedora) Metadata() *api.Metadata {
 	return &api.Metadata{
 		Name:        "fedora",
@@ -76,17 +79,19 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 			continue
 		}
 
+		details := &api.ArtifactDetails{
+			SHA256Sum:         release.Sha256,
+			DownloadURL:       release.Link,
+			ImageArchitecture: architecture.GetImageArchitecture(f.Arch),
+		}
+
 		components := strings.Split(release.Link, "/")
 		fileName := components[len(components)-1]
-		suffix := fmt.Sprintf(".%s.qcow2", f.Arch)
-		additionalTag := strings.TrimSuffix(strings.TrimPrefix(fileName, "Fedora-Cloud-Base-"), suffix)
+		if matches := additionalUniqueTagRegExp.FindStringSubmatch(fileName); len(matches) > 0 {
+			details.AdditionalUniqueTags = append(details.AdditionalUniqueTags, matches[0])
+		}
 
-		return &api.ArtifactDetails{
-			SHA256Sum:            release.Sha256,
-			DownloadURL:          release.Link,
-			AdditionalUniqueTags: []string{additionalTag},
-			ImageArchitecture:    architecture.GetImageArchitecture(f.Arch),
-		}, nil
+		return details, nil
 	}
 
 	return nil, fmt.Errorf("no release information in releases.json for fedora:%q found", f.Version)
