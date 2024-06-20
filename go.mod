@@ -102,7 +102,7 @@ require (
 	github.com/ostreedev/ostree-go v0.0.0-20210805093236-719684c64e4f // indirect
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.74.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/sylabs/sif/v2 v2.16.0 // indirect
+	github.com/sylabs/sif/v2 v2.17.0 // indirect
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	github.com/tchap/go-patricia/v2 v2.3.1 // indirect
 	github.com/vbatts/tar-split v0.11.5 // indirect
@@ -127,7 +127,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/apiextensions-apiserver v0.29.5 // indirect
 	k8s.io/client-go v12.0.0+incompatible // indirect
-	k8s.io/klog/v2 v2.130.0 // indirect
+	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240322212309-b815d8309940 // indirect
 	kubevirt.io/containerized-data-importer-api v1.59.0 // indirect
 	kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 // indirect
