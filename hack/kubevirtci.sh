@@ -29,6 +29,8 @@ function kubevirtci::up() {
   ${_kubectl} apply -f "https://github.com/kubevirt/kubevirt/releases/download/${LATEST}/kubevirt-cr.yaml"
   echo "waiting for kubevirt to become ready, this can take a few minutes..."
   ${_kubectl} -n kubevirt wait kv kubevirt --for condition=Available --timeout=15m
+  echo "deploying common-instancetypes from main..."
+  ${_kubectl} apply -k https://github.com/kubevirt/common-instancetypes.git
 }
 
 function kubevirtci::down() {
