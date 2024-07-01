@@ -9,6 +9,7 @@ import (
 	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
+	"kubevirt.io/containerdisks/artifacts/opensuse/leap"
 	"kubevirt.io/containerdisks/artifacts/opensuse/tumbleweed"
 	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
@@ -63,6 +64,19 @@ var staticRegistry = []Entry{
 			tumbleweed.New("x86_64"),
 		},
 		UseForDocs: true,
+	},
+	{
+		Artifacts: []api.Artifact{
+			leap.New("x86_64", "15.6"),
+			leap.New("aarch64", "15.6"),
+		},
+		UseForDocs: true,
+	},
+	{
+		Artifacts: []api.Artifact{
+			leap.New("x86_64", "15.5"),
+			leap.New("aarch64", "15.5"),
+		},
 	},
 	// for testing only
 	{
