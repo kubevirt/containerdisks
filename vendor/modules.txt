@@ -491,8 +491,8 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit; go 1.12
 github.com/spf13/pflag
-# github.com/sylabs/sif/v2 v2.17.0
-## explicit; go 1.21
+# github.com/sylabs/sif/v2 v2.17.1
+## explicit; go 1.21.0
 github.com/sylabs/sif/v2/pkg/sif
 # github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635
 ## explicit
