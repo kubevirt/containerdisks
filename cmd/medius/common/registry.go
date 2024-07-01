@@ -9,6 +9,7 @@ import (
 	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
+	"kubevirt.io/containerdisks/artifacts/opensuse/tumbleweed"
 	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/common"
@@ -56,6 +57,12 @@ var staticRegistry = []Entry{
 			ubuntu.New("20.04", "aarch64", nil),
 		},
 		UseForDocs: false,
+	},
+	{
+		Artifacts: []api.Artifact{
+			tumbleweed.New("x86_64"),
+		},
+		UseForDocs: true,
 	},
 	// for testing only
 	{
