@@ -1,3 +1,4 @@
+//nolint:lll
 package images
 
 import (
@@ -22,6 +23,7 @@ import (
 
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
+	pkgCommon "kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 )
 
@@ -62,8 +64,8 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				}
 
 				errString := ""
-				err := verifyArtifact(cmd.Context(), artifact, r, options, client)
-				if err != nil {
+				v := newVerifyArtifact(artifact, r, options, client)
+				if err = v.Do(cmd.Context()); err != nil {
 					errString = err.Error()
 				}
 
@@ -113,35 +115,66 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 	return verifyCmd
 }
 
-func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult, o *common.Options, client kvirtcli.KubevirtClient) error {
-	log := common.Logger(a)
+type verifyArtifact struct {
+	artifact api.Artifact
+	result   api.ArtifactResult
+	options  *common.Options
+	client   kvirtcli.KubevirtClient
+	vmClient kvirtcli.VirtualMachineInterface
+	log      *logrus.Entry
+}
 
-	if len(res.Tags) == 0 {
-		err := errors.New("no containerdisks to verify")
-		log.Error(err)
+func newVerifyArtifact(artifact api.Artifact, result api.ArtifactResult, options *common.Options, client kvirtcli.KubevirtClient) *verifyArtifact {
+	log := common.Logger(artifact)
+	vmClient := client.VirtualMachine(options.VerifyImagesOptions.Namespace)
+	return &verifyArtifact{
+		artifact: artifact,
+		result:   result,
+		options:  options,
+		client:   client,
+		vmClient: vmClient,
+		log:      log,
+	}
+}
+
+func (v *verifyArtifact) Do(ctx context.Context) error {
+	if len(v.result.Tags) == 0 {
+		err := fmt.Errorf("no containerdisks to verify")
+		v.log.Error(err)
 		return err
 	}
 
-	imgRef := path.Join(o.VerifyImagesOptions.Registry, res.Tags[0])
-	vm, username, privateKey, err := createVM(a, imgRef)
+	v.log.Info("Verifying documentation VirtualMachine")
+	if err := v.verifyVM(ctx, v.createVM); err != nil {
+		return err
+	}
+
+	if v.artifact.Metadata() != nil && v.artifact.Metadata().EnvVariables != nil {
+		v.log.Info("Verifying ENV variable VirtualMachine using ", v.artifact.Metadata().EnvVariables)
+		return v.verifyVM(ctx, v.createVMWithEnvVariables)
+	}
+
+	return nil
+}
+
+func (v *verifyArtifact) verifyVM(ctx context.Context, createVM func() (*v1.VirtualMachine, string, ed25519.PrivateKey, error)) error {
+	vm, username, privateKey, err := createVM()
 	if err != nil {
-		log.WithError(err).Error("Failed to create VM object")
+		v.log.WithError(err).Error("Failed to create VM object")
 		return err
 	}
 	if errors.Is(ctx.Err(), context.Canceled) {
 		return ctx.Err()
 	}
-
-	vmClient := client.VirtualMachine(o.VerifyImagesOptions.Namespace)
-	log.Info("Creating VM")
-	if vm, err = vmClient.Create(ctx, vm, metav1.CreateOptions{}); err != nil {
-		log.WithError(err).Error("Failed to create VM")
+	v.log.Info("Creating VM")
+	if vm, err = v.vmClient.Create(ctx, vm, metav1.CreateOptions{}); err != nil {
+		v.log.WithError(err).Error("Failed to create VM")
 		return err
 	}
 
 	defer func() {
-		if err = vmClient.Delete(ctx, vm.Name, metav1.DeleteOptions{GracePeriodSeconds: ptr.To[int64](0)}); err != nil {
-			log.WithError(err).Error("Failed to delete VM")
+		if err = v.vmClient.Delete(ctx, vm.Name, metav1.DeleteOptions{GracePeriodSeconds: ptr.To[int64](0)}); err != nil {
+			v.log.WithError(err).Error("Failed to delete VM")
 		}
 	}()
 
@@ -149,29 +182,29 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 		return ctx.Err()
 	}
 
-	log.Info("Waiting for VM to be ready")
-	if err = waitVMReady(ctx, vm.Name, vmClient, o.VerifyImagesOptions.Timeout); err != nil {
+	v.log.Info("Waiting for VM to be ready")
+	if err = waitVMReady(ctx, vm.Name, v.vmClient, v.options.VerifyImagesOptions.Timeout); err != nil {
 		if errors.Is(ctx.Err(), context.Canceled) {
 			return ctx.Err()
 		}
 
-		log.WithError(err).Error("VM not ready")
+		v.log.WithError(err).Error("VM not ready")
 		return err
 	}
 
-	vmi, err := client.VirtualMachineInstance(o.VerifyImagesOptions.Namespace).Get(ctx, vm.Name, metav1.GetOptions{})
+	vmi, err := v.client.VirtualMachineInstance(v.options.VerifyImagesOptions.Namespace).Get(ctx, vm.Name, metav1.GetOptions{})
 	if err != nil {
-		log.WithError(err).Error("Failed to get VMI")
+		v.log.WithError(err).Error("Failed to get VMI")
 		return err
 	}
 	if errors.Is(ctx.Err(), context.Canceled) {
 		return ctx.Err()
 	}
 
-	log.Info("Running tests on VMI")
-	for _, testFn := range a.Tests() {
+	v.log.Info("Running tests on VMI")
+	for _, testFn := range v.artifact.Tests() {
 		if err = testFn(ctx, vmi, &api.ArtifactTestParams{Username: username, PrivateKey: privateKey}); err != nil {
-			log.WithError(err).Error("Failed to verify containerdisk")
+			v.log.WithError(err).Error("Failed to verify containerdisk")
 			return err
 		}
 		if errors.Is(ctx.Err(), context.Canceled) {
@@ -179,33 +212,71 @@ func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult,
 		}
 	}
 
-	log.Info("Tests successful")
+	v.log.Info("Tests successful")
 	return nil
 }
 
-func createVM(artifact api.Artifact, imgRef string) (*v1.VirtualMachine, string, ed25519.PrivateKey, error) {
-	metadata := artifact.Metadata()
-	username := metadata.ExampleUserData.Username
+func (v *verifyArtifact) createMetadata() (username, userData string, privateKey ed25519.PrivateKey, err error) {
+	username = v.artifact.Metadata().ExampleUserData.Username
 
-	_, privateKey, err := ed25519.GenerateKey(rand.Reader)
+	_, privateKey, err = ed25519.GenerateKey(rand.Reader)
 	if err != nil {
-		return nil, "", nil, err
+		return "", "", nil, err
 	}
 
 	publicKey, err := marshallPublicKey(&privateKey)
 	if err != nil {
-		return nil, "", nil, err
+		return "", "", nil, err
 	}
 
-	userData := artifact.UserData(
+	userData = v.artifact.UserData(
 		&docs.UserData{
 			Username:       username,
 			AuthorizedKeys: []string{publicKey},
 		},
 	)
 
+	return username, userData, privateKey, nil
+}
+
+func (v *verifyArtifact) createVMWithEnvVariables() (*v1.VirtualMachine, string, ed25519.PrivateKey, error) {
+	username, userData, privateKey, err := v.createMetadata()
+	if err != nil {
+		return nil, "", nil, err
+	}
+
+	metadata := v.artifact.Metadata()
 	name := randName(metadata.Name)
-	vm := artifact.VM(name, imgRef, userData)
+	imgRef := path.Join(v.options.VerifyImagesOptions.Registry, v.result.Tags[0])
+	vm := v.artifact.VM(name, imgRef, userData)
+	vm.Spec.Template.Spec.TerminationGracePeriodSeconds = ptr.To[int64](0)
+
+	if instancetype, ok := metadata.EnvVariables[pkgCommon.DefaultInstancetypeEnv]; ok {
+		vm.Spec.Instancetype = &v1.InstancetypeMatcher{
+			Name: instancetype,
+		}
+		vm.Spec.Template.Spec.Domain.Resources = v1.ResourceRequirements{}
+	}
+
+	if preference, ok := metadata.EnvVariables[pkgCommon.DefaultPreferenceEnv]; ok {
+		vm.Spec.Preference = &v1.PreferenceMatcher{
+			Name: preference,
+		}
+		vm.Spec.Template.Spec.Domain.Devices.Disks[0].Disk.Bus = ""
+	}
+
+	return vm, username, privateKey, nil
+}
+
+func (v *verifyArtifact) createVM() (*v1.VirtualMachine, string, ed25519.PrivateKey, error) {
+	username, userData, privateKey, err := v.createMetadata()
+	if err != nil {
+		return nil, "", nil, err
+	}
+
+	name := randName(v.artifact.Metadata().Name)
+	imgRef := path.Join(v.options.VerifyImagesOptions.Registry, v.result.Tags[0])
+	vm := v.artifact.VM(name, imgRef, userData)
 	vm.Spec.Template.Spec.TerminationGracePeriodSeconds = ptr.To[int64](0)
 	return vm, username, privateKey, nil
 }
