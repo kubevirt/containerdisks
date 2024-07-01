@@ -1,4 +1,4 @@
-package common
+package instancetype
 
 const (
 	DefaultInstancetypeEnv = "INSTANCETYPE_KUBEVIRT_IO_DEFAULT_INSTANCETYPE"

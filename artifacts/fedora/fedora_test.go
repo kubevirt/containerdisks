@@ -7,9 +7,9 @@ import (
 	. "github.com/onsi/gomega"
 
 	"kubevirt.io/containerdisks/pkg/api"
-	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
+	"kubevirt.io/containerdisks/pkg/instancetype"
 	"kubevirt.io/containerdisks/testutil"
 )
 
@@ -38,8 +38,8 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
-					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+					instancetype.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					instancetype.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 				},
 			},
 		),
@@ -74,8 +74,8 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
-					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+					instancetype.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					instancetype.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 				},
 			},
 		),
@@ -106,8 +106,8 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
-						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+						instancetype.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						instancetype.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
 				},
 				&fedora{
@@ -124,8 +124,8 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
-						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+						instancetype.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						instancetype.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
 				},
 				&fedora{

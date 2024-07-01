@@ -23,8 +23,8 @@ import (
 
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
-	pkgCommon "kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
+	"kubevirt.io/containerdisks/pkg/instancetype"
 )
 
 func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
@@ -251,14 +251,14 @@ func (v *verifyArtifact) createVMWithEnvVariables() (*v1.VirtualMachine, string,
 	vm := v.artifact.VM(name, imgRef, userData)
 	vm.Spec.Template.Spec.TerminationGracePeriodSeconds = ptr.To[int64](0)
 
-	if instancetype, ok := metadata.EnvVariables[pkgCommon.DefaultInstancetypeEnv]; ok {
+	if instancetypeName, ok := metadata.EnvVariables[instancetype.DefaultInstancetypeEnv]; ok {
 		vm.Spec.Instancetype = &v1.InstancetypeMatcher{
-			Name: instancetype,
+			Name: instancetypeName,
 		}
 		vm.Spec.Template.Spec.Domain.Resources = v1.ResourceRequirements{}
 	}
 
-	if preference, ok := metadata.EnvVariables[pkgCommon.DefaultPreferenceEnv]; ok {
+	if preference, ok := metadata.EnvVariables[instancetype.DefaultPreferenceEnv]; ok {
 		vm.Spec.Preference = &v1.PreferenceMatcher{
 			Name: preference,
 		}
