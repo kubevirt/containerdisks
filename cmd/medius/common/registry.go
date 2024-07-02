@@ -40,13 +40,6 @@ var staticRegistry = []Entry{
 	},
 	{
 		Artifacts: []api.Artifact{
-			centosstream.New("8", "x86_64", &docs.UserData{Username: "centos"}, defaultEnvVariables("u1.medium", "centos.stream8")),
-			centosstream.New("8", "aarch64", &docs.UserData{Username: "centos"}, nil),
-		},
-		UseForDocs: false,
-	},
-	{
-		Artifacts: []api.Artifact{
 			ubuntu.New("24.04", "x86_64", defaultEnvVariables("u1.medium", "ubuntu")),
 			ubuntu.New("24.04", "aarch64", nil),
 		},
