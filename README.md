@@ -2,10 +2,12 @@
 
 | Name             | Architecture  |
 |------------------|---------------|
-| [CentOS Stream](https://quay.io/repository/containerdisks/centos-stream) | amd64, arm64   |
-| [Fedora](https://quay.io/repository/containerdisks/fedora)               | amd64, arm64   |
-| [CentOS](https://quay.io/repository/containerdisks/centos)               | amd64          |
-| [Ubuntu](https://quay.io/repository/containerdisks/ubuntu)               | amd64, arm64   |
+| [CentOS Stream](https://quay.io/repository/containerdisks/centos-stream)            | amd64, arm64   |
+| [Fedora](https://quay.io/repository/containerdisks/fedora)                          | amd64, arm64   |
+| [CentOS](https://quay.io/repository/containerdisks/centos)                          | amd64          |
+| [Ubuntu](https://quay.io/repository/containerdisks/ubuntu)                          | amd64, arm64   |
+| [OpenSUSE Tumbleweed](https://quay.io/repository/containerdisks/opensuse-tumbleweed)| amd64          |
+| [OpenSUSE Leap](https://quay.io/repository/containerdisks/opensuse-leap)            | amd64, arm64   |
 
 ## Building and publishing containerdisks
 
