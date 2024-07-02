@@ -16,10 +16,11 @@ import (
 )
 
 type tumbleweed struct {
-	Arch       string
-	variant    string
-	subVariant string
-	getter     http.Getter
+	Arch         string
+	variant      string
+	subVariant   string
+	getter       http.Getter
+	envVariables map[string]string
 }
 
 var _ api.Artifact = &tumbleweed{}
@@ -62,6 +63,7 @@ func (t *tumbleweed) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "opensuse",
 		},
+		EnvVariables: t.envVariables,
 	}
 }
 
@@ -84,11 +86,12 @@ func (t *tumbleweed) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(arch string) *tumbleweed {
+func New(arch string, envVariables map[string]string) *tumbleweed {
 	return &tumbleweed{
-		Arch:       arch,
-		variant:    "openSUSE-Tumbleweed-Minimal-VM",
-		subVariant: "Cloud",
-		getter:     &http.HTTPGetter{},
+		Arch:         arch,
+		variant:      "openSUSE-Tumbleweed-Minimal-VM",
+		subVariant:   "Cloud",
+		getter:       &http.HTTPGetter{},
+		envVariables: envVariables,
 	}
 }
