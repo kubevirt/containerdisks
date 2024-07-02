@@ -14,9 +14,10 @@ import (
 )
 
 type leap struct {
-	Arch    string
-	Version string
-	getter  http.Getter
+	Arch         string
+	Version      string
+	getter       http.Getter
+	envVariables map[string]string
 }
 
 var _ api.Artifact = &leap{}
@@ -50,6 +51,7 @@ func (l *leap) Metadata() *api.Metadata {
 		ExampleUserData: docs.UserData{
 			Username: "opensuse",
 		},
+		EnvVariables: l.envVariables,
 	}
 }
 
@@ -72,10 +74,11 @@ func (l *leap) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(arch, version string) *leap {
+func New(arch, version string, envVariables map[string]string) *leap {
 	return &leap{
-		Arch:    arch,
-		Version: version,
-		getter:  &http.HTTPGetter{},
+		Arch:         arch,
+		Version:      version,
+		getter:       &http.HTTPGetter{},
+		envVariables: envVariables,
 	}
 }

@@ -61,21 +61,21 @@ var staticRegistry = []Entry{
 	},
 	{
 		Artifacts: []api.Artifact{
-			tumbleweed.New("x86_64"),
+			tumbleweed.New("x86_64", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
 		},
 		UseForDocs: true,
 	},
 	{
 		Artifacts: []api.Artifact{
-			leap.New("x86_64", "15.6"),
-			leap.New("aarch64", "15.6"),
+			leap.New("x86_64", "15.6", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("aarch64", "15.6", nil),
 		},
 		UseForDocs: true,
 	},
 	{
 		Artifacts: []api.Artifact{
-			leap.New("x86_64", "15.5"),
-			leap.New("aarch64", "15.5"),
+			leap.New("x86_64", "15.5", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("aarch64", "15.5", nil),
 		},
 	},
 	// for testing only
