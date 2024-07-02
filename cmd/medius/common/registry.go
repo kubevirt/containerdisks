@@ -5,7 +5,6 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"kubevirt.io/containerdisks/artifacts/centos"
 	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
@@ -25,12 +24,6 @@ type Entry struct {
 }
 
 var staticRegistry = []Entry{
-	{
-		Artifacts: []api.Artifact{
-			centos.New("7-2009", defaultEnvVariables("u1.medium", "centos.7")),
-		},
-		UseForDocs: true,
-	},
 	{
 		Artifacts: []api.Artifact{
 			centosstream.New("9", "x86_64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream9")),
