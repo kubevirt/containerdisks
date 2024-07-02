@@ -12,9 +12,9 @@ import (
 
 	"kubevirt.io/containerdisks/pkg/api"
 	"kubevirt.io/containerdisks/pkg/architecture"
-	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/http"
+	"kubevirt.io/containerdisks/pkg/instancetype"
 	"kubevirt.io/containerdisks/pkg/tests"
 )
 
@@ -199,8 +199,8 @@ const (
 func (f *fedora) setEnvVariables() {
 	if f.Arch == "x86_64" {
 		f.EnvVariables = map[string]string{
-			common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
-			common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+			instancetype.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+			instancetype.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 		}
 	}
 }

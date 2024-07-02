@@ -13,8 +13,8 @@ import (
 	"kubevirt.io/containerdisks/artifacts/opensuse/tumbleweed"
 	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
-	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
+	"kubevirt.io/containerdisks/pkg/instancetype"
 )
 
 type Entry struct {
@@ -128,8 +128,8 @@ func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 
 func defaultEnvVariables(defaultInstancetype, defaultPreference string) map[string]string {
 	return map[string]string{
-		common.DefaultInstancetypeEnv: defaultInstancetype,
-		common.DefaultPreferenceEnv:   defaultPreference,
+		instancetype.DefaultInstancetypeEnv: defaultInstancetype,
+		instancetype.DefaultPreferenceEnv:   defaultPreference,
 	}
 }
 

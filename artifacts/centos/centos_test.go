@@ -7,8 +7,8 @@ import (
 	. "github.com/onsi/gomega"
 
 	"kubevirt.io/containerdisks/pkg/api"
-	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
+	"kubevirt.io/containerdisks/pkg/instancetype"
 	"kubevirt.io/containerdisks/testutil"
 )
 
@@ -29,8 +29,8 @@ var _ = Describe("Centos", func() {
 				ImageArchitecture: "amd64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "centos.7",
+				instancetype.DefaultInstancetypeEnv: "u1.medium",
+				instancetype.DefaultPreferenceEnv:   "centos.7",
 			},
 			&api.Metadata{
 				Name:        "centos",
@@ -40,8 +40,8 @@ var _ = Describe("Centos", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "centos.7",
+					instancetype.DefaultInstancetypeEnv: "u1.medium",
+					instancetype.DefaultPreferenceEnv:   "centos.7",
 				},
 			},
 		),
@@ -52,8 +52,8 @@ var _ = Describe("Centos", func() {
 				ImageArchitecture: "amd64",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "centos.7",
+				instancetype.DefaultInstancetypeEnv: "u1.medium",
+				instancetype.DefaultPreferenceEnv:   "centos.7",
 			},
 			&api.Metadata{
 				Name:        "centos",
@@ -63,8 +63,8 @@ var _ = Describe("Centos", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "centos.7",
+					instancetype.DefaultInstancetypeEnv: "u1.medium",
+					instancetype.DefaultPreferenceEnv:   "centos.7",
 				},
 			},
 		),
