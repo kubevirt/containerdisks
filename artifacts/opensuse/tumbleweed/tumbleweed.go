@@ -46,9 +46,10 @@ func (t *tumbleweed) Inspect() (*api.ArtifactDetails, error) {
 	for file, checksum := range checksums {
 		if r.MatchString(file) {
 			return &api.ArtifactDetails{
-				SHA256Sum:         checksum,
-				DownloadURL:       baseURL + file,
-				ImageArchitecture: architecture.GetImageArchitecture(t.Arch),
+				SHA256Sum:            checksum,
+				DownloadURL:          baseURL + file,
+				ImageArchitecture:    architecture.GetImageArchitecture(t.Arch),
+				AdditionalUniqueTags: []string{"latest"},
 			}, nil
 		}
 	}
