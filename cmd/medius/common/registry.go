@@ -79,12 +79,6 @@ var staticRegistry = []Entry{
 		},
 		UseForDocs: true,
 	},
-	{
-		Artifacts: []api.Artifact{
-			leap.New("x86_64", "15.5", defaultEnvVariables("u1.medium", "opensuse.leap")),
-			leap.New("aarch64", "15.5", nil),
-		},
-	},
 	// for testing only
 	{
 		Artifacts: []api.Artifact{
