@@ -47,10 +47,17 @@ var staticRegistry = []Entry{
 	},
 	{
 		Artifacts: []api.Artifact{
+			ubuntu.New("24.04", "x86_64", defaultEnvVariables("u1.medium", "ubuntu")),
+			ubuntu.New("24.04", "aarch64", nil),
+		},
+		UseForDocs: true,
+	},
+	{
+		Artifacts: []api.Artifact{
 			ubuntu.New("22.04", "x86_64", defaultEnvVariables("u1.medium", "ubuntu")),
 			ubuntu.New("22.04", "aarch64", nil),
 		},
-		UseForDocs: true,
+		UseForDocs: false,
 	},
 	{
 		Artifacts: []api.Artifact{
