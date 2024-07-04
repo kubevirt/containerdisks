@@ -7,8 +7,8 @@ import (
 	. "github.com/onsi/gomega"
 
 	"kubevirt.io/containerdisks/pkg/api"
-	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
+	"kubevirt.io/containerdisks/pkg/instancetype"
 	"kubevirt.io/containerdisks/testutil"
 )
 
@@ -35,8 +35,8 @@ var _ = Describe("CentosStream", func() {
 				Username: "centos",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "centos.stream8",
+				instancetype.DefaultInstancetypeEnv: "u1.medium",
+				instancetype.DefaultPreferenceEnv:   "centos.stream8",
 			},
 			&api.Metadata{
 				Name:        "centos-stream",
@@ -46,8 +46,8 @@ var _ = Describe("CentosStream", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "centos.stream8",
+					instancetype.DefaultInstancetypeEnv: "u1.medium",
+					instancetype.DefaultPreferenceEnv:   "centos.stream8",
 				},
 			},
 		),
@@ -62,8 +62,8 @@ var _ = Describe("CentosStream", func() {
 				Username: "centos",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "centos.stream8",
+				instancetype.DefaultInstancetypeEnv: "u1.medium",
+				instancetype.DefaultPreferenceEnv:   "centos.stream8",
 			},
 			&api.Metadata{
 				Name:        "centos-stream",
@@ -73,8 +73,8 @@ var _ = Describe("CentosStream", func() {
 					Username: "centos",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "centos.stream8",
+					instancetype.DefaultInstancetypeEnv: "u1.medium",
+					instancetype.DefaultPreferenceEnv:   "centos.stream8",
 				},
 			},
 		),
@@ -89,8 +89,8 @@ var _ = Describe("CentosStream", func() {
 				Username: "cloud-user",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "centos.stream9",
+				instancetype.DefaultInstancetypeEnv: "u1.medium",
+				instancetype.DefaultPreferenceEnv:   "centos.stream9",
 			},
 			&api.Metadata{
 				Name:        "centos-stream",
@@ -100,8 +100,8 @@ var _ = Describe("CentosStream", func() {
 					Username: "cloud-user",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "centos.stream9",
+					instancetype.DefaultInstancetypeEnv: "u1.medium",
+					instancetype.DefaultPreferenceEnv:   "centos.stream9",
 				},
 			},
 		),
@@ -116,8 +116,8 @@ var _ = Describe("CentosStream", func() {
 				Username: "cloud-user",
 			},
 			map[string]string{
-				common.DefaultInstancetypeEnv: "u1.medium",
-				common.DefaultPreferenceEnv:   "centos.stream9",
+				instancetype.DefaultInstancetypeEnv: "u1.medium",
+				instancetype.DefaultPreferenceEnv:   "centos.stream9",
 			},
 			&api.Metadata{
 				Name:        "centos-stream",
@@ -127,8 +127,8 @@ var _ = Describe("CentosStream", func() {
 					Username: "cloud-user",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: "u1.medium",
-					common.DefaultPreferenceEnv:   "centos.stream9",
+					instancetype.DefaultInstancetypeEnv: "u1.medium",
+					instancetype.DefaultPreferenceEnv:   "centos.stream9",
 				},
 			},
 		),
