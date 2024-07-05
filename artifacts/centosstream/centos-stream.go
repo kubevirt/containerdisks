@@ -20,7 +20,9 @@ import (
 const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/CentOS_Graphical_Symbol.svg/64px-CentOS_Graphical_Symbol.svg.png" alt="drawing" height="15"/> Centos Stream Generic Cloud images for KubeVirt.
 <br />
 <br />
-Visit [centos.org](https://www.centos.org/) to learn more about the CentOS project.`
+Visit [centos.org](https://www.centos.org/) to learn more about the CentOS project.
+<br />
+Note that CentOS Stream 8 is EOL as of [May 31, 2024](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/) and the associated containerdisks are now deprecated ahead of [removal in the future](https://github.com/kubevirt/containerdisks/issues/152).`
 
 type centos struct {
 	Version         string
