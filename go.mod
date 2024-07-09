@@ -11,7 +11,7 @@ replace (
 require (
 	github.com/containers/image/v5 v5.31.1
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/google/go-containerregistry v0.19.2
+	github.com/google/go-containerregistry v0.20.0
 	github.com/onsi/ginkgo/v2 v2.19.0
 	github.com/onsi/gomega v1.33.1
 	github.com/pkg/errors v0.9.1
