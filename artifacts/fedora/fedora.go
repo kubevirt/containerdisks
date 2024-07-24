@@ -192,15 +192,22 @@ func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 }
 
 const (
-	defaultInstancetypeX86_64 = "u1.medium"
-	defaultPreferenceX86_64   = "fedora"
+	defaultInstancetype      = "u1.medium"
+	defaultPreferenceX86_64  = "fedora"
+	defaultPreferenceAarch64 = "fedora.arm64"
 )
 
 func (f *fedora) setEnvVariables() {
-	if f.Arch == "x86_64" {
+	switch f.Arch {
+	case "x86_64":
 		f.EnvVariables = map[string]string{
-			common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+			common.DefaultInstancetypeEnv: defaultInstancetype,
 			common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+		}
+	case "aarch64":
+		f.EnvVariables = map[string]string{
+			common.DefaultInstancetypeEnv: defaultInstancetype,
+			common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
 		}
 	}
 }
