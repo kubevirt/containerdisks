@@ -38,7 +38,7 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					common.DefaultInstancetypeEnv: defaultInstancetype,
 					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 				},
 			},
@@ -57,6 +57,10 @@ var _ = Describe("Fedora", func() {
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: defaultInstancetype,
+					common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
+				},
 			},
 		),
 		Entry("fedora:39 x86_64", "39", "x86_64", "testdata/releases.json",
@@ -74,7 +78,7 @@ var _ = Describe("Fedora", func() {
 					Username: "fedora",
 				},
 				EnvVariables: map[string]string{
-					common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+					common.DefaultInstancetypeEnv: defaultInstancetype,
 					common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 				},
 			},
@@ -93,6 +97,10 @@ var _ = Describe("Fedora", func() {
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: defaultInstancetype,
+					common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
+				},
 			},
 		),
 	)
@@ -106,7 +114,7 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						common.DefaultInstancetypeEnv: defaultInstancetype,
 						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
 				},
@@ -115,6 +123,10 @@ var _ = Describe("Fedora", func() {
 					Arch:    "aarch64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
+					EnvVariables: map[string]string{
+						common.DefaultInstancetypeEnv: defaultInstancetype,
+						common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
+					},
 				},
 			},
 			{
@@ -124,7 +136,7 @@ var _ = Describe("Fedora", func() {
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
 					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetypeX86_64,
+						common.DefaultInstancetypeEnv: defaultInstancetype,
 						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 					},
 				},
@@ -133,6 +145,10 @@ var _ = Describe("Fedora", func() {
 					Arch:    "aarch64",
 					Variant: "Cloud",
 					getter:  &http.HTTPGetter{},
+					EnvVariables: map[string]string{
+						common.DefaultInstancetypeEnv: defaultInstancetype,
+						common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
+					},
 				},
 			},
 		}
