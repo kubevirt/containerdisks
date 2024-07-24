@@ -29,9 +29,10 @@ var _ = Describe("OpenSUSE Tumbleweed", func() {
 				common.DefaultPreferenceEnv:   "opensuse.tumbleweed",
 			},
 			&api.ArtifactDetails{
-				SHA256Sum:         "e8150b4a7ce5c56587492c930af094236c7a095149d714c015e6860ce6c58e66",
-				DownloadURL:       "https://download.opensuse.org/tumbleweed/appliances/openSUSE-Tumbleweed-Minimal-VM.x86_64-1.0.0-Cloud-Snapshot20240629.qcow2",
-				ImageArchitecture: "amd64",
+				SHA256Sum:            "e8150b4a7ce5c56587492c930af094236c7a095149d714c015e6860ce6c58e66",
+				DownloadURL:          "https://download.opensuse.org/tumbleweed/appliances/openSUSE-Tumbleweed-Minimal-VM.x86_64-1.0.0-Cloud-Snapshot20240629.qcow2",
+				ImageArchitecture:    "amd64",
+				AdditionalUniqueTags: []string{"latest"},
 			},
 			&api.Metadata{
 				Name:        "opensuse-tumbleweed",
