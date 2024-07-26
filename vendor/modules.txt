@@ -53,8 +53,8 @@ github.com/containerd/errdefs
 ## explicit; go 1.19
 github.com/containerd/stargz-snapshotter/estargz
 github.com/containerd/stargz-snapshotter/estargz/errorutil
-# github.com/containers/image/v5 v5.31.1
-## explicit; go 1.21
+# github.com/containers/image/v5 v5.32.0
+## explicit; go 1.21.0
 github.com/containers/image/v5/directory
 github.com/containers/image/v5/directory/explicitfilepath
 github.com/containers/image/v5/docker
@@ -113,7 +113,7 @@ github.com/containers/libtrust
 # github.com/containers/ocicrypt v1.2.0
 ## explicit; go 1.21
 github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.54.0
+# github.com/containers/storage v1.55.0
 ## explicit; go 1.21
 github.com/containers/storage
 github.com/containers/storage/drivers
@@ -391,8 +391,8 @@ github.com/moby/docker-image-spec/specs-go/v1
 # github.com/moby/sys/mountinfo v0.7.2
 ## explicit; go 1.17
 github.com/moby/sys/mountinfo
-# github.com/moby/sys/user v0.1.0
-## explicit; go 1.17
+# github.com/moby/sys/user v0.2.0
+## explicit; go 1.21
 github.com/moby/sys/user
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
@@ -425,7 +425,7 @@ github.com/onsi/ginkgo/v2/internal/parallel_support
 github.com/onsi/ginkgo/v2/internal/testingtproxy
 github.com/onsi/ginkgo/v2/reporters
 github.com/onsi/ginkgo/v2/types
-# github.com/onsi/gomega v1.33.1
+# github.com/onsi/gomega v1.34.0
 ## explicit; go 1.20
 github.com/onsi/gomega
 github.com/onsi/gomega/format
@@ -451,7 +451,6 @@ github.com/opencontainers/runtime-spec/specs-go
 ## explicit; go 1.19
 github.com/opencontainers/selinux/go-selinux
 github.com/opencontainers/selinux/go-selinux/label
-github.com/opencontainers/selinux/pkg/pwalk
 github.com/opencontainers/selinux/pkg/pwalkdir
 # github.com/openshift/api v0.0.0-20240323003854-2252c7adfb79
 ## explicit; go 1.21
@@ -553,7 +552,7 @@ golang.org/x/crypto/internal/alias
 golang.org/x/crypto/internal/poly1305
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
-# golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842
+# golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8
 ## explicit; go 1.20
 golang.org/x/exp/maps
 # golang.org/x/net v0.27.0
