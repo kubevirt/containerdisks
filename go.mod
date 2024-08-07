@@ -11,15 +11,15 @@ replace (
 require (
 	github.com/containers/image/v5 v5.32.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/google/go-containerregistry v0.20.1
+	github.com/google/go-containerregistry v0.20.2
 	github.com/onsi/ginkgo/v2 v2.19.0
 	github.com/onsi/gomega v1.34.1
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/ulikunitz/xz v0.5.12
-	golang.org/x/crypto v0.25.0
-	golang.org/x/text v0.16.0
+	golang.org/x/crypto v0.26.0
+	golang.org/x/text v0.17.0
 	k8s.io/api v0.30.2
 	k8s.io/apimachinery v0.30.3
 	k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0
@@ -112,13 +112,13 @@ require (
 	go.opentelemetry.io/otel/metric v1.28.0 // indirect
 	go.opentelemetry.io/otel/trace v1.28.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
-	golang.org/x/net v0.27.0 // indirect
+	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.23.0 // indirect
-	golang.org/x/term v0.22.0 // indirect
+	golang.org/x/term v0.23.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
-	golang.org/x/tools v0.23.0 // indirect
+	golang.org/x/tools v0.24.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240528184218-531527333157 // indirect
 	google.golang.org/grpc v1.65.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
