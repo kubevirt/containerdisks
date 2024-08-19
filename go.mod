@@ -1,6 +1,7 @@
 module kubevirt.io/containerdisks
 
 go 1.22.2
+toolchain go1.22.5
 
 replace (
 	// Fixed to versions v0.26.x for kubevirt.io/client-go v1.2.x
@@ -29,7 +30,7 @@ require (
 )
 
 require (
-	dario.cat/mergo v1.0.0 // indirect
+	dario.cat/mergo v1.0.1 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
@@ -131,7 +132,7 @@ require (
 	k8s.io/client-go v12.0.0+incompatible // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240322212309-b815d8309940 // indirect
-	kubevirt.io/containerized-data-importer-api v1.59.0 // indirect
+	kubevirt.io/containerized-data-importer-api v1.60.1 // indirect
 	kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect

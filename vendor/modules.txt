@@ -1,4 +1,4 @@
-# dario.cat/mergo v1.0.0
+# dario.cat/mergo v1.0.1
 ## explicit; go 1.13
 dario.cat/mergo
 # github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161
@@ -457,7 +457,6 @@ github.com/opencontainers/selinux/go-selinux/label
 github.com/opencontainers/selinux/pkg/pwalkdir
 # github.com/openshift/api v0.0.0-20240323003854-2252c7adfb79
 ## explicit; go 1.21
-github.com/openshift/api/config/v1
 github.com/openshift/api/route/v1
 github.com/openshift/api/security/v1
 # github.com/openshift/client-go v0.0.0-20240312121557-60dd5f9fbf8d
@@ -992,8 +991,8 @@ kubevirt.io/client-go/log
 kubevirt.io/client-go/subresources
 kubevirt.io/client-go/util
 kubevirt.io/client-go/version
-# kubevirt.io/containerized-data-importer-api v1.59.0
-## explicit; go 1.21
+# kubevirt.io/containerized-data-importer-api v1.60.1
+## explicit; go 1.22.3
 kubevirt.io/containerized-data-importer-api/pkg/apis/core
 kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1
 kubevirt.io/containerized-data-importer-api/pkg/apis/upload
