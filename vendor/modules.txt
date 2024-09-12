@@ -516,8 +516,8 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.54.0
-## explicit; go 1.21
+# go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.55.0
+## explicit; go 1.22
 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/request
 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconv
@@ -617,7 +617,7 @@ golang.org/x/tools/go/ast/inspector
 # google.golang.org/genproto/googleapis/rpc v0.0.0-20240701130421-f6361c86f094
 ## explicit; go 1.20
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.66.1
+# google.golang.org/grpc v1.66.2
 ## explicit; go 1.21
 google.golang.org/grpc/codes
 google.golang.org/grpc/connectivity
@@ -996,7 +996,7 @@ kubevirt.io/client-go/log
 kubevirt.io/client-go/subresources
 kubevirt.io/client-go/util
 kubevirt.io/client-go/version
-# kubevirt.io/containerized-data-importer-api v1.60.2
+# kubevirt.io/containerized-data-importer-api v1.60.3
 ## explicit; go 1.22.3
 kubevirt.io/containerized-data-importer-api/pkg/apis/core
 kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1
