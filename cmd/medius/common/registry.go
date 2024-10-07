@@ -28,6 +28,7 @@ var staticRegistry = []Entry{
 		Artifacts: []api.Artifact{
 			centosstream.New("9", "x86_64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream9")),
 			centosstream.New("9", "aarch64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream9")),
+			centosstream.New("9", "s390x", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream9")),
 		},
 		UseForDocs: true,
 	},
@@ -35,6 +36,7 @@ var staticRegistry = []Entry{
 		Artifacts: []api.Artifact{
 			ubuntu.New("24.04", "x86_64", defaultEnvVariables("u1.medium", "ubuntu")),
 			ubuntu.New("24.04", "aarch64", defaultEnvVariables("u1.medium", "ubuntu")),
+			ubuntu.New("24.04", "s390x", defaultEnvVariables("u1.medium", "ubuntu")),
 		},
 		UseForDocs: true,
 	},
@@ -42,6 +44,7 @@ var staticRegistry = []Entry{
 		Artifacts: []api.Artifact{
 			ubuntu.New("22.04", "x86_64", defaultEnvVariables("u1.medium", "ubuntu")),
 			ubuntu.New("22.04", "aarch64", defaultEnvVariables("u1.medium", "ubuntu")),
+			ubuntu.New("22.04", "s390x", defaultEnvVariables("u1.medium", "ubuntu")),
 		},
 		UseForDocs: false,
 	},
@@ -49,6 +52,7 @@ var staticRegistry = []Entry{
 		Artifacts: []api.Artifact{
 			ubuntu.New("20.04", "x86_64", defaultEnvVariables("u1.medium", "ubuntu")),
 			ubuntu.New("20.04", "aarch64", defaultEnvVariables("u1.medium", "ubuntu")),
+			ubuntu.New("20.04", "s390x", defaultEnvVariables("u1.medium", "ubuntu")),
 		},
 		UseForDocs: false,
 	},
