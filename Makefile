@@ -6,7 +6,7 @@ $(LOCALBIN):
 ## Tool Binaries
 GOFUMPT ?= $(LOCALBIN)/gofumpt
 
-GOARCH ?= amd64
+GOARCH ?= $(shell go env GOARCH)
 
 all: test medius
 
