@@ -78,7 +78,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.4 // indirect
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/kubernetes-csi/external-snapshotter/client/v4 v4.2.0 // indirect
@@ -94,7 +94,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.0 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
-	github.com/opencontainers/selinux v1.11.0 // indirect
+	github.com/opencontainers/selinux v1.11.1 // indirect
 	github.com/openshift/api v0.0.0-20240323003854-2252c7adfb79 // indirect
 	github.com/openshift/client-go v0.0.0-20240312121557-60dd5f9fbf8d // indirect
 	github.com/openshift/custom-resource-status v1.1.2 // indirect
