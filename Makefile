@@ -6,13 +6,15 @@ $(LOCALBIN):
 ## Tool Binaries
 GOFUMPT ?= $(LOCALBIN)/gofumpt
 
+GOARCH ?= $(shell go env GOARCH)
+
 all: test medius
 
 clean:
 	rm -rf bin
 
 medius:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/medius kubevirt.io/containerdisks/cmd/medius
+	CGO_ENABLED=0 GOOS=linux GOARCH=$(GOARCH) go build -o bin/medius kubevirt.io/containerdisks/cmd/medius
 
 fmt: gofumpt
 	go mod tidy -compat=1.22
@@ -38,7 +40,7 @@ getginkgo:
 	go get github.com/onsi/ginkgo/v2@$(GINKGO_VERSION)
 
 test: lint
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go run github.com/onsi/ginkgo/v2/ginkgo@$(GINKGO_VERSION) -v -timeout $(GINKGO_TIMEOUT) ./...
+	CGO_ENABLED=0 GOOS=linux GOARCH=$(GOARCH) go run github.com/onsi/ginkgo/v2/ginkgo@$(GINKGO_VERSION) -v -timeout $(GINKGO_TIMEOUT) ./...
 
 .PHONY: gofumpt
 gofumpt: $(GOFUMPT) ## Download gofumpt locally if necessary.
