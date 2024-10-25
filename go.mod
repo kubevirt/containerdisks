@@ -1,7 +1,6 @@
 module kubevirt.io/containerdisks
 
 go 1.22.6
-
 replace (
 	// Fixed versions for kubevirt.io/client-go v1.3.x
 	k8s.io/api => k8s.io/api v0.30.4
@@ -21,7 +20,7 @@ require (
 	golang.org/x/crypto v0.28.0
 	golang.org/x/text v0.19.0
 	k8s.io/api v0.30.4
-	k8s.io/apimachinery v0.31.1
+	k8s.io/apimachinery v0.31.2
 	k8s.io/utils v0.0.0-20240711033017-18e509b52bc8
 	kubevirt.io/api v1.3.1
 	kubevirt.io/client-go v1.3.1
@@ -102,7 +101,7 @@ require (
 	github.com/ostreedev/ostree-go v0.0.0-20210805093236-719684c64e4f // indirect
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.76.2 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/sylabs/sif/v2 v2.19.1 // indirect
+	github.com/sylabs/sif/v2 v2.19.2 // indirect
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	github.com/tchap/go-patricia/v2 v2.3.1 // indirect
 	github.com/vbatts/tar-split v0.11.6 // indirect
