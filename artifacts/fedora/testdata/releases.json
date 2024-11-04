@@ -607,6 +607,78 @@
     "size": "2463766528"
   },
   {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Cloud/s390x/images/Fedora-Cloud-Base-Generic.s390x-40-1.14.qcow2",
+    "variant": "Cloud",
+    "subvariant": "Cloud_Base",
+    "sha256": "808226b31c6c61e08cde77fe7ba61d766f7528c857e7ae8553040c177cbda9a7",
+    "size": "367915520"
+  },
+  {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Container/s390x/images/Fedora-Container-Base-Generic-Minimal.s390x-40-1.14.oci.tar.xz",
+    "variant": "Container",
+    "subvariant": "Container_Minimal_Base",
+    "sha256": "90704b4ce8156cb26e4e92c3eafb69e823c8c837d7567b5287dca7c9e7e4d631",
+    "size": "46196064"
+  },
+  {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Container/s390x/images/Fedora-Container-Base-Generic.s390x-40-1.14.oci.tar.xz",
+    "variant": "Container",
+    "subvariant": "Container_Base",
+    "sha256": "3930880dc22d405611f4aaae3526d45024ecf71f5ae0825fd397c176fd61aaa1",
+    "size": "81930940"
+  },
+  {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Container/s390x/images/Fedora-Container-Toolbox.s390x-40-1.14.oci.tar.xz",
+    "variant": "Container",
+    "subvariant": "Container_Toolbox",
+    "sha256": "49bc41d3180300abaced1c49be91f2c4050551c4c81652e672c197649519b050",
+    "size": "285858376"
+  },
+  {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Everything/s390x/iso/Fedora-Everything-netinst-s390x-40-1.14.iso",
+    "variant": "Everything",
+    "subvariant": "Everything",
+    "sha256": "a9cf7091294710615c10fba7a3ce25da6de516cccf77c6956e8ce5e883704307",
+    "size": "500766720"
+  },
+  {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Server/s390x/images/Fedora-Server-KVM-40-1.14.s390x.qcow2",
+    "variant": "Server",
+    "subvariant": "Server_KVM",
+    "sha256": "091c232a7301be14e19c76ce9a0c1cbd2be2c4157884a731e1fc4f89e7455a5f",
+    "size": "646119424"
+  },
+  {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Server/s390x/iso/Fedora-Server-dvd-s390x-40-1.14.iso",
+    "variant": "Server",
+    "subvariant": "Server",
+    "sha256": "5e1844fa681ddedcd69ef10a54b4c7bf0dadcb335027b9982c26d53acc9c0f61",
+    "size": "1990197248"
+  },
+  {
+    "version": "40",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Server/s390x/iso/Fedora-Server-netinst-s390x-40-1.14.iso",
+    "variant": "Server",
+    "subvariant": "Server",
+    "sha256": "6daee5daf5367802633ca8262e122df74ce0cbdab0e39a6ecb6ad4c18bd9afda",
+    "size": "500807680"
+  },
+  {
     "version": "39",
     "arch": "x86_64",
     "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-Azure-39-1.5.x86_64.vhd",
@@ -1172,5 +1244,87 @@
     "subvariant": "IoT",
     "sha256": "0cc60fec1790a7a455256004035de4c4c55988bedcf7ef33c3a8ec20f75920cc",
     "size": "1302091776"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Cloud/s390x/images/Fedora-Cloud-Base-39-1.5.s390x.qcow2",
+    "variant": "Cloud",
+    "subvariant": "Cloud_Base",
+    "sha256": "36dec66c791c9d1225d74e8828fdb0976ad89f695e8e6f5c93269cafa8563907",
+    "size": "517734400"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Cloud/s390x/images/Fedora-Cloud-Base-39-1.5.s390x.raw.xz",
+    "variant": "Cloud",
+    "subvariant": "Cloud_Base",
+    "sha256": "34a39b6a2241e1d06c81cf29c32bc0453dd51ea6205e34d9ca90b2d306b8cfd4",
+    "size": "428886820"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Container/s390x/images/Fedora-Container-Base-39-1.5.s390x.tar.xz",
+    "variant": "Container",
+    "subvariant": "Container_Base",
+    "sha256": "bfebf0450a32890c1afb3685cb95dc3a5d21620d05debb04192702f21d91dbfc",
+    "size": "41836244"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Container/s390x/images/Fedora-Container-Minimal-Base-39-1.5.s390x.tar.xz",
+    "variant": "Container",
+    "subvariant": "Container_Minimal_Base",
+    "sha256": "68c51bfb6a7e624570a142ffbf841368cb6cbb84a35877460712d756cbe53524",
+    "size": "25187084"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Container/s390x/images/Fedora-Container-Toolbox-39-1.5.s390x.tar.xz",
+    "variant": "Container",
+    "subvariant": "Container_Toolbox",
+    "sha256": "a3975a7ca0370b20856aa7a32839066e22537a8228a92f7bb9aa1cab6bd5d0b2",
+    "size": "161049744"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Everything/s390x/iso/Fedora-Everything-netinst-s390x-39-1.5.iso",
+    "variant": "Everything",
+    "subvariant": "Everything",
+    "sha256": "b7d46e18072a4c03bb912fdac71c6d43615559715fde5ae804d8039eb6c2a8f5",
+    "size": "505550848"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Server/s390x/images/Fedora-Server-KVM-39-1.5.s390x.qcow2",
+    "variant": "Server",
+    "subvariant": "Server_KVM",
+    "sha256": "e24153618cac495fa1ba8954e400e10cc131a52c4872b6cbd564ea24fdf8bb3b",
+    "size": "585105408"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Server/s390x/iso/Fedora-Server-dvd-s390x-39-1.5.iso",
+    "variant": "Server",
+    "subvariant": "Server",
+    "sha256": "e2e5cfc63bcba6bd3a08b1cff0928f4a07025da126eb3436137b2472e50a6922",
+    "size": "2033778688"
+  },
+  {
+    "version": "39",
+    "arch": "s390x",
+    "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Server/s390x/iso/Fedora-Server-netinst-s390x-39-1.5.iso",
+    "variant": "Server",
+    "subvariant": "Server",
+    "sha256": "4403519c1000e6e81be2e51362662e539a0d21011a61a6eb02dc28e235b91454",
+    "size": "505616384"
   }
 ]
+
