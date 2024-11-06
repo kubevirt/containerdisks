@@ -2,7 +2,7 @@
 
 set -e
 
-export KUBEVIRTCI_TAG=${KUBEVIRTCI_TAG:-$(curl -sfL https://raw.githubusercontent.com/kubevirt/kubevirt/main/cluster-up/version.txt)}
+export KUBEVIRTCI_TAG=${KUBEVIRTCI_TAG:-$(curl -sfL https://raw.githubusercontent.com/kubevirt/kubevirt/main/kubevirtci/cluster-up/version.txt)}
 export KUBEVIRT_DEPLOY_CDI="true"
 
 _base_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
