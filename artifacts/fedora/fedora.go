@@ -195,7 +195,6 @@ const (
 	defaultInstancetype      = "u1.medium"
 	defaultPreferenceX86_64  = "fedora"
 	defaultPreferenceAarch64 = "fedora.arm64"
-	defaultPreferenceS390x   = "fedora.s390x"
 )
 
 func (f *fedora) setEnvVariables() {
@@ -209,11 +208,6 @@ func (f *fedora) setEnvVariables() {
 		f.EnvVariables = map[string]string{
 			common.DefaultInstancetypeEnv: defaultInstancetype,
 			common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
-		}
-	case "s390x":
-		f.EnvVariables = map[string]string{
-			common.DefaultInstancetypeEnv: defaultInstancetype,
-			common.DefaultPreferenceEnv:   defaultPreferenceS390x,
 		}
 	}
 }
@@ -231,10 +225,9 @@ func New(release, arch string) *fedora {
 
 func NewGatherer() *fedoraGatherer {
 	return &fedoraGatherer{
-		Archs:      []string{"x86_64", "aarch64", "s390x"},
+		Archs:      []string{"x86_64", "aarch64"},
 		Variant:    "Cloud",
 		Subvariant: "Cloud_Base",
 		getter:     &http.HTTPGetter{},
 	}
 }
-
