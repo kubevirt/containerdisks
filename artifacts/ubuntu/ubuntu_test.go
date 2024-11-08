@@ -68,6 +68,23 @@ var _ = Describe("Ubuntu", func() {
 				},
 			},
 		),
+		Entry("ubuntu:22.04 s390x", "22.04", "s390x", "testdata/SHA256SUM",
+			&api.ArtifactDetails{
+				SHA256Sum:         "192c18a58917622e12a3bb6aaf246fcc6a76d9562eb9f49d34df81fbc59610af",
+				DownloadURL:       "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-s390x.img",
+				ImageArchitecture: "s390x",
+			},
+			nil,
+			&api.Metadata{
+				Name:        "ubuntu",
+				Version:     "22.04",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "ubuntu",
+				},
+				EnvVariables: nil,
+			},
+		),
 	)
 })
 
@@ -75,3 +92,4 @@ func TestUbuntu(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Ubuntu Suite")
 }
+
