@@ -106,4 +106,3 @@ func TestCentosStream(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "CentosStream Suite")
 }
-

@@ -92,4 +92,3 @@ func TestUbuntu(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Ubuntu Suite")
 }
-

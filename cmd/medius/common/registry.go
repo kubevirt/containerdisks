@@ -158,4 +158,3 @@ func ShouldSkip(focus string, entry *Entry) bool {
 
 	return focus != entry.Artifacts[0].Metadata().Describe()
 }
-
