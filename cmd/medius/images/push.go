@@ -176,6 +176,8 @@ func (b *buildAndPublish) handleMetadataError(imageName string, err error) error
 		b.Log.Info("Tag does not yet exist, it will be created")
 	case repository.IsTagUnknownError(err):
 		b.Log.Info("Tag is gone but seems to have existed already, it will be created")
+	case repository.IsArchUnknownError(err):
+		b.Log.Info("Image with arch does not exist yet, it will be created")
 	default:
 		return fmt.Errorf("error introspecting image %q: %v", imageName, err)
 	}

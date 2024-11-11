@@ -159,6 +159,10 @@ func IsTagUnknownError(err error) bool {
 	return false
 }
 
+func IsArchUnknownError(err error) bool {
+	return strings.Contains(err.Error(), "no image found in manifest list for architecture")
+}
+
 func getErrorCode(err error) errcode.ErrorCoder {
 	for {
 		if unwrapped := errors.Unwrap(err); unwrapped != nil {

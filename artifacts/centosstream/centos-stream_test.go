@@ -78,6 +78,27 @@ var _ = Describe("CentosStream", func() {
 				},
 			},
 		),
+		Entry("centos-stream:9 s390x", "9", "s390x", "testdata/centos-stream9-s390x.checksum",
+			&api.ArtifactDetails{
+				SHA256Sum:            "17322e2562832b57bb2554a5b7056fba6d06db662728c487496d83845d7f016c",
+				DownloadURL:          "https://cloud.centos.org/centos/9-stream/s390x/images/CentOS-Stream-GenericCloud-9-latest.s390x.qcow2",
+				AdditionalUniqueTags: []string{"9-latest"},
+				ImageArchitecture:    "s390x",
+			},
+			&docs.UserData{
+				Username: "cloud-user",
+			},
+			nil,
+			&api.Metadata{
+				Name:        "centos-stream",
+				Version:     "9",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "cloud-user",
+				},
+				EnvVariables: nil,
+			},
+		),
 	)
 })
 
