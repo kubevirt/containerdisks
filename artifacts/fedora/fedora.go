@@ -209,6 +209,8 @@ func (f *fedora) setEnvVariables() {
 			common.DefaultInstancetypeEnv: defaultInstancetype,
 			common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
 		}
+	case "s390x":
+		f.EnvVariables = nil
 	}
 }
 
@@ -225,7 +227,7 @@ func New(release, arch string) *fedora {
 
 func NewGatherer() *fedoraGatherer {
 	return &fedoraGatherer{
-		Archs:      []string{"x86_64", "aarch64"},
+		Archs:      []string{"x86_64", "aarch64", "s390x"},
 		Variant:    "Cloud",
 		Subvariant: "Cloud_Base",
 		getter:     &http.HTTPGetter{},
