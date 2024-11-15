@@ -63,6 +63,23 @@ var _ = Describe("Fedora", func() {
 				},
 			},
 		),
+		Entry("fedora:40 s390x", "40", "s390x", "testdata/releases.json",
+			&api.ArtifactDetails{
+				SHA256Sum:            "808226b31c6c61e08cde77fe7ba61d766f7528c857e7ae8553040c177cbda9a7",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Cloud/s390x/images/Fedora-Cloud-Base-Generic.s390x-40-1.14.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"40-1.14"},
+				ImageArchitecture:    "s390x",
+			},
+			&api.Metadata{
+				Name:        "fedora",
+				Version:     "40",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "fedora",
+				},
+				EnvVariables: nil,
+			},
+		),
 		Entry("fedora:39 x86_64", "39", "x86_64", "testdata/releases.json",
 			&api.ArtifactDetails{
 				SHA256Sum:            "ab5be5058c5c839528a7d6373934e0ce5ad6c8f80bd71ed3390032027da52f37",
@@ -103,6 +120,23 @@ var _ = Describe("Fedora", func() {
 				},
 			},
 		),
+		Entry("fedora:39 s390x", "39", "s390x", "testdata/releases.json",
+			&api.ArtifactDetails{
+				SHA256Sum:            "36dec66c791c9d1225d74e8828fdb0976ad89f695e8e6f5c93269cafa8563907",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Cloud/s390x/images/Fedora-Cloud-Base-39-1.5.s390x.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string{"39-1.5"},
+				ImageArchitecture:    "s390x",
+			},
+			&api.Metadata{
+				Name:        "fedora",
+				Version:     "39",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "fedora",
+				},
+				EnvVariables: nil,
+			},
+		),
 	)
 
 	It("Gather should be able to parse releases files", func() {
@@ -128,6 +162,13 @@ var _ = Describe("Fedora", func() {
 						common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
 					},
 				},
+				&fedora{
+					Version:      "40",
+					Arch:         "s390x",
+					Variant:      "Cloud",
+					getter:       &http.HTTPGetter{},
+					EnvVariables: nil,
+				},
 			},
 			{
 				&fedora{
@@ -149,6 +190,13 @@ var _ = Describe("Fedora", func() {
 						common.DefaultInstancetypeEnv: defaultInstancetype,
 						common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
 					},
+				},
+				&fedora{
+					Version:      "39",
+					Arch:         "s390x",
+					Variant:      "Cloud",
+					getter:       &http.HTTPGetter{},
+					EnvVariables: nil,
 				},
 			},
 		}
