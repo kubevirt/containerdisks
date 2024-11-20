@@ -26,6 +26,14 @@ type Entry struct {
 var staticRegistry = []Entry{
 	{
 		Artifacts: []api.Artifact{
+			centosstream.New("10", "x86_64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream10")),
+			centosstream.New("10", "aarch64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream10")),
+			centosstream.New("10", "s390x", &docs.UserData{Username: "cloud-user"}, nil),
+		},
+		UseForDocs: true,
+	},
+	{
+		Artifacts: []api.Artifact{
 			centosstream.New("9", "x86_64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream9")),
 			centosstream.New("9", "aarch64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream9")),
 			centosstream.New("9", "s390x", &docs.UserData{Username: "cloud-user"}, nil),

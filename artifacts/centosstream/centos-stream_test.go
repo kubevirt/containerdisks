@@ -99,6 +99,81 @@ var _ = Describe("CentosStream", func() {
 				EnvVariables: nil,
 			},
 		),
+		Entry("centos-stream:10 x86_64", "10", "x86_64", "testdata/centos-stream10-x86_64.checksum",
+			&api.ArtifactDetails{
+				SHA256Sum:            "3cb1310f39d92d34d0ea62c1d6f8943f47dce9df6937adb5bd26af8efa5d921d",
+				DownloadURL:          "https://cloud.centos.org/centos/10-stream/x86_64/images/CentOS-Stream-GenericCloud-10-latest.x86_64.qcow2",
+				AdditionalUniqueTags: []string{"10-latest"},
+				ImageArchitecture:    "amd64",
+			},
+			&docs.UserData{
+				Username: "cloud-user",
+			},
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "centos.stream10",
+			},
+			&api.Metadata{
+				Name:        "centos-stream",
+				Version:     "10",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "cloud-user",
+				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "centos.stream10",
+				},
+			},
+		),
+		Entry("centos-stream:10 aarch64", "10", "aarch64", "testdata/centos-stream10-aarch64.checksum",
+			&api.ArtifactDetails{
+				SHA256Sum:            "dc929660b4e88eea4ad5f1dcf49c21405ab9462a898659228c938a89283ae93c",
+				DownloadURL:          "https://cloud.centos.org/centos/10-stream/aarch64/images/CentOS-Stream-GenericCloud-10-latest.aarch64.qcow2",
+				AdditionalUniqueTags: []string{"10-latest"},
+				ImageArchitecture:    "arm64",
+			},
+			&docs.UserData{
+				Username: "cloud-user",
+			},
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "centos.stream10",
+			},
+			&api.Metadata{
+				Name:        "centos-stream",
+				Version:     "10",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "cloud-user",
+				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "centos.stream10",
+				},
+			},
+		),
+		Entry("centos-stream:10 s390x", "10", "s390x", "testdata/centos-stream10-s390x.checksum",
+			&api.ArtifactDetails{
+				SHA256Sum:            "dc854a20aabbb7150ad8da3c2b39a1c9f810cf3270ec706837bf5bb80435c907",
+				DownloadURL:          "https://cloud.centos.org/centos/10-stream/s390x/images/CentOS-Stream-GenericCloud-10-latest.s390x.qcow2",
+				AdditionalUniqueTags: []string{"10-latest"},
+				ImageArchitecture:    "s390x",
+			},
+			&docs.UserData{
+				Username: "cloud-user",
+			},
+			nil,
+			&api.Metadata{
+				Name:        "centos-stream",
+				Version:     "10",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "cloud-user",
+				},
+				EnvVariables: nil,
+			},
+		),
 	)
 })
 
