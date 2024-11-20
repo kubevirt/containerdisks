@@ -51,7 +51,7 @@ func (c *centos) Metadata() *api.Metadata {
 func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 	var baseURL string
 
-	if strings.HasPrefix(c.Version, "8") || strings.HasPrefix(c.Version, "9") || strings.HasPrefix(c.Version, "10") {
+	if strings.HasPrefix(c.Version, "9") || strings.HasPrefix(c.Version, "10") {
 		baseURL = fmt.Sprintf("https://cloud.centos.org/centos/%s-stream/%s/images/", c.Version, c.Arch)
 	} else {
 		panic(fmt.Sprintf("can't understand provided version: %q", c.Version))
