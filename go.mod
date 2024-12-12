@@ -1,6 +1,7 @@
 module kubevirt.io/containerdisks
 
 go 1.22.9
+toolchain go1.23.4
 
 replace (
 	// Fixed versions for kubevirt.io/client-go v1.3.x
@@ -12,17 +13,17 @@ require (
 	github.com/containers/image/v5 v5.33.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/google/go-containerregistry v0.20.2
-	github.com/onsi/ginkgo/v2 v2.20.1
+	github.com/onsi/ginkgo/v2 v2.21.0
 	github.com/onsi/gomega v1.36.1
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/ulikunitz/xz v0.5.12
-	golang.org/x/crypto v0.30.0
+	golang.org/x/crypto v0.31.0
 	golang.org/x/text v0.21.0
 	k8s.io/api v0.30.4
-	k8s.io/apimachinery v0.31.4
-	k8s.io/utils v0.0.0-20240711033017-18e509b52bc8
+	k8s.io/apimachinery v0.32.0
+	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738
 	kubevirt.io/api v1.3.1
 	kubevirt.io/client-go v1.3.1
 	sigs.k8s.io/yaml v1.4.0
@@ -70,7 +71,7 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-intervals v0.0.2 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
-	github.com/google/pprof v0.0.0-20240827171923-fa2c70bbbfe5 // indirect
+	github.com/google/pprof v0.0.0-20241029153458-d1b30febd7db // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
@@ -133,6 +134,6 @@ require (
 	k8s.io/kube-openapi v0.30.0 // indirect
 	kubevirt.io/containerized-data-importer-api v1.61.0 // indirect
 	kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 // indirect
-	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.4.3 // indirect
+	sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.5.0 // indirect
 )
