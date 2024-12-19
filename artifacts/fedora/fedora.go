@@ -195,6 +195,7 @@ const (
 	defaultInstancetype      = "u1.medium"
 	defaultPreferenceX86_64  = "fedora"
 	defaultPreferenceAarch64 = "fedora.arm64"
+	defaultPreferenceS390x   = "fedora.s390x"
 )
 
 func (f *fedora) setEnvVariables() {
@@ -210,7 +211,10 @@ func (f *fedora) setEnvVariables() {
 			common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
 		}
 	case "s390x":
-		f.EnvVariables = nil
+		f.EnvVariables = map[string]string{
+			common.DefaultInstancetypeEnv: defaultInstancetype,
+			common.DefaultPreferenceEnv:   defaultPreferenceS390x,
+		}
 	}
 }
 
