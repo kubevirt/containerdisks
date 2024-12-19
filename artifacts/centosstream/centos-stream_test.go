@@ -88,7 +88,10 @@ var _ = Describe("CentosStream", func() {
 			&docs.UserData{
 				Username: "cloud-user",
 			},
-			nil,
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "centos.stream9",
+			},
 			&api.Metadata{
 				Name:        "centos-stream",
 				Version:     "9",
@@ -96,7 +99,10 @@ var _ = Describe("CentosStream", func() {
 				ExampleUserData: docs.UserData{
 					Username: "cloud-user",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "centos.stream9",
+				},
 			},
 		),
 		Entry("centos-stream:10 x86_64", "10", "x86_64", "testdata/centos-stream10-x86_64.checksum",
@@ -163,7 +169,10 @@ var _ = Describe("CentosStream", func() {
 			&docs.UserData{
 				Username: "cloud-user",
 			},
-			nil,
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "centos.stream10",
+			},
 			&api.Metadata{
 				Name:        "centos-stream",
 				Version:     "10",
@@ -171,7 +180,10 @@ var _ = Describe("CentosStream", func() {
 				ExampleUserData: docs.UserData{
 					Username: "cloud-user",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "centos.stream10",
+				},
 			},
 		),
 	)

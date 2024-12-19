@@ -74,7 +74,10 @@ var _ = Describe("Ubuntu", func() {
 				DownloadURL:       "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-s390x.img",
 				ImageArchitecture: "s390x",
 			},
-			nil,
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "ubuntu",
+			},
 			&api.Metadata{
 				Name:        "ubuntu",
 				Version:     "22.04",
@@ -82,7 +85,10 @@ var _ = Describe("Ubuntu", func() {
 				ExampleUserData: docs.UserData{
 					Username: "ubuntu",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "ubuntu",
+				},
 			},
 		),
 	)

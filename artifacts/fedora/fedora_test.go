@@ -77,7 +77,10 @@ var _ = Describe("Fedora", func() {
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: defaultInstancetype,
+					common.DefaultPreferenceEnv:   defaultPreferenceS390x,
+				},
 			},
 		),
 		Entry("fedora:39 x86_64", "39", "x86_64", "testdata/releases.json",
@@ -134,71 +137,18 @@ var _ = Describe("Fedora", func() {
 				ExampleUserData: docs.UserData{
 					Username: "fedora",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: defaultInstancetype,
+					common.DefaultPreferenceEnv:   defaultPreferenceS390x,
+				},
 			},
 		),
 	)
 
 	It("Gather should be able to parse releases files", func() {
 		artifacts := [][]api.Artifact{
-			{
-				&fedora{
-					Version: "40",
-					Arch:    "x86_64",
-					Variant: "Cloud",
-					getter:  &http.HTTPGetter{},
-					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetype,
-						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
-					},
-				},
-				&fedora{
-					Version: "40",
-					Arch:    "aarch64",
-					Variant: "Cloud",
-					getter:  &http.HTTPGetter{},
-					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetype,
-						common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
-					},
-				},
-				&fedora{
-					Version:      "40",
-					Arch:         "s390x",
-					Variant:      "Cloud",
-					getter:       &http.HTTPGetter{},
-					EnvVariables: nil,
-				},
-			},
-			{
-				&fedora{
-					Version: "39",
-					Arch:    "x86_64",
-					Variant: "Cloud",
-					getter:  &http.HTTPGetter{},
-					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetype,
-						common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
-					},
-				},
-				&fedora{
-					Version: "39",
-					Arch:    "aarch64",
-					Variant: "Cloud",
-					getter:  &http.HTTPGetter{},
-					EnvVariables: map[string]string{
-						common.DefaultInstancetypeEnv: defaultInstancetype,
-						common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
-					},
-				},
-				&fedora{
-					Version:      "39",
-					Arch:         "s390x",
-					Variant:      "Cloud",
-					getter:       &http.HTTPGetter{},
-					EnvVariables: nil,
-				},
-			},
+			parsedRelease("40"),
+			parsedRelease("39"),
 		}
 
 		c := NewGatherer()
@@ -212,4 +162,39 @@ var _ = Describe("Fedora", func() {
 func TestFedora(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Fedora Suite")
+}
+
+func parsedRelease(version string) []api.Artifact {
+	return []api.Artifact{
+		&fedora{
+			Version: version,
+			Arch:    "x86_64",
+			Variant: "Cloud",
+			getter:  &http.HTTPGetter{},
+			EnvVariables: map[string]string{
+				common.DefaultInstancetypeEnv: defaultInstancetype,
+				common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
+			},
+		},
+		&fedora{
+			Version: version,
+			Arch:    "aarch64",
+			Variant: "Cloud",
+			getter:  &http.HTTPGetter{},
+			EnvVariables: map[string]string{
+				common.DefaultInstancetypeEnv: defaultInstancetype,
+				common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
+			},
+		},
+		&fedora{
+			Version: version,
+			Arch:    "s390x",
+			Variant: "Cloud",
+			getter:  &http.HTTPGetter{},
+			EnvVariables: map[string]string{
+				common.DefaultInstancetypeEnv: defaultInstancetype,
+				common.DefaultPreferenceEnv:   defaultPreferenceS390x,
+			},
+		},
+	}
 }
