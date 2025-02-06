@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"regexp"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -98,6 +99,14 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 }
 
 func (f *fedora) VM(name, imgRef, userData string) *v1.VirtualMachine {
+	if runtime.GOARCH == "s390x" {
+		return docs.NewVM(
+			name,
+			imgRef,
+			docs.WithRng(),
+			docs.WithCloudInitNoCloud(userData),
+		)
+	}
 	return docs.NewVM(
 		name,
 		imgRef,
