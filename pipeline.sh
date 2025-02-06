@@ -2,10 +2,12 @@
 
 set -e -o pipefail
 
+export KUBEVIRT_PROVIDER=${KUBEVIRT_PROVIDER:-k8s-1.31}
+FOCUS=${FOCUS:-centos-stream:9}
+
 make medius
 make cluster-up
 
-FOCUS=${FOCUS:-centos-stream:9}
 registry="$(./hack/kubevirtci.sh registry)"
 kubeconfig="$(./hack/kubevirtci.sh kubeconfig)"
 ./bin/medius images push --force --focus="${FOCUS}" --no-fail --dry-run=false --source-registry="${registry}" --insecure-skip-tls
