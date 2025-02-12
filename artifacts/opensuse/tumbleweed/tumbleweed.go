@@ -64,6 +64,7 @@ func (t *tumbleweed) Metadata() *api.Metadata {
 			Username: "opensuse",
 		},
 		EnvVariables: t.envVariables,
+		Arch:         t.Arch,
 	}
 }
 

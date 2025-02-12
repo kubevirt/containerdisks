@@ -37,6 +37,7 @@ func (u *ubuntu) Metadata() *api.Metadata {
 			Username: "ubuntu",
 		},
 		EnvVariables: u.EnvVariables,
+		Arch:         u.Arch,
 	}
 }
 

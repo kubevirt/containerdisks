@@ -55,6 +55,8 @@ type Metadata struct {
 	// EnvVariables contains additional env variables which should be added to the resulting containerdisk.
 	// These env variables can e.g. describe an appropriate instancetype or preference.
 	EnvVariables map[string]string
+	// Image architecture
+	Arch string
 }
 
 func (m Metadata) Describe() string {

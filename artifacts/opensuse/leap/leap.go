@@ -52,6 +52,7 @@ func (l *leap) Metadata() *api.Metadata {
 			Username: "opensuse",
 		},
 		EnvVariables: l.envVariables,
+		Arch:         l.Arch,
 	}
 }
 

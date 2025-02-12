@@ -43,6 +43,7 @@ var _ = Describe("Ubuntu", func() {
 					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "ubuntu",
 				},
+				Arch: "x86_64",
 			},
 		),
 		Entry("ubuntu:22.04 aarch64", "22.04", "aarch64", "testdata/SHA256SUM",
@@ -66,6 +67,7 @@ var _ = Describe("Ubuntu", func() {
 					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "ubuntu",
 				},
+				Arch: "aarch64",
 			},
 		),
 		Entry("ubuntu:22.04 s390x", "22.04", "s390x", "testdata/SHA256SUM",
@@ -89,6 +91,7 @@ var _ = Describe("Ubuntu", func() {
 					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "ubuntu",
 				},
+				Arch: "s390x",
 			},
 		),
 	)
