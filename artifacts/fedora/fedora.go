@@ -65,6 +65,7 @@ func (f *fedora) Metadata() *api.Metadata {
 			Username: "fedora",
 		},
 		EnvVariables: f.EnvVariables,
+		Arch:         f.Arch,
 	}
 }
 

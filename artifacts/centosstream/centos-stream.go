@@ -39,6 +39,7 @@ func (c *centos) Metadata() *api.Metadata {
 		Version:      c.Version,
 		Description:  description,
 		EnvVariables: c.EnvVariables,
+		Arch:         c.Arch,
 	}
 
 	if c.ExampleUserData != nil {

@@ -44,6 +44,7 @@ var _ = Describe("OpenSUSE Tumbleweed", func() {
 					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "opensuse.tumbleweed",
 				},
+				Arch: "x86_64",
 			},
 		),
 	)

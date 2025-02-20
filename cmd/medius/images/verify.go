@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"path"
+	"slices"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -22,6 +23,7 @@ import (
 
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/architecture"
 	"kubevirt.io/containerdisks/pkg/docs"
 )
 
@@ -47,8 +49,18 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
+			// Get client node architecture
+			nodeArchitecture, err := retrieveNodeArch(client)
+			if err != nil {
+				logrus.Fatal(err)
+			}
+			logrus.Infof("Node Architecture: %s\n", nodeArchitecture)
+
 			focusMatched, resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
-				artifact := e.Artifacts[0]
+				artifact, err := retrieveArchitectureArtifact(nodeArchitecture, e)
+				if err != nil {
+					return nil, err
+				}
 				description := artifact.Metadata().Describe()
 				r, ok := results[description]
 				if !ok {
@@ -62,7 +74,7 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				}
 
 				errString := ""
-				err := verifyArtifact(cmd.Context(), artifact, r, options, client)
+				err = verifyArtifact(cmd.Context(), artifact, r, options, client)
 				if err != nil {
 					errString = err.Error()
 				}
@@ -111,6 +123,27 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 	}
 
 	return verifyCmd
+}
+
+func retrieveNodeArch(client kvirtcli.KubevirtClient) (string, error) {
+	nodes, err := client.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return "", err
+	}
+	if len(nodes.Items) == 0 {
+		return "", fmt.Errorf("no nodes found")
+	}
+	return nodes.Items[0].Status.NodeInfo.Architecture, nil
+}
+
+func retrieveArchitectureArtifact(nodeArchitecture string, e *common.Entry) (api.Artifact, error) {
+	archIndex := slices.IndexFunc(e.Artifacts, func(a api.Artifact) bool {
+		return architecture.GetImageArchitecture(a.Metadata().Arch) == nodeArchitecture
+	})
+	if archIndex == -1 {
+		return nil, fmt.Errorf("no artifact found for node architecture %s", nodeArchitecture)
+	}
+	return e.Artifacts[archIndex], nil
 }
 
 func verifyArtifact(ctx context.Context, a api.Artifact, res api.ArtifactResult, o *common.Options, client kvirtcli.KubevirtClient) error {

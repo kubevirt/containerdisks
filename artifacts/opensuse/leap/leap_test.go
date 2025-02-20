@@ -43,6 +43,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "opensuse.leap",
 				},
+				Arch: "x86_64",
 			},
 		),
 		Entry("leap:15.6 aarch64", "aarch64", "15.6", "testdata/openSUSE-Leap-15.6-Minimal-VM.aarch64-Cloud.qcow2.sha256",
@@ -59,6 +60,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 				ExampleUserData: docs.UserData{
 					Username: "opensuse",
 				},
+				Arch: "aarch64",
 			},
 		),
 		Entry("leap:15.5 x86_64", "x86_64", "15.5", "testdata/openSUSE-Leap-15.5-Minimal-VM.x86_64-Cloud.qcow2.sha256",
@@ -82,6 +84,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 					common.DefaultInstancetypeEnv: "u1.medium",
 					common.DefaultPreferenceEnv:   "opensuse.leap",
 				},
+				Arch: "x86_64",
 			},
 		),
 		Entry("leap:15.5 aarch64", "aarch64", "15.5", "testdata/openSUSE-Leap-15.5-Minimal-VM.aarch64-Cloud.qcow2.sha256",
@@ -98,6 +101,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 				ExampleUserData: docs.UserData{
 					Username: "opensuse",
 				},
+				Arch: "aarch64",
 			},
 		),
 	)
