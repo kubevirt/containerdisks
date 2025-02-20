@@ -46,7 +46,12 @@ type fedoraGatherer struct {
 	getter     http.Getter
 }
 
-const minimumVersion = 38
+const (
+	minimumVersion = 38
+	amd64Arch      = "x86_64"
+	arm64Arch      = "aarch64"
+	s390xArch      = "s390x"
+)
 
 //nolint:lll
 const description = `<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/240px-Fedora_logo.svg.png" alt="drawing" width="15"/> Fedora [Cloud](https://alt.fedoraproject.org/cloud/) images for KubeVirt.
@@ -99,6 +104,14 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 }
 
 func (f *fedora) VM(name, imgRef, userData string) *v1.VirtualMachine {
+	if f.Arch == s390xArch {
+		return docs.NewVM(
+			name,
+			imgRef,
+			docs.WithRng(),
+			docs.WithCloudInitNoCloud(userData),
+		)
+	}
 	return docs.NewVM(
 		name,
 		imgRef,
@@ -201,17 +214,17 @@ const (
 
 func (f *fedora) setEnvVariables() {
 	switch f.Arch {
-	case "x86_64":
+	case amd64Arch:
 		f.EnvVariables = map[string]string{
 			common.DefaultInstancetypeEnv: defaultInstancetype,
 			common.DefaultPreferenceEnv:   defaultPreferenceX86_64,
 		}
-	case "aarch64":
+	case arm64Arch:
 		f.EnvVariables = map[string]string{
 			common.DefaultInstancetypeEnv: defaultInstancetype,
 			common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
 		}
-	case "s390x":
+	case s390xArch:
 		f.EnvVariables = map[string]string{
 			common.DefaultInstancetypeEnv: defaultInstancetype,
 			common.DefaultPreferenceEnv:   defaultPreferenceS390x,
@@ -232,7 +245,7 @@ func New(release, arch string) *fedora {
 
 func NewGatherer() *fedoraGatherer {
 	return &fedoraGatherer{
-		Archs:      []string{"x86_64", "aarch64", "s390x"},
+		Archs:      []string{amd64Arch, arm64Arch, s390xArch},
 		Variant:    "Cloud",
 		Subvariant: "Cloud_Base",
 		getter:     &http.HTTPGetter{},
