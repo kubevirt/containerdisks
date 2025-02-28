@@ -17,7 +17,7 @@ medius:
 	CGO_ENABLED=0 GOOS=linux GOARCH=$(GOARCH) go build -o bin/medius kubevirt.io/containerdisks/cmd/medius
 
 fmt: gofumpt
-	go mod tidy -compat=1.22
+	go mod tidy -compat=1.23
 	$(GOFUMPT) -w -extra .
 
 .PHONY: vendor
@@ -25,14 +25,14 @@ vendor:
 	go mod vendor
 
 GOLANGCI_LINT ?= $(LOCALBIN)/golangci-lint
-GOLANGCI_LINT_VERSION ?= v1.60.1
+GOLANGCI_LINT_VERSION ?= v1.64.5
 
 .PHONY: lint
 lint:
 	test -s $(GOLANGCI_LINT) || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(LOCALBIN) $(GOLANGCI_LINT_VERSION)
 	CGO_ENABLED=0 $(GOLANGCI_LINT) run --timeout 5m
 
-GINKGO_VERSION ?= v2.20.0
+GINKGO_VERSION ?= v2.22.1
 GINKGO_TIMEOUT ?= 2h
 
 .PHONY: getginkgo

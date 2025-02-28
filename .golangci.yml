@@ -6,9 +6,6 @@ linters-settings:
   funlen:
     lines: 100
     statements: 50
-  gci:
-    sections:
-      - prefix(github.com/kubevirt/containerdisks)
   goconst:
     min-len: 2
     min-occurrences: 2
@@ -41,6 +38,7 @@ linters-settings:
     ignored-functions:
       - '^Eventually$'
       - '^EventuallyWithOffset$'
+      - '^ExpectWithOffset$'
       - '^console\.ExpectBatch$'
       - '^console\.RunCommand$'
   govet:
@@ -71,7 +69,6 @@ linters:
     - dogsled
     - dupl
     - errcheck
-    - exportloopref
     - exhaustive
     - funlen
     - gochecknoinits
