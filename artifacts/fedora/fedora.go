@@ -195,6 +195,10 @@ func (f *fedoraGatherer) releaseMatches(release *Release) bool {
 
 	for _, arch := range f.Archs {
 		if release.Arch == arch {
+			// The Fedora 40 images for s390x cannot boot, hence we avoid to build it.
+			if arch == "s390x" && release.Version == "40" {
+				return false
+			}
 			return version >= minimumVersion &&
 				release.Variant == f.Variant &&
 				release.Subvariant == f.Subvariant &&
