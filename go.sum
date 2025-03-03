@@ -71,8 +71,8 @@ github.com/containerd/stargz-snapshotter/estargz v0.16.3 h1:7evrXtoh1mSbGj/pfRcc
 github.com/containerd/stargz-snapshotter/estargz v0.16.3/go.mod h1:uyr4BfYfOj3G9WBVE8cOlQmXAbPN9VEQpBBeJIuOipU=
 github.com/containerd/typeurl/v2 v2.2.3 h1:yNA/94zxWdvYACdYO8zofhrTVuQY73fFU1y++dYSw40=
 github.com/containerd/typeurl/v2 v2.2.3/go.mod h1:95ljDnPfD3bAbDJRugOiShd/DlAAsxGtUBhJxIn7SCk=
-github.com/containers/image/v5 v5.34.0 h1:HPqQaDUsox/3mC1pbOyLAIQEp0JhQqiUZ+6JiFIZLDI=
-github.com/containers/image/v5 v5.34.0/go.mod h1:/WnvUSEfdqC/ahMRd4YJDBLrpYWkGl018rB77iB3FDo=
+github.com/containers/image/v5 v5.34.1 h1:/m2bkFnuedTyNkzma8s7cFLjeefPIb4trjyafWhIlwM=
+github.com/containers/image/v5 v5.34.1/go.mod h1:/WnvUSEfdqC/ahMRd4YJDBLrpYWkGl018rB77iB3FDo=
 github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 h1:Qzk5C6cYglewc+UyGf6lc8Mj2UaPTHy/iF2De0/77CA=
 github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01/go.mod h1:9rfv8iPl1ZP7aqh9YA68wnZv2NUDbXdcdPHVz0pFbPY=
 github.com/containers/ocicrypt v1.2.1 h1:0qIOTT9DoYwcKmxSt8QJt+VzMY18onl9jUXsxpVhSmM=
@@ -94,10 +94,10 @@ github.com/docker/cli v28.0.1+incompatible h1:g0h5NQNda3/CxIsaZfH4Tyf6vpxFth7PYl
 github.com/docker/cli v28.0.1+incompatible/go.mod h1:JLrzqnKDaYBop7H2jaqPtU4hHvMKP+vjCwu2uszcLI8=
 github.com/docker/distribution v2.8.3+incompatible h1:AtKxIZ36LoNK51+Z6RpzLpddBirtxJnzDrHLEKxTAYk=
 github.com/docker/distribution v2.8.3+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
-github.com/docker/docker v27.5.1+incompatible h1:4PYU5dnBYqRQi0294d1FBECqT9ECWeQAIfE8q4YnPY8=
-github.com/docker/docker v27.5.1+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
-github.com/docker/docker-credential-helpers v0.9.0 h1:q4wWo2fTPLA2xr3B+2uFYejw9AnkFV9nnpRos9xgx6k=
-github.com/docker/docker-credential-helpers v0.9.0/go.mod h1:uSp+6RNGaUeJqOFEDUqDWJ4ATPaoyXpCOCwiFWbyXZA=
+github.com/docker/docker v28.0.1+incompatible h1:FCHjSRdXhNRFjlHMTv4jUNlIBbTeRjrWfeFuJp7jpo0=
+github.com/docker/docker v28.0.1+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
+github.com/docker/docker-credential-helpers v0.9.1 h1:xrekBBXJprfiFFWKrKxsFBjMl+5cG1GaNN1kZTcjXD0=
+github.com/docker/docker-credential-helpers v0.9.1/go.mod h1:T4QzRTwtu1hvhXKzeQkJm6GNMJT3bJ0S6V4LU/SZV9A=
 github.com/docker/go-connections v0.5.0 h1:USnMq7hx7gwdVZq1L49hLXaFtUdTADjXGp+uj1Br63c=
 github.com/docker/go-connections v0.5.0/go.mod h1:ov60Kzw0kKElRwhNs9UlUHAE/F9Fe6GLaXnqyDdmEXc=
 github.com/docker/go-metrics v0.0.1 h1:AgB/0SvBxihN0X8OR4SjsblXkbMvalQ8cjmtKQ2rQV8=
