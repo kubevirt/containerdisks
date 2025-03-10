@@ -49,15 +49,11 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 				logrus.Fatal(err)
 			}
 
-			// Get client node architecture
-			nodeArchitecture, err := retrieveNodeArch(client)
-			if err != nil {
-				logrus.Fatal(err)
-			}
-			logrus.Infof("Node Architecture: %s\n", nodeArchitecture)
+			// Set target architecture
+			defineTargetArch(options, client)
 
 			focusMatched, resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
-				artifact, err := retrieveArchitectureArtifact(nodeArchitecture, e)
+				artifact, err := retrieveArchitectureArtifact(options, e)
 				if err != nil {
 					return nil, err
 				}
@@ -115,6 +111,8 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 		options.VerifyImagesOptions.NoFail, "Return success even if a worker fails")
 	verifyCmd.Flags().IntVar(&options.VerifyImagesOptions.Timeout, "timeout",
 		options.VerifyImagesOptions.Timeout, "Maximum seconds to wait for VM to be running")
+	verifyCmd.Flags().StringVar(&options.VerifyImagesOptions.TargetArchitecture, "target-architecture",
+		options.VerifyImagesOptions.TargetArchitecture, "Target architecture for containerdisks verification")
 	verifyCmd.Flags().AddGoFlagSet(kvirtcli.FlagSet())
 
 	err := verifyCmd.MarkFlagRequired("registry")
@@ -123,6 +121,19 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 	}
 
 	return verifyCmd
+}
+
+func defineTargetArch(options *common.Options, client kvirtcli.KubevirtClient) {
+	if options.VerifyImagesOptions.TargetArchitecture != "" {
+		return
+	}
+	logrus.Info("Target architecture not specified, retrieving node architecture")
+	nodeArchitecture, err := retrieveNodeArch(client)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	logrus.Infof("Node Architecture: %s\n", nodeArchitecture)
+	options.VerifyImagesOptions.TargetArchitecture = nodeArchitecture
 }
 
 func retrieveNodeArch(client kvirtcli.KubevirtClient) (string, error) {
@@ -136,12 +147,13 @@ func retrieveNodeArch(client kvirtcli.KubevirtClient) (string, error) {
 	return nodes.Items[0].Status.NodeInfo.Architecture, nil
 }
 
-func retrieveArchitectureArtifact(nodeArchitecture string, e *common.Entry) (api.Artifact, error) {
+func retrieveArchitectureArtifact(options *common.Options, e *common.Entry) (api.Artifact, error) {
+	targetArchitecture := options.VerifyImagesOptions.TargetArchitecture
 	archIndex := slices.IndexFunc(e.Artifacts, func(a api.Artifact) bool {
-		return architecture.GetImageArchitecture(a.Metadata().Arch) == nodeArchitecture
+		return architecture.GetImageArchitecture(a.Metadata().Arch) == targetArchitecture
 	})
 	if archIndex == -1 {
-		return nil, fmt.Errorf("no artifact found for node architecture %s", nodeArchitecture)
+		return nil, fmt.Errorf("no artifact found for target architecture %s", targetArchitecture)
 	}
 	return e.Artifacts[archIndex], nil
 }
