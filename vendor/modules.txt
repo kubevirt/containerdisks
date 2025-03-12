@@ -59,7 +59,7 @@ github.com/containerd/stargz-snapshotter/estargz/errorutil
 # github.com/containerd/typeurl/v2 v2.2.3
 ## explicit; go 1.21
 github.com/containerd/typeurl/v2
-# github.com/containers/image/v5 v5.34.1
+# github.com/containers/image/v5 v5.34.2
 ## explicit; go 1.22.8
 github.com/containers/image/v5/directory
 github.com/containers/image/v5/directory/explicitfilepath
@@ -489,7 +489,7 @@ github.com/ostreedev/ostree-go/pkg/otbuiltin
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.80.1
+# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.81.0
 ## explicit; go 1.23.0
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1
@@ -693,7 +693,7 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# k8s.io/api v0.32.1 => k8s.io/api v0.31.6
+# k8s.io/api v0.32.2 => k8s.io/api v0.31.6
 ## explicit; go 1.22.0
 k8s.io/api/admissionregistration/v1
 k8s.io/api/admissionregistration/v1alpha1
@@ -750,7 +750,7 @@ k8s.io/api/storage/v1
 k8s.io/api/storage/v1alpha1
 k8s.io/api/storage/v1beta1
 k8s.io/api/storagemigration/v1alpha1
-# k8s.io/apiextensions-apiserver v0.32.1 => k8s.io/apiextensions-apiserver v0.31.6
+# k8s.io/apiextensions-apiserver v0.32.2 => k8s.io/apiextensions-apiserver v0.31.6
 ## explicit; go 1.22.0
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
