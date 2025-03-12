@@ -12,7 +12,7 @@ replace (
 )
 
 require (
-	github.com/containers/image/v5 v5.34.1
+	github.com/containers/image/v5 v5.34.2
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/google/go-containerregistry v0.20.3
 	github.com/onsi/ginkgo/v2 v2.22.1
@@ -23,7 +23,7 @@ require (
 	github.com/ulikunitz/xz v0.5.12
 	golang.org/x/crypto v0.36.0
 	golang.org/x/text v0.23.0
-	k8s.io/api v0.32.1
+	k8s.io/api v0.32.2
 	k8s.io/apimachinery v0.32.2
 	k8s.io/utils v0.0.0-20241210054802-24370beab758
 	kubevirt.io/api v1.4.0
@@ -105,7 +105,7 @@ require (
 	github.com/openshift/client-go v0.0.0-20240312121557-60dd5f9fbf8d // indirect
 	github.com/openshift/custom-resource-status v1.1.2 // indirect
 	github.com/ostreedev/ostree-go v0.0.0-20210805093236-719684c64e4f // indirect
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.80.1 // indirect
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.81.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/sylabs/sif/v2 v2.21.1 // indirect
 	github.com/tchap/go-patricia/v2 v2.3.2 // indirect
@@ -131,7 +131,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apiextensions-apiserver v0.32.1 // indirect
+	k8s.io/apiextensions-apiserver v0.32.2 // indirect
 	k8s.io/client-go v0.32.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.31.0 // indirect
