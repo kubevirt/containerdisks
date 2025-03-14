@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"kubevirt.io/containerdisks/artifacts/centosstream"
+	"kubevirt.io/containerdisks/artifacts/debian"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
 	"kubevirt.io/containerdisks/artifacts/opensuse/leap"
@@ -83,6 +84,19 @@ var staticRegistry = []Entry{
 			leap.New("x86_64", "15.5", defaultEnvVariables("u1.medium", "opensuse.leap")),
 			leap.New("aarch64", "15.5", defaultEnvVariables("u1.medium", "opensuse.leap")),
 		},
+	},
+	{
+		Artifacts: []api.Artifact{
+			debian.New("11", "bullseye", "x86_64", &docs.UserData{Username: "debian"}, nil),
+			debian.New("11", "bullseye", "aarch64", &docs.UserData{Username: "debian"}, nil),
+		},
+	},
+	{
+		Artifacts: []api.Artifact{
+			debian.New("12", "bookworm", "x86_64", &docs.UserData{Username: "debian"}, nil),
+			debian.New("12", "bookworm", "aarch64", &docs.UserData{Username: "debian"}, nil),
+		},
+		UseForDocs: true,
 	},
 	// for testing only
 	{

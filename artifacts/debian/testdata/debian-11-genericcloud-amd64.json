@@ -1,0 +1,1365 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "cloud.debian.org/v1alpha1",
+            "data": {
+                "info": {
+                    "arch": "amd64",
+                    "build_id": "cloud-admin-team-master",
+                    "release": "bullseye",
+                    "release_baseid": "11",
+                    "release_id": "11",
+                    "type": "official",
+                    "vendor": "genericcloud",
+                    "version": "20250303-2040"
+                },
+                "packages": [
+                    {
+                        "name": "adduser",
+                        "version": "3.118+deb11u1"
+                    },
+                    {
+                        "name": "apparmor",
+                        "version": "2.13.6-10"
+                    },
+                    {
+                        "name": "apt",
+                        "version": "2.2.4"
+                    },
+                    {
+                        "name": "apt-listchanges",
+                        "version": "3.24"
+                    },
+                    {
+                        "name": "apt-utils",
+                        "version": "2.2.4"
+                    },
+                    {
+                        "name": "base-files",
+                        "version": "11.1+deb11u11"
+                    },
+                    {
+                        "name": "base-passwd",
+                        "version": "3.5.51"
+                    },
+                    {
+                        "name": "bash",
+                        "version": "5.1-2+deb11u1"
+                    },
+                    {
+                        "name": "bash-completion",
+                        "version": "1:2.11-2"
+                    },
+                    {
+                        "name": "bind9-host",
+                        "version": "1:9.16.50-1~deb11u3"
+                    },
+                    {
+                        "name": "bind9-libs:amd64",
+                        "version": "1:9.16.50-1~deb11u3"
+                    },
+                    {
+                        "name": "bsdextrautils",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "bsdutils",
+                        "version": "1:2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "ca-certificates",
+                        "version": "20210119"
+                    },
+                    {
+                        "name": "chrony",
+                        "version": "4.0-8+deb11u2"
+                    },
+                    {
+                        "name": "cloud-guest-utils",
+                        "version": "0.31-2"
+                    },
+                    {
+                        "name": "cloud-image-utils",
+                        "version": "0.31-2"
+                    },
+                    {
+                        "name": "cloud-init",
+                        "version": "20.4.1-2+deb11u1"
+                    },
+                    {
+                        "name": "cloud-initramfs-growroot",
+                        "version": "0.18.debian8"
+                    },
+                    {
+                        "name": "cloud-utils",
+                        "version": "0.31-2"
+                    },
+                    {
+                        "name": "coreutils",
+                        "version": "8.32-4+b1"
+                    },
+                    {
+                        "name": "cpio",
+                        "version": "2.13+dfsg-7.1~deb11u1"
+                    },
+                    {
+                        "name": "cron",
+                        "version": "3.0pl1-137"
+                    },
+                    {
+                        "name": "curl",
+                        "version": "7.74.0-1.3+deb11u14"
+                    },
+                    {
+                        "name": "dash",
+                        "version": "0.5.11+git20200708+dd9ef66-5"
+                    },
+                    {
+                        "name": "dbus",
+                        "version": "1.12.28-0+deb11u1"
+                    },
+                    {
+                        "name": "debconf",
+                        "version": "1.5.77"
+                    },
+                    {
+                        "name": "debian-archive-keyring",
+                        "version": "2021.1.1+deb11u1"
+                    },
+                    {
+                        "name": "debianutils",
+                        "version": "4.11.2"
+                    },
+                    {
+                        "name": "diffutils",
+                        "version": "1:3.7-5"
+                    },
+                    {
+                        "name": "distro-info-data",
+                        "version": "0.51+deb11u7"
+                    },
+                    {
+                        "name": "dmsetup",
+                        "version": "2:1.02.175-2.1"
+                    },
+                    {
+                        "name": "dpkg",
+                        "version": "1.20.13"
+                    },
+                    {
+                        "name": "e2fsprogs",
+                        "version": "1.46.2-2+deb11u1"
+                    },
+                    {
+                        "name": "ethtool",
+                        "version": "1:5.9-1"
+                    },
+                    {
+                        "name": "fdisk",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "file",
+                        "version": "1:5.39-3+deb11u1"
+                    },
+                    {
+                        "name": "findutils",
+                        "version": "4.8.0-1"
+                    },
+                    {
+                        "name": "gcc-10-base:amd64",
+                        "version": "10.2.1-6"
+                    },
+                    {
+                        "name": "gcc-9-base:amd64",
+                        "version": "9.3.0-22"
+                    },
+                    {
+                        "name": "gdisk",
+                        "version": "1.0.6-1.1"
+                    },
+                    {
+                        "name": "genisoimage",
+                        "version": "9:1.1.11-3.2"
+                    },
+                    {
+                        "name": "gettext-base",
+                        "version": "0.21-4"
+                    },
+                    {
+                        "name": "gpgv",
+                        "version": "2.2.27-2+deb11u2"
+                    },
+                    {
+                        "name": "grep",
+                        "version": "3.6-1+deb11u1"
+                    },
+                    {
+                        "name": "groff-base",
+                        "version": "1.22.4-6"
+                    },
+                    {
+                        "name": "grub-cloud-amd64",
+                        "version": "0.0.5"
+                    },
+                    {
+                        "name": "grub-common",
+                        "version": "2.06-3~deb11u6"
+                    },
+                    {
+                        "name": "grub-efi-amd64-bin",
+                        "version": "2.06-3~deb11u6"
+                    },
+                    {
+                        "name": "grub-efi-amd64-signed",
+                        "version": "1+2.06+3~deb11u6"
+                    },
+                    {
+                        "name": "grub-pc-bin",
+                        "version": "2.06-3~deb11u6"
+                    },
+                    {
+                        "name": "grub2-common",
+                        "version": "2.06-3~deb11u6"
+                    },
+                    {
+                        "name": "gzip",
+                        "version": "1.10-4+deb11u1"
+                    },
+                    {
+                        "name": "hostname",
+                        "version": "3.23"
+                    },
+                    {
+                        "name": "ifupdown",
+                        "version": "0.8.36"
+                    },
+                    {
+                        "name": "init",
+                        "version": "1.60"
+                    },
+                    {
+                        "name": "init-system-helpers",
+                        "version": "1.60"
+                    },
+                    {
+                        "name": "initramfs-tools",
+                        "version": "0.140"
+                    },
+                    {
+                        "name": "initramfs-tools-core",
+                        "version": "0.140"
+                    },
+                    {
+                        "name": "iproute2",
+                        "version": "5.10.0-4"
+                    },
+                    {
+                        "name": "iptables",
+                        "version": "1.8.7-1"
+                    },
+                    {
+                        "name": "iputils-ping",
+                        "version": "3:20210202-1"
+                    },
+                    {
+                        "name": "isc-dhcp-client",
+                        "version": "4.4.1-2.3+deb11u2"
+                    },
+                    {
+                        "name": "klibc-utils",
+                        "version": "2.0.8-6.1"
+                    },
+                    {
+                        "name": "kmod",
+                        "version": "28-1"
+                    },
+                    {
+                        "name": "less",
+                        "version": "551-2+deb11u2"
+                    },
+                    {
+                        "name": "libacl1:amd64",
+                        "version": "2.2.53-10"
+                    },
+                    {
+                        "name": "libaio1:amd64",
+                        "version": "0.3.112-9"
+                    },
+                    {
+                        "name": "libapparmor1:amd64",
+                        "version": "2.13.6-10"
+                    },
+                    {
+                        "name": "libapt-pkg6.0:amd64",
+                        "version": "2.2.4"
+                    },
+                    {
+                        "name": "libargon2-1:amd64",
+                        "version": "0~20171227-0.2"
+                    },
+                    {
+                        "name": "libattr1:amd64",
+                        "version": "1:2.4.48-6"
+                    },
+                    {
+                        "name": "libaudit-common",
+                        "version": "1:3.0-2"
+                    },
+                    {
+                        "name": "libaudit1:amd64",
+                        "version": "1:3.0-2"
+                    },
+                    {
+                        "name": "libblkid1:amd64",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "libbpf0:amd64",
+                        "version": "1:0.3-2"
+                    },
+                    {
+                        "name": "libbrotli1:amd64",
+                        "version": "1.0.9-2+b2"
+                    },
+                    {
+                        "name": "libbsd0:amd64",
+                        "version": "0.11.3-1+deb11u1"
+                    },
+                    {
+                        "name": "libbz2-1.0:amd64",
+                        "version": "1.0.8-4"
+                    },
+                    {
+                        "name": "libc-bin",
+                        "version": "2.31-13+deb11u11"
+                    },
+                    {
+                        "name": "libc-l10n",
+                        "version": "2.31-13+deb11u11"
+                    },
+                    {
+                        "name": "libc6:amd64",
+                        "version": "2.31-13+deb11u11"
+                    },
+                    {
+                        "name": "libcap-ng0:amd64",
+                        "version": "0.7.9-2.2+b1"
+                    },
+                    {
+                        "name": "libcap2:amd64",
+                        "version": "1:2.44-1"
+                    },
+                    {
+                        "name": "libcap2-bin",
+                        "version": "1:2.44-1"
+                    },
+                    {
+                        "name": "libcbor0:amd64",
+                        "version": "0.5.0+dfsg-2"
+                    },
+                    {
+                        "name": "libcom-err2:amd64",
+                        "version": "1.46.2-2+deb11u1"
+                    },
+                    {
+                        "name": "libcrypt1:amd64",
+                        "version": "1:4.4.18-4"
+                    },
+                    {
+                        "name": "libcryptsetup12:amd64",
+                        "version": "2:2.3.7-1+deb11u1"
+                    },
+                    {
+                        "name": "libcurl3-gnutls:amd64",
+                        "version": "7.74.0-1.3+deb11u14"
+                    },
+                    {
+                        "name": "libcurl4:amd64",
+                        "version": "7.74.0-1.3+deb11u14"
+                    },
+                    {
+                        "name": "libdb5.3:amd64",
+                        "version": "5.3.28+dfsg1-0.8"
+                    },
+                    {
+                        "name": "libdbus-1-3:amd64",
+                        "version": "1.12.28-0+deb11u1"
+                    },
+                    {
+                        "name": "libdebconfclient0:amd64",
+                        "version": "0.260"
+                    },
+                    {
+                        "name": "libdevmapper1.02.1:amd64",
+                        "version": "2:1.02.175-2.1"
+                    },
+                    {
+                        "name": "libdns-export1110",
+                        "version": "1:9.11.19+dfsg-2.1"
+                    },
+                    {
+                        "name": "libedit2:amd64",
+                        "version": "3.1-20191231-2+b1"
+                    },
+                    {
+                        "name": "libefiboot1:amd64",
+                        "version": "37-6"
+                    },
+                    {
+                        "name": "libefivar1:amd64",
+                        "version": "37-6"
+                    },
+                    {
+                        "name": "libelf1:amd64",
+                        "version": "0.183-1"
+                    },
+                    {
+                        "name": "libestr0:amd64",
+                        "version": "0.1.10-2.1+b1"
+                    },
+                    {
+                        "name": "libexpat1:amd64",
+                        "version": "2.2.10-2+deb11u6"
+                    },
+                    {
+                        "name": "libext2fs2:amd64",
+                        "version": "1.46.2-2+deb11u1"
+                    },
+                    {
+                        "name": "libfastjson4:amd64",
+                        "version": "0.99.9-1"
+                    },
+                    {
+                        "name": "libfdisk1:amd64",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "libffi7:amd64",
+                        "version": "3.3-6"
+                    },
+                    {
+                        "name": "libfido2-1:amd64",
+                        "version": "1.6.0-2"
+                    },
+                    {
+                        "name": "libfreetype6:amd64",
+                        "version": "2.10.4+dfsg-1+deb11u1"
+                    },
+                    {
+                        "name": "libfstrm0:amd64",
+                        "version": "0.6.0-1+b1"
+                    },
+                    {
+                        "name": "libfuse2:amd64",
+                        "version": "2.9.9-5"
+                    },
+                    {
+                        "name": "libgcc-s1:amd64",
+                        "version": "10.2.1-6"
+                    },
+                    {
+                        "name": "libgcrypt20:amd64",
+                        "version": "1.8.7-6"
+                    },
+                    {
+                        "name": "libgdbm6:amd64",
+                        "version": "1.19-2"
+                    },
+                    {
+                        "name": "libglib2.0-0:amd64",
+                        "version": "2.66.8-1+deb11u5"
+                    },
+                    {
+                        "name": "libgmp10:amd64",
+                        "version": "2:6.2.1+dfsg-1+deb11u1"
+                    },
+                    {
+                        "name": "libgnutls30:amd64",
+                        "version": "3.7.1-5+deb11u7"
+                    },
+                    {
+                        "name": "libgpg-error0:amd64",
+                        "version": "1.38-2"
+                    },
+                    {
+                        "name": "libgpm2:amd64",
+                        "version": "1.20.7-8"
+                    },
+                    {
+                        "name": "libgssapi-krb5-2:amd64",
+                        "version": "1.18.3-6+deb11u6"
+                    },
+                    {
+                        "name": "libhogweed6:amd64",
+                        "version": "3.7.3-1"
+                    },
+                    {
+                        "name": "libicu67:amd64",
+                        "version": "67.1-7"
+                    },
+                    {
+                        "name": "libidn2-0:amd64",
+                        "version": "2.3.0-5"
+                    },
+                    {
+                        "name": "libip4tc2:amd64",
+                        "version": "1.8.7-1"
+                    },
+                    {
+                        "name": "libip6tc2:amd64",
+                        "version": "1.8.7-1"
+                    },
+                    {
+                        "name": "libisc-export1105:amd64",
+                        "version": "1:9.11.19+dfsg-2.1"
+                    },
+                    {
+                        "name": "libjson-c5:amd64",
+                        "version": "0.15-2+deb11u1"
+                    },
+                    {
+                        "name": "libk5crypto3:amd64",
+                        "version": "1.18.3-6+deb11u6"
+                    },
+                    {
+                        "name": "libkeyutils1:amd64",
+                        "version": "1.6.1-2"
+                    },
+                    {
+                        "name": "libklibc:amd64",
+                        "version": "2.0.8-6.1"
+                    },
+                    {
+                        "name": "libkmod2:amd64",
+                        "version": "28-1"
+                    },
+                    {
+                        "name": "libkrb5-3:amd64",
+                        "version": "1.18.3-6+deb11u6"
+                    },
+                    {
+                        "name": "libkrb5support0:amd64",
+                        "version": "1.18.3-6+deb11u6"
+                    },
+                    {
+                        "name": "libldap-2.4-2:amd64",
+                        "version": "2.4.57+dfsg-3+deb11u1"
+                    },
+                    {
+                        "name": "liblmdb0:amd64",
+                        "version": "0.9.24-1"
+                    },
+                    {
+                        "name": "liblognorm5:amd64",
+                        "version": "2.0.5-1.1"
+                    },
+                    {
+                        "name": "liblz4-1:amd64",
+                        "version": "1.9.3-2"
+                    },
+                    {
+                        "name": "liblzma5:amd64",
+                        "version": "5.2.5-2.1~deb11u1"
+                    },
+                    {
+                        "name": "libmagic-mgc",
+                        "version": "1:5.39-3+deb11u1"
+                    },
+                    {
+                        "name": "libmagic1:amd64",
+                        "version": "1:5.39-3+deb11u1"
+                    },
+                    {
+                        "name": "libmaxminddb0:amd64",
+                        "version": "1.5.2-1"
+                    },
+                    {
+                        "name": "libmd0:amd64",
+                        "version": "1.0.3-3"
+                    },
+                    {
+                        "name": "libmnl0:amd64",
+                        "version": "1.0.4-3"
+                    },
+                    {
+                        "name": "libmount1:amd64",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "libmpdec3:amd64",
+                        "version": "2.5.1-1"
+                    },
+                    {
+                        "name": "libncurses6:amd64",
+                        "version": "6.2+20201114-2+deb11u2"
+                    },
+                    {
+                        "name": "libncursesw6:amd64",
+                        "version": "6.2+20201114-2+deb11u2"
+                    },
+                    {
+                        "name": "libnetfilter-conntrack3:amd64",
+                        "version": "1.0.8-3"
+                    },
+                    {
+                        "name": "libnettle8:amd64",
+                        "version": "3.7.3-1"
+                    },
+                    {
+                        "name": "libnewt0.52:amd64",
+                        "version": "0.52.21-4+b3"
+                    },
+                    {
+                        "name": "libnfnetlink0:amd64",
+                        "version": "1.0.1-3+b1"
+                    },
+                    {
+                        "name": "libnftnl11:amd64",
+                        "version": "1.1.9-1"
+                    },
+                    {
+                        "name": "libnghttp2-14:amd64",
+                        "version": "1.43.0-1+deb11u2"
+                    },
+                    {
+                        "name": "libnsl2:amd64",
+                        "version": "1.3.0-2"
+                    },
+                    {
+                        "name": "libp11-kit0:amd64",
+                        "version": "0.23.22-1"
+                    },
+                    {
+                        "name": "libpam-modules:amd64",
+                        "version": "1.4.0-9+deb11u1"
+                    },
+                    {
+                        "name": "libpam-modules-bin",
+                        "version": "1.4.0-9+deb11u1"
+                    },
+                    {
+                        "name": "libpam-runtime",
+                        "version": "1.4.0-9+deb11u1"
+                    },
+                    {
+                        "name": "libpam-systemd:amd64",
+                        "version": "247.3-7+deb11u6"
+                    },
+                    {
+                        "name": "libpam0g:amd64",
+                        "version": "1.4.0-9+deb11u1"
+                    },
+                    {
+                        "name": "libpcap0.8:amd64",
+                        "version": "1.10.0-2"
+                    },
+                    {
+                        "name": "libpci3:amd64",
+                        "version": "1:3.7.0-5"
+                    },
+                    {
+                        "name": "libpcre2-8-0:amd64",
+                        "version": "10.36-2+deb11u1"
+                    },
+                    {
+                        "name": "libpcre3:amd64",
+                        "version": "2:8.39-13"
+                    },
+                    {
+                        "name": "libpipeline1:amd64",
+                        "version": "1.5.3-1"
+                    },
+                    {
+                        "name": "libpng16-16:amd64",
+                        "version": "1.6.37-3"
+                    },
+                    {
+                        "name": "libpopt0:amd64",
+                        "version": "1.18-2"
+                    },
+                    {
+                        "name": "libprocps8:amd64",
+                        "version": "2:3.3.17-5"
+                    },
+                    {
+                        "name": "libprotobuf-c1:amd64",
+                        "version": "1.3.3-1+b2"
+                    },
+                    {
+                        "name": "libpsl5:amd64",
+                        "version": "0.21.0-1.2"
+                    },
+                    {
+                        "name": "libpython3-stdlib:amd64",
+                        "version": "3.9.2-3"
+                    },
+                    {
+                        "name": "libpython3.9-minimal:amd64",
+                        "version": "3.9.2-1+deb11u2"
+                    },
+                    {
+                        "name": "libpython3.9-stdlib:amd64",
+                        "version": "3.9.2-1+deb11u2"
+                    },
+                    {
+                        "name": "libreadline8:amd64",
+                        "version": "8.1-1"
+                    },
+                    {
+                        "name": "librtmp1:amd64",
+                        "version": "2.4+20151223.gitfa8646d.1-2+b2"
+                    },
+                    {
+                        "name": "libsasl2-2:amd64",
+                        "version": "2.1.27+dfsg-2.1+deb11u1"
+                    },
+                    {
+                        "name": "libsasl2-modules-db:amd64",
+                        "version": "2.1.27+dfsg-2.1+deb11u1"
+                    },
+                    {
+                        "name": "libseccomp2:amd64",
+                        "version": "2.5.1-1+deb11u1"
+                    },
+                    {
+                        "name": "libselinux1:amd64",
+                        "version": "3.1-3"
+                    },
+                    {
+                        "name": "libsemanage-common",
+                        "version": "3.1-1"
+                    },
+                    {
+                        "name": "libsemanage1:amd64",
+                        "version": "3.1-1+b2"
+                    },
+                    {
+                        "name": "libsepol1:amd64",
+                        "version": "3.1-1+deb11u1"
+                    },
+                    {
+                        "name": "libslang2:amd64",
+                        "version": "2.3.2-5"
+                    },
+                    {
+                        "name": "libsmartcols1:amd64",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "libsqlite3-0:amd64",
+                        "version": "3.34.1-3+deb11u1"
+                    },
+                    {
+                        "name": "libss2:amd64",
+                        "version": "1.46.2-2+deb11u1"
+                    },
+                    {
+                        "name": "libssh2-1:amd64",
+                        "version": "1.9.0-2+deb11u1"
+                    },
+                    {
+                        "name": "libssl1.1:amd64",
+                        "version": "1.1.1w-0+deb11u2"
+                    },
+                    {
+                        "name": "libstdc++6:amd64",
+                        "version": "10.2.1-6"
+                    },
+                    {
+                        "name": "libsystemd0:amd64",
+                        "version": "247.3-7+deb11u6"
+                    },
+                    {
+                        "name": "libtasn1-6:amd64",
+                        "version": "4.16.0-2+deb11u2"
+                    },
+                    {
+                        "name": "libtinfo6:amd64",
+                        "version": "6.2+20201114-2+deb11u2"
+                    },
+                    {
+                        "name": "libtirpc-common",
+                        "version": "1.3.1-1+deb11u1"
+                    },
+                    {
+                        "name": "libtirpc3:amd64",
+                        "version": "1.3.1-1+deb11u1"
+                    },
+                    {
+                        "name": "libuchardet0:amd64",
+                        "version": "0.0.7-1"
+                    },
+                    {
+                        "name": "libudev1:amd64",
+                        "version": "247.3-7+deb11u6"
+                    },
+                    {
+                        "name": "libunistring2:amd64",
+                        "version": "0.9.10-4"
+                    },
+                    {
+                        "name": "liburing1:amd64",
+                        "version": "0.7-3"
+                    },
+                    {
+                        "name": "libutempter0:amd64",
+                        "version": "1.2.1-2"
+                    },
+                    {
+                        "name": "libuuid1:amd64",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "libuv1:amd64",
+                        "version": "1.40.0-2+deb11u1"
+                    },
+                    {
+                        "name": "libwrap0:amd64",
+                        "version": "7.6.q-31"
+                    },
+                    {
+                        "name": "libxml2:amd64",
+                        "version": "2.9.10+dfsg-6.7+deb11u6"
+                    },
+                    {
+                        "name": "libxtables12:amd64",
+                        "version": "1.8.7-1"
+                    },
+                    {
+                        "name": "libxxhash0:amd64",
+                        "version": "0.8.0-2"
+                    },
+                    {
+                        "name": "libyaml-0-2:amd64",
+                        "version": "0.2.2-1"
+                    },
+                    {
+                        "name": "libzstd1:amd64",
+                        "version": "1.4.8+dfsg-2.1"
+                    },
+                    {
+                        "name": "linux-base",
+                        "version": "4.6"
+                    },
+                    {
+                        "name": "linux-image-5.10.0-34-cloud-amd64",
+                        "version": "5.10.234-1"
+                    },
+                    {
+                        "name": "linux-image-cloud-amd64",
+                        "version": "5.10.234-1"
+                    },
+                    {
+                        "name": "locales",
+                        "version": "2.31-13+deb11u11"
+                    },
+                    {
+                        "name": "login",
+                        "version": "1:4.8.1-1"
+                    },
+                    {
+                        "name": "logrotate",
+                        "version": "3.18.0-2+deb11u2"
+                    },
+                    {
+                        "name": "logsave",
+                        "version": "1.46.2-2+deb11u1"
+                    },
+                    {
+                        "name": "lsb-base",
+                        "version": "11.1.0"
+                    },
+                    {
+                        "name": "lsb-release",
+                        "version": "11.1.0"
+                    },
+                    {
+                        "name": "man-db",
+                        "version": "2.9.4-2"
+                    },
+                    {
+                        "name": "manpages",
+                        "version": "5.10-1"
+                    },
+                    {
+                        "name": "mawk",
+                        "version": "1.3.4.20200120-2"
+                    },
+                    {
+                        "name": "media-types",
+                        "version": "4.0.0"
+                    },
+                    {
+                        "name": "mokutil",
+                        "version": "0.6.0-2~deb11u1"
+                    },
+                    {
+                        "name": "mount",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "nano",
+                        "version": "5.4-2+deb11u3"
+                    },
+                    {
+                        "name": "ncurses-base",
+                        "version": "6.2+20201114-2+deb11u2"
+                    },
+                    {
+                        "name": "ncurses-bin",
+                        "version": "6.2+20201114-2+deb11u2"
+                    },
+                    {
+                        "name": "net-tools",
+                        "version": "1.60+git20181103.0eebece-1+deb11u1"
+                    },
+                    {
+                        "name": "netbase",
+                        "version": "6.3"
+                    },
+                    {
+                        "name": "openssh-client",
+                        "version": "1:8.4p1-5+deb11u4"
+                    },
+                    {
+                        "name": "openssh-server",
+                        "version": "1:8.4p1-5+deb11u4"
+                    },
+                    {
+                        "name": "openssh-sftp-server",
+                        "version": "1:8.4p1-5+deb11u4"
+                    },
+                    {
+                        "name": "openssl",
+                        "version": "1.1.1w-0+deb11u2"
+                    },
+                    {
+                        "name": "passwd",
+                        "version": "1:4.8.1-1"
+                    },
+                    {
+                        "name": "pci.ids",
+                        "version": "0.0~2021.02.08-1"
+                    },
+                    {
+                        "name": "pciutils",
+                        "version": "1:3.7.0-5"
+                    },
+                    {
+                        "name": "perl-base",
+                        "version": "5.32.1-4+deb11u4"
+                    },
+                    {
+                        "name": "procps",
+                        "version": "2:3.3.17-5"
+                    },
+                    {
+                        "name": "psmisc",
+                        "version": "23.4-2"
+                    },
+                    {
+                        "name": "python-apt-common",
+                        "version": "2.2.1"
+                    },
+                    {
+                        "name": "python3",
+                        "version": "3.9.2-3"
+                    },
+                    {
+                        "name": "python3-apt",
+                        "version": "2.2.1"
+                    },
+                    {
+                        "name": "python3-attr",
+                        "version": "20.3.0-1"
+                    },
+                    {
+                        "name": "python3-blinker",
+                        "version": "1.4+dfsg1-0.3"
+                    },
+                    {
+                        "name": "python3-certifi",
+                        "version": "2020.6.20-1"
+                    },
+                    {
+                        "name": "python3-cffi-backend:amd64",
+                        "version": "1.14.5-1"
+                    },
+                    {
+                        "name": "python3-chardet",
+                        "version": "4.0.0-1"
+                    },
+                    {
+                        "name": "python3-configobj",
+                        "version": "5.0.6-4"
+                    },
+                    {
+                        "name": "python3-cryptography",
+                        "version": "3.3.2-1+deb11u1"
+                    },
+                    {
+                        "name": "python3-dbus",
+                        "version": "1.2.16-5"
+                    },
+                    {
+                        "name": "python3-debconf",
+                        "version": "1.5.77"
+                    },
+                    {
+                        "name": "python3-debian",
+                        "version": "0.1.39"
+                    },
+                    {
+                        "name": "python3-debianbts",
+                        "version": "3.1.0"
+                    },
+                    {
+                        "name": "python3-distro-info",
+                        "version": "1.0+deb11u1"
+                    },
+                    {
+                        "name": "python3-distutils",
+                        "version": "3.9.2-1"
+                    },
+                    {
+                        "name": "python3-httplib2",
+                        "version": "0.18.1-3"
+                    },
+                    {
+                        "name": "python3-idna",
+                        "version": "2.10-1+deb11u1"
+                    },
+                    {
+                        "name": "python3-importlib-metadata",
+                        "version": "1.6.0-2"
+                    },
+                    {
+                        "name": "python3-jinja2",
+                        "version": "2.11.3-1+deb11u2"
+                    },
+                    {
+                        "name": "python3-json-pointer",
+                        "version": "2.0-2"
+                    },
+                    {
+                        "name": "python3-jsonpatch",
+                        "version": "1.25-3"
+                    },
+                    {
+                        "name": "python3-jsonschema",
+                        "version": "3.2.0-3"
+                    },
+                    {
+                        "name": "python3-jwt",
+                        "version": "1.7.1-2"
+                    },
+                    {
+                        "name": "python3-lib2to3",
+                        "version": "3.9.2-1"
+                    },
+                    {
+                        "name": "python3-markupsafe",
+                        "version": "1.1.1-1+b3"
+                    },
+                    {
+                        "name": "python3-minimal",
+                        "version": "3.9.2-3"
+                    },
+                    {
+                        "name": "python3-more-itertools",
+                        "version": "4.2.0-3"
+                    },
+                    {
+                        "name": "python3-oauthlib",
+                        "version": "3.1.0-2"
+                    },
+                    {
+                        "name": "python3-pkg-resources",
+                        "version": "52.0.0-4+deb11u1"
+                    },
+                    {
+                        "name": "python3-pycurl",
+                        "version": "7.43.0.6-5"
+                    },
+                    {
+                        "name": "python3-pyrsistent:amd64",
+                        "version": "0.15.5-1+b3"
+                    },
+                    {
+                        "name": "python3-pysimplesoap",
+                        "version": "1.16.2-3"
+                    },
+                    {
+                        "name": "python3-reportbug",
+                        "version": "7.10.3+deb11u2"
+                    },
+                    {
+                        "name": "python3-requests",
+                        "version": "2.25.1+dfsg-2"
+                    },
+                    {
+                        "name": "python3-setuptools",
+                        "version": "52.0.0-4+deb11u1"
+                    },
+                    {
+                        "name": "python3-six",
+                        "version": "1.16.0-2"
+                    },
+                    {
+                        "name": "python3-urllib3",
+                        "version": "1.26.5-1~exp1+deb11u1"
+                    },
+                    {
+                        "name": "python3-yaml",
+                        "version": "5.3.1-5"
+                    },
+                    {
+                        "name": "python3-zipp",
+                        "version": "1.0.0-3"
+                    },
+                    {
+                        "name": "python3.9",
+                        "version": "3.9.2-1+deb11u2"
+                    },
+                    {
+                        "name": "python3.9-minimal",
+                        "version": "3.9.2-1+deb11u2"
+                    },
+                    {
+                        "name": "qemu-utils",
+                        "version": "1:5.2+dfsg-11+deb11u3"
+                    },
+                    {
+                        "name": "readline-common",
+                        "version": "8.1-1"
+                    },
+                    {
+                        "name": "reportbug",
+                        "version": "7.10.3+deb11u2"
+                    },
+                    {
+                        "name": "resolvconf",
+                        "version": "1.87"
+                    },
+                    {
+                        "name": "rsyslog",
+                        "version": "8.2102.0-2+deb11u1"
+                    },
+                    {
+                        "name": "runit-helper",
+                        "version": "2.10.3"
+                    },
+                    {
+                        "name": "screen",
+                        "version": "4.8.0-6"
+                    },
+                    {
+                        "name": "sed",
+                        "version": "4.7-1"
+                    },
+                    {
+                        "name": "sensible-utils",
+                        "version": "0.0.14"
+                    },
+                    {
+                        "name": "shim-helpers-amd64-signed",
+                        "version": "1+15.8+1~deb11u1"
+                    },
+                    {
+                        "name": "shim-signed:amd64",
+                        "version": "1.44~1+deb11u1+15.8-1~deb11u1"
+                    },
+                    {
+                        "name": "shim-signed-common",
+                        "version": "1.44~1+deb11u1+15.8-1~deb11u1"
+                    },
+                    {
+                        "name": "shim-unsigned",
+                        "version": "15.8-1~deb11u1"
+                    },
+                    {
+                        "name": "socat",
+                        "version": "1.7.4.1-3"
+                    },
+                    {
+                        "name": "sudo",
+                        "version": "1.9.5p2-3+deb11u1"
+                    },
+                    {
+                        "name": "systemd",
+                        "version": "247.3-7+deb11u6"
+                    },
+                    {
+                        "name": "systemd-sysv",
+                        "version": "247.3-7+deb11u6"
+                    },
+                    {
+                        "name": "sysvinit-utils",
+                        "version": "2.96-7+deb11u1"
+                    },
+                    {
+                        "name": "tar",
+                        "version": "1.34+dfsg-1+deb11u1"
+                    },
+                    {
+                        "name": "tcpdump",
+                        "version": "4.99.0-2+deb11u1"
+                    },
+                    {
+                        "name": "traceroute",
+                        "version": "1:2.1.0-2+deb11u1"
+                    },
+                    {
+                        "name": "tzdata",
+                        "version": "2024b-0+deb11u1"
+                    },
+                    {
+                        "name": "ucf",
+                        "version": "3.0043+deb11u2"
+                    },
+                    {
+                        "name": "udev",
+                        "version": "247.3-7+deb11u6"
+                    },
+                    {
+                        "name": "unattended-upgrades",
+                        "version": "2.8"
+                    },
+                    {
+                        "name": "util-linux",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "uuid-runtime",
+                        "version": "2.36.1-8+deb11u2"
+                    },
+                    {
+                        "name": "vim",
+                        "version": "2:8.2.2434-3+deb11u1"
+                    },
+                    {
+                        "name": "vim-common",
+                        "version": "2:8.2.2434-3+deb11u1"
+                    },
+                    {
+                        "name": "vim-runtime",
+                        "version": "2:8.2.2434-3+deb11u1"
+                    },
+                    {
+                        "name": "vim-tiny",
+                        "version": "2:8.2.2434-3+deb11u1"
+                    },
+                    {
+                        "name": "wget",
+                        "version": "1.21-1+deb11u1"
+                    },
+                    {
+                        "name": "whiptail",
+                        "version": "0.52.21-4+b3"
+                    },
+                    {
+                        "name": "xxd",
+                        "version": "2:8.2.2434-3+deb11u1"
+                    },
+                    {
+                        "name": "xz-utils",
+                        "version": "5.2.5-2.1~deb11u1"
+                    },
+                    {
+                        "name": "zlib1g:amd64",
+                        "version": "1:1.2.11.dfsg-2+deb11u2"
+                    }
+                ]
+            },
+            "kind": "Build",
+            "metadata": {
+                "annotations": {
+                    "cloud.debian.org/digest": "sha512:vCRK/sDmLnGesY0renGvg7hPoFjKj7R1/ucxxKSYq65TlUBLUf7Kt5wSC/f3uhfSj35Lur8JQCU42KdTN3cVCg"
+                },
+                "labels": {
+                    "cloud.debian.org/vendor": "genericcloud",
+                    "cloud.debian.org/version": "20250303-2040",
+                    "debian.org/arch": "amd64",
+                    "debian.org/dist": "debian",
+                    "debian.org/release": "bullseye"
+                },
+                "uid": "cf5a5c9d-6de3-40db-b7f5-688cb3513b0c"
+            }
+        },
+        {
+            "apiVersion": "cloud.debian.org/v1alpha1",
+            "data": {
+                "familyRef": null,
+                "provider": "cloud.debian.org",
+                "ref": "bullseye/20250303-2040/debian-11-genericcloud-amd64-20250303-2040.tar.xz"
+            },
+            "kind": "Upload",
+            "metadata": {
+                "annotations": {
+                    "cloud.debian.org/digest": "sha512:5miu9BcaBogH2Dsi5wnRyIddwBVoAK0snfCbfNC5JYlJNKWZ5SNmRQvWtXYI1Bi/PTzGasg3o2HLEvAssT44eg"
+                },
+                "labels": {
+                    "cloud.debian.org/vendor": "genericcloud",
+                    "cloud.debian.org/version": "20250303-2040",
+                    "debian.org/arch": "amd64",
+                    "debian.org/dist": "debian",
+                    "debian.org/release": "bullseye",
+                    "upload.cloud.debian.org/image-format": "internal",
+                    "upload.cloud.debian.org/type": "release"
+                },
+                "uid": "54ceef36-233b-4d28-82e8-366d3509dfb3"
+            }
+        },
+        {
+            "apiVersion": "cloud.debian.org/v1alpha1",
+            "data": {
+                "familyRef": null,
+                "provider": "cloud.debian.org",
+                "ref": "bullseye/20250303-2040/debian-11-genericcloud-amd64-20250303-2040.raw"
+            },
+            "kind": "Upload",
+            "metadata": {
+                "annotations": {
+                    "cloud.debian.org/digest": "sha512:XJ7svoVws0NjyyNTPpkhY+BRI7qn0UOuBGVAWWErPsYTiJVlEHhm6fEUfsnQvCzuLciVyjMhd4mZla6O6+gJhQ"
+                },
+                "labels": {
+                    "cloud.debian.org/vendor": "genericcloud",
+                    "cloud.debian.org/version": "20250303-2040",
+                    "debian.org/arch": "amd64",
+                    "debian.org/dist": "debian",
+                    "debian.org/release": "bullseye",
+                    "upload.cloud.debian.org/image-format": "raw",
+                    "upload.cloud.debian.org/type": "release"
+                },
+                "uid": "19166878-24b8-4687-b1ce-09fdae791f9c"
+            }
+        },
+        {
+            "apiVersion": "cloud.debian.org/v1alpha1",
+            "data": {
+                "familyRef": null,
+                "provider": "cloud.debian.org",
+                "ref": "bullseye/20250303-2040/debian-11-genericcloud-amd64-20250303-2040.qcow2"
+            },
+            "kind": "Upload",
+            "metadata": {
+                "annotations": {
+                    "cloud.debian.org/digest": "sha512:PAg1bWhg+YcInBS0WVP7HyZtGxtQ3QhnRJJeLtQRO4BOhIqLG0ZhT+vEjN51nxjoJLdr+wJhjtaz0G7RXqmSgw"
+                },
+                "labels": {
+                    "cloud.debian.org/vendor": "genericcloud",
+                    "cloud.debian.org/version": "20250303-2040",
+                    "debian.org/arch": "amd64",
+                    "debian.org/dist": "debian",
+                    "debian.org/release": "bullseye",
+                    "upload.cloud.debian.org/image-format": "qcow2",
+                    "upload.cloud.debian.org/type": "release"
+                },
+                "uid": "76574768-71e8-46f9-b6bb-83689e7b8c3f"
+            }
+        }
+    ],
+    "kind": "List"
+}
