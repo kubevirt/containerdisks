@@ -37,7 +37,7 @@ func (l *leap) Inspect() (*api.ArtifactDetails, error) {
 		return nil, err
 	}
 	return &api.ArtifactDetails{
-		SHA256Sum:         strings.Split(string(checksumBytes), " ")[0],
+		SHASum:            strings.Split(string(checksumBytes), " ")[0],
 		DownloadURL:       baseURL,
 		ImageArchitecture: architecture.GetImageArchitecture(l.Arch),
 	}, nil

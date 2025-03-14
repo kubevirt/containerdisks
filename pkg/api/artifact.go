@@ -28,8 +28,8 @@ type ArtifactResult struct {
 }
 
 type ArtifactDetails struct {
-	// SHA256Sum is the checksum of the image to download.
-	SHA256Sum string
+	// SHASum is the checksum of the image to download.
+	SHASum string
 	// DownloadURL points to the target image.
 	DownloadURL string
 	// ImageArchitecture is the target architecture of the image.
