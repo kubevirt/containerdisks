@@ -155,14 +155,14 @@ func (b *buildAndPublish) Do(entry *common.Entry, timestamp time.Time) ([]string
 	return prepareTags(timestamp, "", entry, artifactInfo), nil
 }
 
-func (b *buildAndPublish) getImageSha(description, arch string) (imageSha string, err error) {
+func (b *buildAndPublish) getImageChecksum(description, arch string) (imageChecksum string, err error) {
 	imageName := path.Join(b.Options.PublishImagesOptions.SourceRegistry, description)
 	imageInfo, err := b.Repo.ImageMetadata(imageName, arch, b.Options.AllowInsecureRegistry)
 	if err != nil {
 		err = b.handleMetadataError(imageName, err)
 	} else {
 		b.Log.Infof("Latest containerdisk checksum: %q", imageInfo.Labels[build.LabelShaSum])
-		imageSha = imageInfo.Labels[build.LabelShaSum]
+		imageChecksum = imageInfo.Labels[build.LabelShaSum]
 	}
 
 	return
@@ -186,7 +186,7 @@ func (b *buildAndPublish) handleMetadataError(imageName string, err error) error
 }
 
 func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string, error) {
-	artifactReader, err := b.Getter.GetWithChecksumAndContext(b.Ctx, artifactInfo.DownloadURL)
+	artifactReader, err := b.Getter.GetWithChecksumAndContext(b.Ctx, artifactInfo.DownloadURL, artifactInfo.ChecksumHash)
 	if err != nil {
 		return "", fmt.Errorf("error opening a connection to the specified download location: %v", err)
 	}
@@ -201,8 +201,8 @@ func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string
 	}
 
 	checksum := artifactReader.Checksum()
-	if checksum != artifactInfo.SHA256Sum {
-		return "", fmt.Errorf("expected checksum %q but got %q", artifactInfo.SHA256Sum, checksum)
+	if checksum != artifactInfo.Checksum {
+		return "", fmt.Errorf("expected checksum %q but got %q", artifactInfo.Checksum, checksum)
 	}
 
 	return file, nil
@@ -270,7 +270,7 @@ func (b *buildAndPublish) buildImages(entry *common.Entry) ([]v1.Image, []string
 		b.Log.Info("Building containerdisk ...")
 		image, err := build.ContainerDisk(file,
 			artifactInfo.ImageArchitecture,
-			build.ContainerDiskConfig(artifactInfo.SHA256Sum, metadata.EnvVariables))
+			build.ContainerDiskConfig(artifactInfo.Checksum, metadata.EnvVariables))
 		if err != nil {
 			return nil, nil, fmt.Errorf("error creating the containerdisk : %v", err)
 		}
@@ -296,11 +296,11 @@ func (b *buildAndPublish) rebuildNeeded(entry *common.Entry) (bool, error) {
 		if err != nil {
 			return false, fmt.Errorf("error introspecting artifact %q: %v", metadata.Describe(), err)
 		}
-		imageSha, err := b.getImageSha(metadata.Describe(), artifactInfo.ImageArchitecture)
+		imageChecksum, err := b.getImageChecksum(metadata.Describe(), artifactInfo.ImageArchitecture)
 		if err != nil {
 			return false, err
 		}
-		if imageSha != artifactInfo.SHA256Sum {
+		if imageChecksum != artifactInfo.Checksum {
 			return true, nil
 		}
 	}

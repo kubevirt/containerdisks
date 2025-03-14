@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"hash"
 
 	v1 "kubevirt.io/api/core/v1"
 
@@ -28,8 +29,10 @@ type ArtifactResult struct {
 }
 
 type ArtifactDetails struct {
-	// SHA256Sum is the checksum of the image to download.
-	SHA256Sum string
+	// Checksum is the checksum of the image to download.
+	Checksum string
+	// ChecksumHash is the digest function used to compute the checksum
+	ChecksumHash func() hash.Hash
 	// DownloadURL points to the target image.
 	DownloadURL string
 	// ImageArchitecture is the target architecture of the image.

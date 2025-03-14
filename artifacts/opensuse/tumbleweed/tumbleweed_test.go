@@ -20,7 +20,12 @@ var _ = Describe("OpenSUSE Tumbleweed", func() {
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
-			Expect(got).To(Equal(details))
+			Expect(got.ChecksumHash).ToNot(BeNil())
+			Expect(got.Checksum).To(Equal(details.Checksum))
+			Expect(got.DownloadURL).To(Equal(details.DownloadURL))
+			Expect(got.AdditionalUniqueTags).To(Equal(details.AdditionalUniqueTags))
+			Expect(got.ImageArchitecture).To(Equal(details.ImageArchitecture))
+			Expect(got.Compression).To(Equal(details.Compression))
 			Expect(c.Metadata()).To(Equal(metadata))
 		},
 		Entry("tumbleweed:1 x86_64", "x86_64", "testdata/tumbleweed.SHA256SUM",
@@ -29,7 +34,7 @@ var _ = Describe("OpenSUSE Tumbleweed", func() {
 				common.DefaultPreferenceEnv:   "opensuse.tumbleweed",
 			},
 			&api.ArtifactDetails{
-				SHA256Sum:         "e8150b4a7ce5c56587492c930af094236c7a095149d714c015e6860ce6c58e66",
+				Checksum:          "e8150b4a7ce5c56587492c930af094236c7a095149d714c015e6860ce6c58e66",
 				DownloadURL:       "https://download.opensuse.org/tumbleweed/appliances/openSUSE-Tumbleweed-Minimal-VM.x86_64-1.0.0-Cloud-Snapshot20240629.qcow2",
 				ImageArchitecture: "amd64",
 			},

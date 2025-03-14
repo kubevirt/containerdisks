@@ -2,6 +2,7 @@ package tumbleweed
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"fmt"
 	"regexp"
 
@@ -46,7 +47,8 @@ func (t *tumbleweed) Inspect() (*api.ArtifactDetails, error) {
 	for file, checksum := range checksums {
 		if r.MatchString(file) {
 			return &api.ArtifactDetails{
-				SHA256Sum:         checksum,
+				Checksum:          checksum,
+				ChecksumHash:      sha256.New,
 				DownloadURL:       baseURL + file,
 				ImageArchitecture: architecture.GetImageArchitecture(t.Arch),
 			}, nil

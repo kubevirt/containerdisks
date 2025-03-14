@@ -19,8 +19,14 @@ var _ = Describe("OpenSUSE Leap", func() {
 			c.getter = testutil.NewMockGetter(mockFile)
 			got, err := c.Inspect()
 			Expect(err).NotTo(HaveOccurred())
-			Expect(got).To(Equal(details))
+			Expect(got.ChecksumHash).ToNot(BeNil())
+			Expect(got.Checksum).To(Equal(details.Checksum))
+			Expect(got.DownloadURL).To(Equal(details.DownloadURL))
+			Expect(got.AdditionalUniqueTags).To(Equal(details.AdditionalUniqueTags))
+			Expect(got.ImageArchitecture).To(Equal(details.ImageArchitecture))
+			Expect(got.Compression).To(Equal(details.Compression))
 			Expect(c.Metadata()).To(Equal(metadata))
+			Expect(err).NotTo(HaveOccurred())
 		},
 		Entry("leap:15.6 x86_64", "x86_64", "15.6", "testdata/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2.sha256",
 			map[string]string{
@@ -28,7 +34,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 				common.DefaultPreferenceEnv:   "opensuse.leap",
 			},
 			&api.ArtifactDetails{
-				SHA256Sum:         "0f7f09a9a083088b51aa365fe0e4310e6b156c2153d6aa03a77b81eee884e52a",
+				Checksum:          "0f7f09a9a083088b51aa365fe0e4310e6b156c2153d6aa03a77b81eee884e52a",
 				DownloadURL:       "https://download.opensuse.org/distribution/leap/15.6/appliances/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2",
 				ImageArchitecture: "amd64",
 			},
@@ -49,7 +55,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 		Entry("leap:15.6 aarch64", "aarch64", "15.6", "testdata/openSUSE-Leap-15.6-Minimal-VM.aarch64-Cloud.qcow2.sha256",
 			nil,
 			&api.ArtifactDetails{
-				SHA256Sum:         "d2ff40176f8823ab869bf4d728f827ffd6c7f180940b9ccca865be6dc20b06dd",
+				Checksum:          "d2ff40176f8823ab869bf4d728f827ffd6c7f180940b9ccca865be6dc20b06dd",
 				DownloadURL:       "https://download.opensuse.org/distribution/leap/15.6/appliances/openSUSE-Leap-15.6-Minimal-VM.aarch64-Cloud.qcow2",
 				ImageArchitecture: "arm64",
 			},
@@ -69,7 +75,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 				common.DefaultPreferenceEnv:   "opensuse.leap",
 			},
 			&api.ArtifactDetails{
-				SHA256Sum:         "46e63b73fadc17c8b38ff83a45ebf3a736b86310e440ac1bfb123a420af1161f",
+				Checksum:          "46e63b73fadc17c8b38ff83a45ebf3a736b86310e440ac1bfb123a420af1161f",
 				DownloadURL:       "https://download.opensuse.org/distribution/leap/15.5/appliances/openSUSE-Leap-15.5-Minimal-VM.x86_64-Cloud.qcow2",
 				ImageArchitecture: "amd64",
 			},
@@ -90,7 +96,7 @@ var _ = Describe("OpenSUSE Leap", func() {
 		Entry("leap:15.5 aarch64", "aarch64", "15.5", "testdata/openSUSE-Leap-15.5-Minimal-VM.aarch64-Cloud.qcow2.sha256",
 			nil,
 			&api.ArtifactDetails{
-				SHA256Sum:         "3560ca0845d797880a1a36ca84b52a6ba1d0bb1e153913312c5e9f3c9cfda56a",
+				Checksum:          "3560ca0845d797880a1a36ca84b52a6ba1d0bb1e153913312c5e9f3c9cfda56a",
 				DownloadURL:       "https://download.opensuse.org/distribution/leap/15.5/appliances/openSUSE-Leap-15.5-Minimal-VM.aarch64-Cloud.qcow2",
 				ImageArchitecture: "arm64",
 			},
