@@ -54,7 +54,7 @@ func (u *ubuntu) Inspect() (*api.ArtifactDetails, error) {
 	}
 	if checksum, exists := checksums[u.Variant]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:         checksum,
+			SHASum:            checksum,
 			DownloadURL:       baseURL + u.Variant,
 			Compression:       u.Compression,
 			ImageArchitecture: architecture.GetImageArchitecture(u.Arch),

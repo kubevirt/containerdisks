@@ -91,7 +91,7 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 
 	if checksum, exists := checksums[candidate]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:            checksum,
+			SHASum:               checksum,
 			DownloadURL:          baseURL + candidate,
 			AdditionalUniqueTags: additionalTags,
 			ImageArchitecture:    architecture.GetImageArchitecture(c.Arch),

@@ -86,7 +86,7 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 		}
 
 		details := &api.ArtifactDetails{
-			SHA256Sum:         release.Sha256,
+			SHASum:            release.Sha256,
 			DownloadURL:       release.Link,
 			ImageArchitecture: architecture.GetImageArchitecture(f.Arch),
 		}

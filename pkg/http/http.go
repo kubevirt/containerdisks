@@ -3,6 +3,7 @@ package http
 import (
 	"context"
 	"crypto/sha256"
+	"crypto/sha512"
 	"encoding/hex"
 	"fmt"
 	"hash"
@@ -19,7 +20,7 @@ type Getter interface {
 
 type ReadCloserWithChecksum interface {
 	io.ReadCloser
-	Checksum() string
+	Checksum() (string, string)
 }
 
 type HTTPGetter struct{}
@@ -69,15 +70,27 @@ func (h *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL stri
 }
 
 func newReadCloserWithChecksum(body io.ReadCloser) *readCloserWithChecksum {
-	sha := sha256.New()
-	teeReader := io.TeeReader(body, sha)
-	return &readCloserWithChecksum{body: body, teeReader: teeReader, sha: sha}
+	sha256checksum := sha256.New()
+	sha512checksum := sha512.New()
+
+	// MultiWriter writes to both hashers simultaneously as the data is read through the Read method.
+	// It allows to compute both shas in a single pass while the data will be still available to later read it and
+	// create the containerdisk.
+	teeReader := io.TeeReader(body, io.MultiWriter(sha256checksum, sha512checksum))
+
+	return &readCloserWithChecksum{
+		body:      body,
+		teeReader: teeReader,
+		sha256:    sha256checksum,
+		sha512:    sha512checksum,
+	}
 }
 
 type readCloserWithChecksum struct {
 	body      io.ReadCloser
 	teeReader io.Reader
-	sha       hash.Hash
+	sha256    hash.Hash
+	sha512    hash.Hash
 }
 
 func (r *readCloserWithChecksum) Read(p []byte) (n int, err error) {
@@ -88,6 +101,6 @@ func (r *readCloserWithChecksum) Close() error {
 	return r.body.Close()
 }
 
-func (r *readCloserWithChecksum) Checksum() string {
-	return hex.EncodeToString(r.sha.Sum(nil))
+func (r *readCloserWithChecksum) Checksum() (sha256checksum, sha512checksum string) {
+	return hex.EncodeToString(r.sha256.Sum(nil)), hex.EncodeToString(r.sha512.Sum(nil))
 }

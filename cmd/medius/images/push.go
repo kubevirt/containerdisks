@@ -200,9 +200,11 @@ func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string
 		return "", b.Ctx.Err()
 	}
 
-	checksum := artifactReader.Checksum()
-	if checksum != artifactInfo.SHA256Sum {
-		return "", fmt.Errorf("expected checksum %q but got %q", artifactInfo.SHA256Sum, checksum)
+	checksum256, checksum512 := artifactReader.Checksum()
+
+	if checksum256 != artifactInfo.SHASum && checksum512 != artifactInfo.SHASum {
+		return "", fmt.Errorf("expected checksum %q but got SHA256sum %q and SHA512sum %q",
+			artifactInfo.SHASum, checksum256, checksum512)
 	}
 
 	return file, nil
@@ -270,7 +272,7 @@ func (b *buildAndPublish) buildImages(entry *common.Entry) ([]v1.Image, []string
 		b.Log.Info("Building containerdisk ...")
 		image, err := build.ContainerDisk(file,
 			artifactInfo.ImageArchitecture,
-			build.ContainerDiskConfig(artifactInfo.SHA256Sum, metadata.EnvVariables))
+			build.ContainerDiskConfig(artifactInfo.SHASum, metadata.EnvVariables))
 		if err != nil {
 			return nil, nil, fmt.Errorf("error creating the containerdisk : %v", err)
 		}
@@ -300,7 +302,7 @@ func (b *buildAndPublish) rebuildNeeded(entry *common.Entry) (bool, error) {
 		if err != nil {
 			return false, err
 		}
-		if imageSha != artifactInfo.SHA256Sum {
+		if imageSha != artifactInfo.SHASum {
 			return true, nil
 		}
 	}

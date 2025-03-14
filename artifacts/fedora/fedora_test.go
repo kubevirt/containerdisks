@@ -25,7 +25,7 @@ var _ = Describe("Fedora", func() {
 		},
 		Entry("fedora:40 x86_64", "40", "x86_64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "ac58f3c35b73272d5986fa6d3bc44fd246b45df4c334e99a07b3bbd00684adee",
+				SHASum:               "ac58f3c35b73272d5986fa6d3bc44fd246b45df4c334e99a07b3bbd00684adee",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/x86_64/images/Fedora-Cloud-Base-Generic.x86_64-40-1.14.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"40-1.14"},
 				ImageArchitecture:    "amd64",
@@ -46,7 +46,7 @@ var _ = Describe("Fedora", func() {
 		),
 		Entry("fedora:40 aarch64", "40", "aarch64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "ebdce26d861a9d15072affe1919ed753ec7015bd97b3a7d0d0df6a10834f7459",
+				SHASum:               "ebdce26d861a9d15072affe1919ed753ec7015bd97b3a7d0d0df6a10834f7459",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/40/Cloud/aarch64/images/Fedora-Cloud-Base-Generic.aarch64-40-1.14.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"40-1.14"},
 				ImageArchitecture:    "arm64",
@@ -67,7 +67,7 @@ var _ = Describe("Fedora", func() {
 		),
 		Entry("fedora:40 s390x", "40", "s390x", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "808226b31c6c61e08cde77fe7ba61d766f7528c857e7ae8553040c177cbda9a7",
+				SHASum:               "808226b31c6c61e08cde77fe7ba61d766f7528c857e7ae8553040c177cbda9a7",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora-secondary/releases/40/Cloud/s390x/images/Fedora-Cloud-Base-Generic.s390x-40-1.14.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"40-1.14"},
 				ImageArchitecture:    "s390x",
@@ -88,7 +88,7 @@ var _ = Describe("Fedora", func() {
 		),
 		Entry("fedora:39 x86_64", "39", "x86_64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "ab5be5058c5c839528a7d6373934e0ce5ad6c8f80bd71ed3390032027da52f37",
+				SHASum:               "ab5be5058c5c839528a7d6373934e0ce5ad6c8f80bd71ed3390032027da52f37",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"39-1.5"},
 				ImageArchitecture:    "amd64",
@@ -109,7 +109,7 @@ var _ = Describe("Fedora", func() {
 		),
 		Entry("fedora:39 aarch64", "39", "aarch64", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "765996d5b77481ca02d0ac06405641bf134ac920cfc1e60d981c64d7971162dc",
+				SHASum:               "765996d5b77481ca02d0ac06405641bf134ac920cfc1e60d981c64d7971162dc",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/aarch64/images/Fedora-Cloud-Base-39-1.5.aarch64.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"39-1.5"},
 				ImageArchitecture:    "arm64",
@@ -130,7 +130,7 @@ var _ = Describe("Fedora", func() {
 		),
 		Entry("fedora:39 s390x", "39", "s390x", "testdata/releases.json",
 			&api.ArtifactDetails{
-				SHA256Sum:            "36dec66c791c9d1225d74e8828fdb0976ad89f695e8e6f5c93269cafa8563907",
+				SHASum:               "36dec66c791c9d1225d74e8828fdb0976ad89f695e8e6f5c93269cafa8563907",
 				DownloadURL:          "https://download.fedoraproject.org/pub/fedora-secondary/releases/39/Cloud/s390x/images/Fedora-Cloud-Base-39-1.5.s390x.qcow2", //nolint:lll
 				AdditionalUniqueTags: []string{"39-1.5"},
 				ImageArchitecture:    "s390x",
