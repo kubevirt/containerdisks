@@ -17,7 +17,7 @@ medius:
 	CGO_ENABLED=0 GOOS=linux GOARCH=$(GOARCH) go build -o bin/medius kubevirt.io/containerdisks/cmd/medius
 
 fmt: gofumpt
-	go mod tidy -compat=1.23
+	go mod tidy -compat=1.24
 	$(GOFUMPT) -w -extra .
 
 .PHONY: vendor
