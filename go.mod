@@ -33,7 +33,7 @@ require (
 
 require (
 	dario.cat/mergo v1.0.1 // indirect
-	github.com/BurntSushi/toml v1.4.0 // indirect
+	github.com/BurntSushi/toml v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/Microsoft/hcsshim v0.12.9 // indirect
 	github.com/containerd/cgroups/v3 v3.0.5 // indirect
