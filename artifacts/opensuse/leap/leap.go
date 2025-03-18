@@ -1,6 +1,7 @@
 package leap
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"strings"
 
@@ -37,7 +38,8 @@ func (l *leap) Inspect() (*api.ArtifactDetails, error) {
 		return nil, err
 	}
 	return &api.ArtifactDetails{
-		SHA256Sum:         strings.Split(string(checksumBytes), " ")[0],
+		Checksum:          strings.Split(string(checksumBytes), " ")[0],
+		ChecksumHash:      sha256.New,
 		DownloadURL:       baseURL,
 		ImageArchitecture: architecture.GetImageArchitecture(l.Arch),
 	}, nil

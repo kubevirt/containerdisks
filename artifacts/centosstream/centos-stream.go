@@ -2,6 +2,7 @@ package centosstream
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"fmt"
 	"sort"
 	"strings"
@@ -91,7 +92,8 @@ func (c *centos) Inspect() (*api.ArtifactDetails, error) {
 
 	if checksum, exists := checksums[candidate]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:            checksum,
+			Checksum:             checksum,
+			ChecksumHash:         sha256.New,
 			DownloadURL:          baseURL + candidate,
 			AdditionalUniqueTags: additionalTags,
 			ImageArchitecture:    architecture.GetImageArchitecture(c.Arch),

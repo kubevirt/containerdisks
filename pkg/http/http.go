@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"hash"
@@ -13,8 +12,8 @@ import (
 type Getter interface {
 	GetAll(fileURL string) ([]byte, error)
 	GetAllWithContext(ctx context.Context, fileURL string) ([]byte, error)
-	GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error)
-	GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error)
+	GetWithChecksum(fileURL string, checksumHasher func() hash.Hash) (ReadCloserWithChecksum, error)
+	GetWithChecksumAndContext(ctx context.Context, fileURL string, checksumHasher func() hash.Hash) (ReadCloserWithChecksum, error)
 }
 
 type ReadCloserWithChecksum interface {
@@ -46,11 +45,14 @@ func (h *HTTPGetter) GetAllWithContext(ctx context.Context, fileURL string) ([]b
 	return io.ReadAll(resp.Body)
 }
 
-func (h *HTTPGetter) GetWithChecksum(fileURL string) (ReadCloserWithChecksum, error) {
-	return h.GetWithChecksumAndContext(context.Background(), fileURL)
+func (h *HTTPGetter) GetWithChecksum(fileURL string, checksumHasher func() hash.Hash) (ReadCloserWithChecksum, error) {
+	return h.GetWithChecksumAndContext(context.Background(), fileURL, checksumHasher)
 }
 
-func (h *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL string) (ReadCloserWithChecksum, error) {
+func (h *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL string, checksumHasher func() hash.Hash) (
+	readCloser ReadCloserWithChecksum,
+	err error,
+) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, http.NoBody)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
@@ -65,19 +67,24 @@ func (h *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL stri
 		resp.Body.Close()
 		return nil, fmt.Errorf("failed to download %s: %v ", fileURL, fmt.Errorf("status : %v", resp.StatusCode))
 	}
-	return newReadCloserWithChecksum(resp.Body), nil
+	return newReadCloserWithChecksum(resp.Body, checksumHasher), nil
 }
 
-func newReadCloserWithChecksum(body io.ReadCloser) *readCloserWithChecksum {
-	sha := sha256.New()
-	teeReader := io.TeeReader(body, sha)
-	return &readCloserWithChecksum{body: body, teeReader: teeReader, sha: sha}
+func newReadCloserWithChecksum(body io.ReadCloser, checksumHasher func() hash.Hash) *readCloserWithChecksum {
+	checksum := checksumHasher()
+	teeReader := io.TeeReader(body, checksum)
+
+	return &readCloserWithChecksum{
+		body:         body,
+		teeReader:    teeReader,
+		checksumHash: checksum,
+	}
 }
 
 type readCloserWithChecksum struct {
-	body      io.ReadCloser
-	teeReader io.Reader
-	sha       hash.Hash
+	body         io.ReadCloser
+	teeReader    io.Reader
+	checksumHash hash.Hash
 }
 
 func (r *readCloserWithChecksum) Read(p []byte) (n int, err error) {
@@ -89,5 +96,5 @@ func (r *readCloserWithChecksum) Close() error {
 }
 
 func (r *readCloserWithChecksum) Checksum() string {
-	return hex.EncodeToString(r.sha.Sum(nil))
+	return hex.EncodeToString(r.checksumHash.Sum(nil))
 }

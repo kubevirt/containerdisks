@@ -2,6 +2,7 @@ package ubuntu
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"fmt"
 
 	v1 "kubevirt.io/api/core/v1"
@@ -54,7 +55,8 @@ func (u *ubuntu) Inspect() (*api.ArtifactDetails, error) {
 	}
 	if checksum, exists := checksums[u.Variant]; exists {
 		return &api.ArtifactDetails{
-			SHA256Sum:         checksum,
+			Checksum:          checksum,
+			ChecksumHash:      sha256.New,
 			DownloadURL:       baseURL + u.Variant,
 			Compression:       u.Compression,
 			ImageArchitecture: architecture.GetImageArchitecture(u.Arch),

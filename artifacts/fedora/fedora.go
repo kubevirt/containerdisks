@@ -1,6 +1,7 @@
 package fedora
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"regexp"
@@ -86,7 +87,8 @@ func (f *fedora) Inspect() (*api.ArtifactDetails, error) {
 		}
 
 		details := &api.ArtifactDetails{
-			SHA256Sum:         release.Sha256,
+			Checksum:          release.Sha256,
+			ChecksumHash:      sha256.New,
 			DownloadURL:       release.Link,
 			ImageArchitecture: architecture.GetImageArchitecture(f.Arch),
 		}

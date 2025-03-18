@@ -1,11 +1,13 @@
 package common
 
 import (
+	"crypto/sha256"
 	"strings"
 
 	"github.com/sirupsen/logrus"
 
 	"kubevirt.io/containerdisks/artifacts/centosstream"
+	"kubevirt.io/containerdisks/artifacts/debian"
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
 	"kubevirt.io/containerdisks/artifacts/opensuse/leap"
@@ -83,12 +85,26 @@ var staticRegistry = []Entry{
 			leap.New("aarch64", "15.5", defaultEnvVariables("u1.medium", "opensuse.leap")),
 		},
 	},
+	{
+		Artifacts: []api.Artifact{
+			debian.New("11", "bullseye", "x86_64", &docs.UserData{Username: "debian"}, nil),
+			debian.New("11", "bullseye", "aarch64", &docs.UserData{Username: "debian"}, nil),
+		},
+	},
+	{
+		Artifacts: []api.Artifact{
+			debian.New("12", "bookworm", "x86_64", &docs.UserData{Username: "debian"}, nil),
+			debian.New("12", "bookworm", "aarch64", &docs.UserData{Username: "debian"}, nil),
+		},
+		UseForDocs: true,
+	},
 	// for testing only
 	{
 		Artifacts: []api.Artifact{
 			generic.New(
 				&api.ArtifactDetails{
-					SHA256Sum:         "cc704ab14342c1c8a8d91b66a7fc611d921c8b8f1aaf4695f9d6463d913fa8d1",
+					Checksum:          "cc704ab14342c1c8a8d91b66a7fc611d921c8b8f1aaf4695f9d6463d913fa8d1",
+					ChecksumHash:      sha256.New,
 					DownloadURL:       "https://download.cirros-cloud.net/0.6.1/cirros-0.6.1-x86_64-disk.img",
 					ImageArchitecture: "amd64",
 				},
@@ -99,7 +115,8 @@ var staticRegistry = []Entry{
 			),
 			generic.New(
 				&api.ArtifactDetails{
-					SHA256Sum:         "db9420c481c11dee17860aa46fb1a3efa05fa4fb152726d6344e24da03cb0ccf",
+					Checksum:          "db9420c481c11dee17860aa46fb1a3efa05fa4fb152726d6344e24da03cb0ccf",
+					ChecksumHash:      sha256.New,
 					DownloadURL:       "https://download.cirros-cloud.net/0.6.1/cirros-0.6.1-aarch64-disk.img",
 					ImageArchitecture: "arm64",
 				},
