@@ -87,14 +87,14 @@ var staticRegistry = []Entry{
 	},
 	{
 		Artifacts: []api.Artifact{
-			debian.New("11", "bullseye", "x86_64", &docs.UserData{Username: "debian"}, nil),
-			debian.New("11", "bullseye", "aarch64", &docs.UserData{Username: "debian"}, nil),
+			debian.New("11", "bullseye", "x86_64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
+			debian.New("11", "bullseye", "aarch64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
 		},
 	},
 	{
 		Artifacts: []api.Artifact{
-			debian.New("12", "bookworm", "x86_64", &docs.UserData{Username: "debian"}, nil),
-			debian.New("12", "bookworm", "aarch64", &docs.UserData{Username: "debian"}, nil),
+			debian.New("12", "bookworm", "x86_64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
+			debian.New("12", "bookworm", "aarch64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
 		},
 		UseForDocs:   true,
 		UseForLatest: true,
