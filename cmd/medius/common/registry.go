@@ -96,7 +96,8 @@ var staticRegistry = []Entry{
 			debian.New("12", "bookworm", "x86_64", &docs.UserData{Username: "debian"}, nil),
 			debian.New("12", "bookworm", "aarch64", &docs.UserData{Username: "debian"}, nil),
 		},
-		UseForDocs: true,
+		UseForDocs:   true,
+		UseForLatest: true,
 	},
 	// for testing only
 	{
