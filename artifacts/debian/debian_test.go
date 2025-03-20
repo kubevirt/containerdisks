@@ -7,6 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 
 	"kubevirt.io/containerdisks/pkg/api"
+	"kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/testutil"
 )
@@ -40,7 +41,10 @@ var _ = Describe("Debian", func() {
 			&docs.UserData{
 				Username: "debian",
 			},
-			nil,
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "debian",
+			},
 			&api.Metadata{
 				Name:        "debian",
 				Version:     "11",
@@ -49,7 +53,10 @@ var _ = Describe("Debian", func() {
 				ExampleUserData: docs.UserData{
 					Username: "debian",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "debian",
+				},
 			},
 		),
 		Entry("debian:11 aarch64", "11", "bullseye", "aarch64", "testdata/debian-11-genericcloud-arm64.json",
@@ -63,7 +70,10 @@ var _ = Describe("Debian", func() {
 			&docs.UserData{
 				Username: "debian",
 			},
-			nil,
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "debian",
+			},
 			&api.Metadata{
 				Name:        "debian",
 				Version:     "11",
@@ -72,7 +82,10 @@ var _ = Describe("Debian", func() {
 				ExampleUserData: docs.UserData{
 					Username: "debian",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "debian",
+				},
 			},
 		),
 		Entry("debian:12 x86_64", "12", "bookworm", "x86_64", "testdata/debian-12-genericcloud-amd64.json",
@@ -86,7 +99,10 @@ var _ = Describe("Debian", func() {
 			&docs.UserData{
 				Username: "debian",
 			},
-			nil,
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "debian",
+			},
 			&api.Metadata{
 				Name:        "debian",
 				Version:     "12",
@@ -95,7 +111,10 @@ var _ = Describe("Debian", func() {
 				ExampleUserData: docs.UserData{
 					Username: "debian",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "debian",
+				},
 			},
 		),
 		Entry("debian:12 aarch64", "12", "bookworm", "aarch64", "testdata/debian-12-genericcloud-arm64.json",
@@ -109,7 +128,10 @@ var _ = Describe("Debian", func() {
 			&docs.UserData{
 				Username: "debian",
 			},
-			nil,
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "debian",
+			},
 			&api.Metadata{
 				Name:        "debian",
 				Version:     "12",
@@ -118,7 +140,10 @@ var _ = Describe("Debian", func() {
 				ExampleUserData: docs.UserData{
 					Username: "debian",
 				},
-				EnvVariables: nil,
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "debian",
+				},
 			},
 		),
 	)
