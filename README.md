@@ -1,12 +1,13 @@
 # KubeVirt curated Containerdisks
 
-| Name             | Architecture  |
-|------------------|---------------|
-| [CentOS Stream](https://quay.io/repository/containerdisks/centos-stream)            | amd64, arm64, s390x   |
-| [Fedora](https://quay.io/repository/containerdisks/fedora)                          | amd64, arm64, s390x   |
-| [Ubuntu](https://quay.io/repository/containerdisks/ubuntu)                          | amd64, arm64, s390x   |
-| [OpenSUSE Tumbleweed](https://quay.io/repository/containerdisks/opensuse-tumbleweed)| amd64          |
-| [OpenSUSE Leap](https://quay.io/repository/containerdisks/opensuse-leap)            | amd64, arm64   |
+| Name                                                                                 | Architecture  |
+|--------------------------------------------------------------------------------------|---------------|
+| [CentOS Stream](https://quay.io/repository/containerdisks/centos-stream)             | amd64, arm64, s390x   |
+| [Fedora](https://quay.io/repository/containerdisks/fedora)                           | amd64, arm64, s390x   |
+| [Ubuntu](https://quay.io/repository/containerdisks/ubuntu)                           | amd64, arm64, s390x   |
+| [OpenSUSE Tumbleweed](https://quay.io/repository/containerdisks/opensuse-tumbleweed) | amd64          |
+| [OpenSUSE Leap](https://quay.io/repository/containerdisks/opensuse-leap)             | amd64, arm64   |
+| [Debian](https://quay.io/repository/containerdisks/debian)                    | amd64, arm64   |
 
 ## Building and publishing containerdisks
 
@@ -56,7 +57,8 @@ Image verification and end-to-end testing, including promotions of working
 images, is possible with the `images` subcommands. Images which don't work out of
 the box for kubevirt will not be published.
 
-### Local testing
+### Testing
+#### Using Podman
 
 Setup local container registry to just build and publish:
 
@@ -74,6 +76,35 @@ To publish a specific image run, make use of `--focus`:
 
 ```bash
 bin/medius images push --target-registry=localhost:5000 --dry-run=false --insecure-skip-tls --focus=fedora:35
+```
+
+#### Using a Kubernetes Cluster
+
+Setup a kubevirtci cluster with KubeVirt deployed:
+
+```bash
+make cluster-up
+```
+
+To push all images to the cluster registry call `medius` like:
+
+```bash
+export registry=$(./hack/kubevirtci.sh registry)
+bin/medius images push --target-registry=$registry --source-registry=$registry --dry-run=false --workers=3
+```
+
+To push a specific image run, make use of `--focus`:
+
+```bash
+export registry=$(./hack/kubevirtci.sh registry)
+bin/medius images push --target-registry=$registry --source-registry=$registry --focus=<image-name>:* --dry-run=false  --workers=3
+```
+
+To verify the images that have been pushed to the cluster registry, use `verify`:
+
+```bash
+export kubeconfig=$(./hack/kubevirtci.sh kubeconfig)
+bin/medius images verify --registry=registry:5000 --kubeconfig $kubeconfig --dry-run=false --insecure-skip-tls
 ```
 
 ### Scaling considerations
