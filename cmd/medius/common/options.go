@@ -34,8 +34,9 @@ type PublishImageOptions struct {
 }
 
 type VerifyImageOptions struct {
-	Registry  string
-	Namespace string
-	NoFail    bool
-	Timeout   int
+	Registry           string
+	Namespace          string
+	NoFail             bool
+	Timeout            int
+	TargetArchitecture string
 }
