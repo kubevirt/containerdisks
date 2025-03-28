@@ -1,7 +1,6 @@
 module kubevirt.io/containerdisks
 
 go 1.24.1
-
 replace (
 	// Fixed versions for kubevirt.io/client-go v1.4.x
 	k8s.io/api => k8s.io/api v0.31.6
@@ -12,7 +11,7 @@ replace (
 )
 
 require (
-	github.com/containers/image/v5 v5.34.2
+	github.com/containers/image/v5 v5.34.3
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/google/go-containerregistry v0.20.3
 	github.com/onsi/ginkgo/v2 v2.23.3
@@ -118,7 +117,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.35.0 // indirect
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/oauth2 v0.28.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
@@ -135,7 +134,7 @@ require (
 	k8s.io/client-go v0.32.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.31.0 // indirect
-	kubevirt.io/containerized-data-importer-api v1.61.2 // indirect
+	kubevirt.io/containerized-data-importer-api v1.61.4 // indirect
 	kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.6.0 // indirect
