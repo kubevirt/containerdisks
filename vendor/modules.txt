@@ -487,7 +487,7 @@ github.com/ostreedev/ostree-go/pkg/otbuiltin
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.0
+# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.1
 ## explicit; go 1.24
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1
@@ -969,7 +969,7 @@ k8s.io/utils/internal/third_party/forked/golang/net
 k8s.io/utils/net
 k8s.io/utils/pointer
 k8s.io/utils/ptr
-# kubevirt.io/api v1.5.0
+# kubevirt.io/api v1.5.1
 ## explicit; go 1.22.0
 kubevirt.io/api/clone
 kubevirt.io/api/clone/v1alpha1
@@ -990,7 +990,7 @@ kubevirt.io/api/pool/v1alpha1
 kubevirt.io/api/snapshot
 kubevirt.io/api/snapshot/v1alpha1
 kubevirt.io/api/snapshot/v1beta1
-# kubevirt.io/client-go v1.5.0
+# kubevirt.io/client-go v1.5.1
 ## explicit; go 1.22.0
 kubevirt.io/client-go/containerizeddataimporter
 kubevirt.io/client-go/containerizeddataimporter/scheme

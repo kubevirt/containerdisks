@@ -26,8 +26,8 @@ require (
 	k8s.io/api v0.32.3
 	k8s.io/apimachinery v0.33.0
 	k8s.io/utils v0.0.0-20250321185631-1f6e0b77f77e
-	kubevirt.io/api v1.5.0
-	kubevirt.io/client-go v1.5.0
+	kubevirt.io/api v1.5.1
+	kubevirt.io/client-go v1.5.1
 	sigs.k8s.io/yaml v1.4.0
 )
 
@@ -104,7 +104,7 @@ require (
 	github.com/openshift/client-go v0.0.0-20240312121557-60dd5f9fbf8d // indirect
 	github.com/openshift/custom-resource-status v1.1.2 // indirect
 	github.com/ostreedev/ostree-go v0.0.0-20210805093236-719684c64e4f // indirect
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.0 // indirect
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/sylabs/sif/v2 v2.21.1 // indirect
 	github.com/tchap/go-patricia/v2 v2.3.2 // indirect

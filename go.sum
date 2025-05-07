@@ -378,8 +378,8 @@ github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINE
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.0 h1:Ee6zu4IR/WKYEcYHL4+gbC1A3GAzlHWxSjjMyRVBHYw=
-github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.0/go.mod h1:hY5yoQsoIalncoxYqXXCDL5y7f+GGYYlW9Bi2IdU5KY=
+github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.1 h1:7zaP53Udfw1flmENke9vKkW0+QyVpFgQn2qP3QqIQBM=
+github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.82.1/go.mod h1:hY5yoQsoIalncoxYqXXCDL5y7f+GGYYlW9Bi2IdU5KY=
 github.com/prometheus/client_golang v1.21.1 h1:DOvXXTqVzvkIewV/CDPFdejpMCGeMcbGCQ8YOmu+Ibk=
 github.com/prometheus/client_golang v1.21.1/go.mod h1:U9NM32ykUErtVBxdvD3zfi+EuFkkaBvMb09mIfe0Zgg=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
@@ -794,10 +794,10 @@ k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f h1:0LQagt0gDpKqvIkAMPaRGc
 k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f/go.mod h1:S9tOR0FxgyusSNR+MboCuiDpVWkAifZvaYI1Q2ubgro=
 k8s.io/utils v0.0.0-20240711033017-18e509b52bc8 h1:pUdcCO1Lk/tbT5ztQWOBi5HBgbBP1J8+AsQnQCKsi8A=
 k8s.io/utils v0.0.0-20240711033017-18e509b52bc8/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
-kubevirt.io/api v1.5.0 h1:3wjUf+xYZk6OThkHqDNI+AnvO5x4aPdyIkJT0xHJ2a0=
-kubevirt.io/api v1.5.0/go.mod h1:B6OBbPKntPHOOtoxyRk5YKJHekWWOiwZDb2XncitcJ0=
-kubevirt.io/client-go v1.5.0 h1:3ILatYDJYEYL7yUe1SIirxrXG2hsmEwYFItBXAxVkAc=
-kubevirt.io/client-go v1.5.0/go.mod h1:BXdCWW7yFOYerojVMJrwI62SH1nO/+XD7f1Hrbil5fA=
+kubevirt.io/api v1.5.1 h1:vjDaOBZ18LH1SsSVtqmuVtQsfBrm1hc6QQxk47VNfts=
+kubevirt.io/api v1.5.1/go.mod h1:B6OBbPKntPHOOtoxyRk5YKJHekWWOiwZDb2XncitcJ0=
+kubevirt.io/client-go v1.5.1 h1:kYtydFpgdrmG3/zOF5NI4D2U5MpkJnC5txidkzrMY88=
+kubevirt.io/client-go v1.5.1/go.mod h1:/aYolmh9sS+RII9ezZrpdgzOWfP+z/JcTEDka1Y6NJE=
 kubevirt.io/containerized-data-importer-api v1.62.0 h1:gu8s/H1qJ40xpFH+B4Hr1X6W22IbzazOXHvRAUwrESw=
 kubevirt.io/containerized-data-importer-api v1.62.0/go.mod h1:VGp35wxpLXU18b7cnEpmcThI3AjcZUSfg/Zfql44U4o=
 kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 h1:fZYvD3/Vnitfkx6IJxjLAk8ugnZQ7CXVYcRfkSKmuZY=
