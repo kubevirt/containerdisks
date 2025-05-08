@@ -55,7 +55,9 @@ func NewVerifyImagesCommand(options *common.Options) *cobra.Command {
 			focusMatched, resultsChan, workerErr := spawnWorkers(cmd.Context(), options, func(e *common.Entry) (*api.ArtifactResult, error) {
 				artifact, err := retrieveArchitectureArtifact(options, e)
 				if err != nil {
-					return nil, err
+					firstArtifactMedatada := e.Artifacts[0].Metadata()
+					logrus.Warn("Skipped " + firstArtifactMedatada.Name + ":" + firstArtifactMedatada.Version + " - " + err.Error())
+					return nil, nil
 				}
 				description := artifact.Metadata().Describe()
 				r, ok := results[description]
