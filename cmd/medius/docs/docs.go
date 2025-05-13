@@ -58,10 +58,15 @@ func run(options *common.Options) error {
 		if common.ShouldSkip(options.Focus, &registry[i]) || !p.UseForDocs {
 			continue
 		}
-
 		focusMatched = true
 
-		artifact := p.Artifacts[0]
+		artifact, err := getPreferredArtifact(p.Artifacts)
+		if err != nil {
+			success = false
+			logrus.Errorf("error getting artifact: %v", err)
+			continue
+		}
+
 		log := common.Logger(artifact)
 		name := artifact.Metadata().Name
 
@@ -102,6 +107,26 @@ func getQuayOrg(registry string) (string, error) {
 	}
 
 	return elements[1], nil
+}
+
+// getPreferredArtifact returns the preferred artifact which has the amd64 architecture.
+// If no artifact with the amd64 architecture can be found, it will try to return the first artifact.
+func getPreferredArtifact(artifacts []api.Artifact) (api.Artifact, error) {
+	if len(artifacts) == 0 {
+		return nil, errors.New("no artifacts provided")
+	}
+
+	for _, artifact := range artifacts {
+		details, err := artifact.Inspect()
+		if err != nil {
+			return nil, err
+		}
+		if details.ImageArchitecture == "amd64" {
+			return artifact, nil
+		}
+	}
+
+	return artifacts[0], nil
 }
 
 func createDescription(artifact api.Artifact, registry string) (string, error) {
