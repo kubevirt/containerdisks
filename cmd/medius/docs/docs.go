@@ -14,6 +14,7 @@ import (
 
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
+	pkgcommon "kubevirt.io/containerdisks/pkg/common"
 	"kubevirt.io/containerdisks/pkg/docs"
 	"kubevirt.io/containerdisks/pkg/quay"
 )
@@ -131,9 +132,10 @@ func getPreferredArtifact(artifacts []api.Artifact) (api.Artifact, error) {
 
 func createDescription(artifact api.Artifact, registry string) (string, error) {
 	metadata := artifact.Metadata()
+	image := path.Join(registry, metadata.Describe())
 	vm := artifact.VM(
 		metadata.Name,
-		path.Join(registry, metadata.Describe()),
+		image,
 		artifact.UserData(&metadata.ExampleUserData),
 	)
 
@@ -143,9 +145,12 @@ func createDescription(artifact api.Artifact, registry string) (string, error) {
 	}
 
 	data := &docs.TemplateData{
-		Name:        metadata.Name,
-		Description: metadata.Description,
-		Example:     string(example),
+		Name:         metadata.Name,
+		Description:  metadata.Description,
+		Example:      string(example),
+		Image:        image,
+		Instancetype: metadata.EnvVariables[pkgcommon.DefaultInstancetypeEnv],
+		Preference:   metadata.EnvVariables[pkgcommon.DefaultPreferenceEnv],
 	}
 
 	var result bytes.Buffer

@@ -16,9 +16,12 @@ import (
 )
 
 type TemplateData struct {
-	Name        string
-	Description string
-	Example     string
+	Name         string
+	Description  string
+	Example      string
+	Image        string
+	Instancetype string
+	Preference   string
 }
 
 type UserData struct {
