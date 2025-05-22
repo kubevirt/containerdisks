@@ -186,9 +186,9 @@ func (b *buildAndPublish) handleMetadataError(imageName string, err error) error
 }
 
 func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string, error) {
-	artifactReader, err := b.Getter.GetWithChecksumAndContext(b.Ctx, artifactInfo.DownloadURL, artifactInfo.ChecksumHash)
+	artifactReader, err := b.getArtifactReader(artifactInfo)
 	if err != nil {
-		return "", fmt.Errorf("error opening a connection to the specified download location: %v", err)
+		return "", err
 	}
 	defer artifactReader.Close()
 
@@ -206,6 +206,20 @@ func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string
 	}
 
 	return file, nil
+}
+
+func (b *buildAndPublish) getArtifactReader(artifactInfo *api.ArtifactDetails) (http.ReadCloserWithChecksum, error) {
+	var artifactReader http.ReadCloserWithChecksum
+	var err error
+	const retries = 3
+	for range retries {
+		artifactReader, err = b.Getter.GetWithChecksumAndContext(b.Ctx, artifactInfo.DownloadURL, artifactInfo.ChecksumHash)
+		if err == nil {
+			return artifactReader, nil
+		}
+		b.Log.Infof("Artifact download verification failed, retrying...")
+	}
+	return nil, fmt.Errorf("error opening a connection to the specified download location: %v", err)
 }
 
 func (b *buildAndPublish) readArtifact(artifactReader http.ReadCloserWithChecksum, compression string) (string, error) {
