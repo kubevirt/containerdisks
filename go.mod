@@ -14,7 +14,7 @@ replace (
 require (
 	github.com/containers/image/v5 v5.35.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/google/go-containerregistry v0.20.5
+	github.com/google/go-containerregistry v0.20.6
 	github.com/onsi/ginkgo/v2 v2.23.3
 	github.com/onsi/gomega v1.37.0
 	github.com/pkg/errors v0.9.1
@@ -26,8 +26,8 @@ require (
 	k8s.io/api v0.33.1
 	k8s.io/apimachinery v0.33.1
 	k8s.io/utils v0.0.0-20250502105355-0f33e8f1c979
-	kubevirt.io/api v1.5.1
-	kubevirt.io/client-go v1.5.1
+	kubevirt.io/api v1.5.2
+	kubevirt.io/client-go v1.5.2
 	sigs.k8s.io/yaml v1.4.0
 )
 
