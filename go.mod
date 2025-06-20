@@ -24,7 +24,7 @@ require (
 	golang.org/x/crypto v0.39.0
 	golang.org/x/text v0.26.0
 	k8s.io/api v0.33.1
-	k8s.io/apimachinery v0.33.1
+	k8s.io/apimachinery v0.33.2
 	k8s.io/utils v0.0.0-20250502105355-0f33e8f1c979
 	kubevirt.io/api v1.5.2
 	kubevirt.io/client-go v1.5.2
