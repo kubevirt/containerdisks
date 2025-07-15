@@ -122,7 +122,7 @@ github.com/containers/libtrust
 # github.com/containers/ocicrypt v1.2.1
 ## explicit; go 1.22
 github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.58.0
+# github.com/containers/storage v1.59.0
 ## explicit; go 1.23.0
 github.com/containers/storage
 github.com/containers/storage/drivers
@@ -137,6 +137,9 @@ github.com/containers/storage/drivers/vfs
 github.com/containers/storage/drivers/windows
 github.com/containers/storage/drivers/zfs
 github.com/containers/storage/internal/dedup
+github.com/containers/storage/internal/rawfilelock
+github.com/containers/storage/internal/staging_lockfile
+github.com/containers/storage/internal/tempdir
 github.com/containers/storage/pkg/archive
 github.com/containers/storage/pkg/chrootarchive
 github.com/containers/storage/pkg/chunked
@@ -237,7 +240,7 @@ github.com/emicklei/go-restful/v3/log
 # github.com/felixge/httpsnoop v1.0.4
 ## explicit; go 1.13
 github.com/felixge/httpsnoop
-# github.com/fxamacker/cbor/v2 v2.8.0
+# github.com/fxamacker/cbor/v2 v2.9.0
 ## explicit; go 1.20
 github.com/fxamacker/cbor/v2
 # github.com/go-kit/kit v0.13.0
@@ -487,7 +490,7 @@ github.com/ostreedev/ostree-go/pkg/otbuiltin
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.83.0
+# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.84.0
 ## explicit; go 1.24.0
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1
@@ -631,7 +634,7 @@ golang.org/x/text/unicode/norm
 # golang.org/x/time v0.12.0
 ## explicit; go 1.23.0
 golang.org/x/time/rate
-# golang.org/x/tools v0.34.0
+# golang.org/x/tools v0.35.0
 ## explicit; go 1.23.0
 golang.org/x/tools/cover
 golang.org/x/tools/go/ast/edge
@@ -692,7 +695,7 @@ gopkg.in/inf.v0
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
-# k8s.io/api v0.33.1 => k8s.io/api v0.31.6
+# k8s.io/api v0.33.2 => k8s.io/api v0.31.6
 ## explicit; go 1.22.0
 k8s.io/api/admissionregistration/v1
 k8s.io/api/admissionregistration/v1alpha1
@@ -749,7 +752,7 @@ k8s.io/api/storage/v1
 k8s.io/api/storage/v1alpha1
 k8s.io/api/storage/v1beta1
 k8s.io/api/storagemigration/v1alpha1
-# k8s.io/apiextensions-apiserver v0.33.1 => k8s.io/apiextensions-apiserver v0.31.6
+# k8s.io/apiextensions-apiserver v0.33.2 => k8s.io/apiextensions-apiserver v0.31.6
 ## explicit; go 1.22.0
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions
 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
@@ -965,7 +968,7 @@ k8s.io/kube-openapi/pkg/schemaconv
 k8s.io/kube-openapi/pkg/spec3
 k8s.io/kube-openapi/pkg/util/proto
 k8s.io/kube-openapi/pkg/validation/spec
-# k8s.io/utils v0.0.0-20250502105355-0f33e8f1c979 => k8s.io/utils v0.0.0-20240711033017-18e509b52bc8
+# k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 => k8s.io/utils v0.0.0-20240711033017-18e509b52bc8
 ## explicit; go 1.18
 k8s.io/utils/clock
 k8s.io/utils/clock/testing
