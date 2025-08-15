@@ -53,7 +53,7 @@ require (
 	github.com/docker/docker-credential-helpers v0.9.3 // indirect
 	github.com/docker/go-connections v0.6.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
-	github.com/emicklei/go-restful/v3 v3.12.2 // indirect
+	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/go-kit/kit v0.13.0 // indirect
@@ -105,7 +105,7 @@ require (
 	github.com/openshift/custom-resource-status v1.1.2 // indirect
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.84.1 // indirect
 	github.com/spf13/pflag v1.0.7 // indirect
-	github.com/sylabs/sif/v2 v2.21.1 // indirect
+	github.com/sylabs/sif/v2 v2.22.0 // indirect
 	github.com/tchap/go-patricia/v2 v2.3.3 // indirect
 	github.com/vbatts/tar-split v0.12.1 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
