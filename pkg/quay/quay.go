@@ -52,10 +52,10 @@ func (q *quayClient) json(ctx context.Context, method, repo, subresource string,
 	}
 	repoURL := q.base(repo)
 	repoURL.Path = path.Join(repoURL.Path, subresource)
-	req, _ := http.NewRequest(method, repoURL.String(), bytes.NewBuffer(content))
+	req, _ := http.NewRequestWithContext(ctx, method, repoURL.String(), bytes.NewBuffer(content))
 	req.Header = header
 	cli := &http.Client{}
-	resp, err := cli.Do(req.WithContext(ctx))
+	resp, err := cli.Do(req)
 	if err != nil {
 		return fmt.Errorf("error performing rest call: %v", err)
 	}
