@@ -227,12 +227,14 @@ func (b *buildAndPublish) readArtifact(artifactReader http.ReadCloserWithChecksu
 
 	// Initialize reader with the artifactReader for the case where no compression is used
 	var reader io.Reader = artifactReader
-	if compression == types.GzipAlgorithmName {
+
+	switch compression {
+	case types.GzipAlgorithmName:
 		reader, err = gzip.NewReader(artifactReader)
 		if err != nil {
 			return "", fmt.Errorf("error creating a gunzip reader for the specified download location: %v", err)
 		}
-	} else if compression == types.XzAlgorithmName {
+	case types.XzAlgorithmName:
 		reader, err = xz.NewReader(artifactReader)
 		if err != nil {
 			return "", fmt.Errorf("error creating a lzma reader for the specified download location: %v", err)

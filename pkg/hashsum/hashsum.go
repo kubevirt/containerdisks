@@ -41,12 +41,13 @@ func Parse(stream io.Reader, format ChecksumFormat) (map[string]string, error) {
 			name := ""
 			checksum := ""
 			for i, groupName := range lineRex.SubexpNames() {
-				if groupName == "name" {
+				switch groupName {
+				case "name":
 					name = matches[i]
 					if format == ChecksumFormatGNU && strings.HasPrefix(name, "*") {
 						name = name[1:]
 					}
-				} else if groupName == "checksum" {
+				case "checksum":
 					checksum = matches[i]
 				}
 			}
