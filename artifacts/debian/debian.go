@@ -57,6 +57,8 @@ const (
 Visit [debian.org](https://cloud.debian.org/images/cloud/) to learn more about Debian project.`
 )
 
+var validDebianVersionPrefixes = []string{"11", "12", "13"}
+
 func (d *debian) Metadata() *api.Metadata {
 	metadata := &api.Metadata{
 		Name:         "debian",
@@ -110,8 +112,17 @@ func (d *debian) getBuildData(jsonURL string) (additionalTags []string, checksum
 	return nil, "", fmt.Errorf("error locating the image information")
 }
 
+func hasAnyPrefix(s string, prefixes []string) bool {
+	for _, p := range prefixes {
+		if strings.HasPrefix(s, p) {
+			return true
+		}
+	}
+	return false
+}
+
 func (d *debian) Inspect() (*api.ArtifactDetails, error) {
-	if !strings.HasPrefix(d.Version, "11") && !strings.HasPrefix(d.Version, "12") {
+	if !hasAnyPrefix(d.Version, validDebianVersionPrefixes) {
 		return nil, fmt.Errorf("can't understand provided version %s", d.Version)
 	}
 

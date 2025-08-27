@@ -146,6 +146,65 @@ var _ = Describe("Debian", func() {
 				},
 			},
 		),
+
+		Entry("debian:13 x86_64", "13", "trixie", "x86_64", "testdata/debian-13-genericcloud-amd64.json",
+			&api.ArtifactDetails{
+				Checksum: "d76122c87c940d1ab9334f4307c98c01dc42f0b49a20cddf278d59b92d34ab63d05ac1f40dffda3d2d32e38" +
+					"1f097706eee6ccbf79a596bfb2cbb3d83c635ae35",
+				DownloadURL:          "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2",
+				ImageArchitecture:    "amd64",
+				AdditionalUniqueTags: []string{"13-20250814-2204"},
+			},
+			&docs.UserData{
+				Username: "debian",
+			},
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "debian",
+			},
+			&api.Metadata{
+				Name:        "debian",
+				Version:     "13",
+				Arch:        "x86_64",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "debian",
+				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "debian",
+				},
+			},
+		),
+		Entry("debian:13 aarch64", "13", "trixie", "aarch64", "testdata/debian-13-genericcloud-arm64.json",
+			&api.ArtifactDetails{
+				Checksum: "e36d98d9ee1f09fc9d7748f0f0f703e6424a2637f075de1aa9f06a4a58039e88086ee14bdaf" +
+					"9483bbc259633248d28b89a32190da959a767f4732c088bdd30d0",
+				DownloadURL:          "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-arm64.qcow2",
+				ImageArchitecture:    "arm64",
+				AdditionalUniqueTags: []string{"13-20250814-2204"},
+			},
+			&docs.UserData{
+				Username: "debian",
+			},
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "debian",
+			},
+			&api.Metadata{
+				Name:        "debian",
+				Version:     "13",
+				Arch:        "aarch64",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "debian",
+				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "debian",
+				},
+			},
+		),
 	)
 })
 

@@ -104,6 +104,12 @@ var staticRegistry = []Entry{
 			debian.New("12", "bookworm", "x86_64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
 			debian.New("12", "bookworm", "aarch64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
 		},
+	},
+	{
+		Artifacts: []api.Artifact{
+			debian.New("13", "trixie", "x86_64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
+			debian.New("13", "trixie", "aarch64", &docs.UserData{Username: "debian"}, defaultEnvVariables("u1.medium", "debian")),
+		},
 		UseForDocs:   true,
 		UseForLatest: true,
 	},
