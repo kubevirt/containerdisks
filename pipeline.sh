@@ -2,7 +2,6 @@
 
 set -e -o pipefail
 
-export KUBEVIRT_PROVIDER=${KUBEVIRT_PROVIDER:-k8s-1.31}
 FOCUS=${FOCUS:-centos-stream:9}
 
 make medius
