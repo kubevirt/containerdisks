@@ -28,6 +28,47 @@ var _ = Describe("OpenSUSE Leap", func() {
 			Expect(c.Metadata()).To(Equal(metadata))
 			Expect(err).NotTo(HaveOccurred())
 		},
+		Entry("leap:16.0 x86_64", "x86_64", "16.0", "testdata/Leap-16.0-Minimal-VM.x86_64-Cloud.qcow2.sha256",
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "opensuse.leap",
+			},
+			&api.ArtifactDetails{
+				Checksum:          "8a18cb174d783367e48d34e4e379c5e8f77b0868bcb09350e3627e40090f16fb",
+				DownloadURL:       "https://download.opensuse.org/distribution/leap/16.0/appliances/Leap-16.0-Minimal-VM.x86_64-Cloud.qcow2",
+				ImageArchitecture: "amd64",
+			},
+			&api.Metadata{
+				Name:        "opensuse-leap",
+				Version:     "16.0",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "opensuse",
+				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "opensuse.leap",
+				},
+				Arch: "x86_64",
+			},
+		),
+		Entry("leap:16.0 aarch64", "aarch64", "16.0", "testdata/Leap-16.0-Minimal-VM.aarch64-Cloud.qcow2.sha256",
+			nil,
+			&api.ArtifactDetails{
+				Checksum:          "3fb04efe905b065c25ef1953ce0b53ec680ec661d919c413e2d25986296a0750",
+				DownloadURL:       "https://download.opensuse.org/distribution/leap/16.0/appliances/Leap-16.0-Minimal-VM.aarch64-Cloud.qcow2",
+				ImageArchitecture: "arm64",
+			},
+			&api.Metadata{
+				Name:        "opensuse-leap",
+				Version:     "16.0",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "opensuse",
+				},
+				Arch: "aarch64",
+			},
+		),
 		Entry("leap:15.6 x86_64", "x86_64", "15.6", "testdata/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2.sha256",
 			map[string]string{
 				common.DefaultInstancetypeEnv: "u1.medium",

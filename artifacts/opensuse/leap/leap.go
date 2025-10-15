@@ -24,15 +24,19 @@ type leap struct {
 var _ api.Artifact = &leap{}
 
 const (
-	baseURLFmt  = "https://download.opensuse.org/distribution/leap/%s/appliances/openSUSE-Leap-%s-Minimal-VM.%s-Cloud.qcow2"
-	description = `OpenSUSE Leap images for KubeVirt.
+	leap16BaseURLFmt = "https://download.opensuse.org/distribution/leap/%s/appliances/Leap-%s-Minimal-VM.%s-Cloud.qcow2"
+	leap15BaseURLFmt = "https://download.opensuse.org/distribution/leap/%s/appliances/openSUSE-Leap-%s-Minimal-VM.%s-Cloud.qcow2"
+	description      = `OpenSUSE Leap images for KubeVirt.
 <br />
 <br />
 Visit [get.opensuse.org/leap/](https://get.opensuse.org/leap/) to learn more about OpenSUSE Leap.`
 )
 
 func (l *leap) Inspect() (*api.ArtifactDetails, error) {
-	baseURL := fmt.Sprintf(baseURLFmt, l.Version, l.Version, l.Arch)
+	baseURL := fmt.Sprintf(leap16BaseURLFmt, l.Version, l.Version, l.Arch)
+	if strings.HasPrefix(l.Version, "15") {
+		baseURL = fmt.Sprintf(leap15BaseURLFmt, l.Version, l.Version, l.Arch)
+	}
 	checksumBytes, err := l.getter.GetAll(baseURL + ".sha256")
 	if err != nil {
 		return nil, err
