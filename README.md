@@ -5,7 +5,7 @@
 | [CentOS Stream](https://quay.io/repository/containerdisks/centos-stream)             | amd64, arm64, s390x   |
 | [Fedora](https://quay.io/repository/containerdisks/fedora)                           | amd64, arm64, s390x   |
 | [Ubuntu](https://quay.io/repository/containerdisks/ubuntu)                           | amd64, arm64, s390x   |
-| [OpenSUSE Tumbleweed](https://quay.io/repository/containerdisks/opensuse-tumbleweed) | amd64          |
+| [OpenSUSE Tumbleweed](https://quay.io/repository/containerdisks/opensuse-tumbleweed) | amd64, s390x   |
 | [OpenSUSE Leap](https://quay.io/repository/containerdisks/opensuse-leap)             | amd64, arm64   |
 | [Debian](https://quay.io/repository/containerdisks/debian)                    | amd64, arm64   |
 
