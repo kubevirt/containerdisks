@@ -30,9 +30,10 @@ const description = `OpenSUSE Tumbleweed images for KubeVirt.
 <br />
 <br />
 Visit [get.opensuse.org/tumbleweed/](https://get.opensuse.org/tumbleweed/) to learn more about OpenSUSE Tumbleweed.`
+const s390xArch = "s390x"
 
 func (t *tumbleweed) Inspect() (*api.ArtifactDetails, error) {
-	baseURL := "https://download.opensuse.org/tumbleweed/appliances/"
+	baseURL := t.retrieveBaseURL()
 	raw, err := t.getter.GetAll(baseURL + "SHA256SUMS")
 	if err != nil {
 		return nil, fmt.Errorf("error downloading the tumbleweed SHA256SUMS file: %v", err)
@@ -43,7 +44,7 @@ func (t *tumbleweed) Inspect() (*api.ArtifactDetails, error) {
 	}
 
 	// openSUSE-Tumbleweed-Minimal-VM.x86_64-1.0.0-kvm-and-xen-Snapshot20240629.qcow2
-	r := regexp.MustCompile(fmt.Sprintf(`%s\.%s-1\.0\.0-%s`, t.variant, t.Arch, t.subVariant))
+	r := regexp.MustCompile(fmt.Sprintf(`%s\.%s-%s-%s`, t.variant, t.Arch, t.retrieveRegexpVersion(), t.subVariant))
 	for file, checksum := range checksums {
 		if r.MatchString(file) {
 			return &api.ArtifactDetails{
@@ -55,6 +56,20 @@ func (t *tumbleweed) Inspect() (*api.ArtifactDetails, error) {
 		}
 	}
 	return nil, fmt.Errorf("variant %q does not exist in the SHA256SUMS file: %v", t.variant, err)
+}
+
+func (t *tumbleweed) retrieveBaseURL() string {
+	if t.Arch == s390xArch {
+		return "https://download.opensuse.org/ports/zsystems/tumbleweed/appliances/"
+	}
+	return "https://download.opensuse.org/tumbleweed/appliances/"
+}
+
+func (t *tumbleweed) retrieveRegexpVersion() string {
+	if t.Arch == s390xArch {
+		return fmt.Sprintf(`16\.0\.0-%s`, t.Arch)
+	}
+	return `1\.0\.0`
 }
 
 func (t *tumbleweed) Metadata() *api.Metadata {
