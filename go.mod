@@ -3,13 +3,13 @@ module kubevirt.io/containerdisks
 go 1.24.1
 
 replace (
-	// Fixed versions for kubevirt.io/client-go v1.6.2
-	k8s.io/api => k8s.io/api v0.32.5
-	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.32.5
+	// Fixed versions for kubevirt.io/client-go v1.7.0
+	k8s.io/api => k8s.io/api v0.33.5
+	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.33.5
 	k8s.io/apimachinery => k8s.io/apimachinery v0.33.5
-	k8s.io/client-go => k8s.io/client-go v0.32.5
+	k8s.io/client-go => k8s.io/client-go v0.33.5
 	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911
-	k8s.io/utils => k8s.io/utils v0.0.0-20240711033017-18e509b52bc8
+	k8s.io/utils => k8s.io/utils v0.0.0-20241210054802-24370beab758
 )
 
 require (
@@ -27,8 +27,8 @@ require (
 	k8s.io/api v0.34.2
 	k8s.io/apimachinery v0.34.2
 	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4
-	kubevirt.io/api v1.6.2
-	kubevirt.io/client-go v1.6.2
+	kubevirt.io/api v1.7.0
+	kubevirt.io/client-go v1.7.0
 	sigs.k8s.io/yaml v1.6.0
 )
 
@@ -79,14 +79,13 @@ require (
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic-models v0.7.1 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-intervals v0.0.2 // indirect
 	github.com/google/pprof v0.0.0-20250820193118-f64d9cf942d6 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
-	github.com/gorilla/websocket v1.5.3 // indirect
+	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7 // indirect
@@ -141,7 +140,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/apiextensions-apiserver v0.34.2 // indirect
-	k8s.io/client-go v0.32.5 // indirect
+	k8s.io/client-go v0.34.2 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.31.0 // indirect
 	kubevirt.io/containerized-data-importer-api v1.63.1 // indirect
