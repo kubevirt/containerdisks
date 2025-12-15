@@ -10,11 +10,11 @@ import (
 	"path"
 	"time"
 
-	"github.com/containers/image/v5/pkg/compression/types"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/ulikunitz/xz"
+	"go.podman.io/image/v5/pkg/compression/types"
 
 	"kubevirt.io/containerdisks/cmd/medius/common"
 	"kubevirt.io/containerdisks/pkg/api"
