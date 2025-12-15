@@ -6,9 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/containers/image/v5/image"
-	"github.com/containers/image/v5/transports/alltransports"
-	"github.com/containers/image/v5/types"
 	"github.com/docker/distribution/registry/api/errcode"
 	v2 "github.com/docker/distribution/registry/api/v2"
 	"github.com/google/go-containerregistry/pkg/crane"
@@ -16,6 +13,9 @@ import (
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
 	"github.com/pkg/errors"
+	"go.podman.io/image/v5/image"
+	"go.podman.io/image/v5/transports/alltransports"
+	"go.podman.io/image/v5/types"
 )
 
 type ImageInfo struct {
