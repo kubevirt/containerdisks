@@ -12,6 +12,9 @@ replace (
 	k8s.io/utils => k8s.io/utils v0.0.0-20241210054802-24370beab758
 )
 
+// Fixed version for go.podman.io/storage v1.61.0
+replace github.com/cyphar/filepath-securejoin => github.com/cyphar/filepath-securejoin v0.5.1
+
 require (
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/google/go-containerregistry v0.20.7
@@ -44,7 +47,7 @@ require (
 	github.com/containerd/stargz-snapshotter/estargz v0.18.1 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.2.1 // indirect
-	github.com/cyphar/filepath-securejoin v0.5.1 // indirect
+	github.com/cyphar/filepath-securejoin v0.6.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/cli v29.1.4+incompatible // indirect
