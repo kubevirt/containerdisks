@@ -62,6 +62,9 @@ func (t *tumbleweed) retrieveBaseURL() string {
 	if t.Arch == s390xArch {
 		return "https://download.opensuse.org/ports/zsystems/tumbleweed/appliances/"
 	}
+	if t.Arch == "aarch64" {
+		return "https://download.opensuse.org/ports/aarch64/tumbleweed/appliances/"
+	}
 	return "https://download.opensuse.org/tumbleweed/appliances/"
 }
 
