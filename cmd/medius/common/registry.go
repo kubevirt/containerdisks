@@ -11,6 +11,7 @@ import (
 	"kubevirt.io/containerdisks/artifacts/fedora"
 	"kubevirt.io/containerdisks/artifacts/generic"
 	"kubevirt.io/containerdisks/artifacts/opensuse/leap"
+	"kubevirt.io/containerdisks/artifacts/opensuse/microos"
 	"kubevirt.io/containerdisks/artifacts/opensuse/tumbleweed"
 	"kubevirt.io/containerdisks/artifacts/ubuntu"
 	"kubevirt.io/containerdisks/pkg/api"
@@ -78,6 +79,12 @@ var staticRegistry = []Entry{
 		Artifacts: []api.Artifact{
 			tumbleweed.New("x86_64", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
 			tumbleweed.New("s390x", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
+		},
+		UseForDocs: true,
+	},
+	{
+		Artifacts: []api.Artifact{
+			microos.New("x86_64", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
 		},
 		UseForDocs: true,
 	},
