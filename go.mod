@@ -1,6 +1,6 @@
 module kubevirt.io/containerdisks
 
-go 1.25.0
+go 1.25.6
 
 replace (
 	// Fixed versions for kubevirt.io/client-go v1.7.0
@@ -14,7 +14,7 @@ replace (
 
 require (
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/google/go-containerregistry v0.20.7
+	github.com/google/go-containerregistry v0.21.0
 	github.com/onsi/ginkgo/v2 v2.28.0
 	github.com/onsi/gomega v1.39.1
 	github.com/pkg/errors v0.9.1
@@ -27,8 +27,8 @@ require (
 	k8s.io/api v0.34.3
 	k8s.io/apimachinery v0.34.3
 	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4
-	kubevirt.io/api v1.7.0
-	kubevirt.io/client-go v1.7.0
+	kubevirt.io/api v1.7.1
+	kubevirt.io/client-go v1.7.1
 	sigs.k8s.io/yaml v1.6.0
 )
 
