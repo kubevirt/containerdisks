@@ -55,7 +55,7 @@ func (q *quayClient) json(ctx context.Context, method, repo, subresource string,
 	req, _ := http.NewRequestWithContext(ctx, method, repoURL.String(), bytes.NewBuffer(content))
 	req.Header = header
 	cli := &http.Client{}
-	resp, err := cli.Do(req)
+	resp, err := cli.Do(req) //nolint:gosec // G704: client talks only to Quay API / controlled endpoint
 	if err != nil {
 		return fmt.Errorf("error performing rest call: %v", err)
 	}

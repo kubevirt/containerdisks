@@ -33,7 +33,7 @@ func (h *HTTPGetter) GetAllWithContext(ctx context.Context, fileURL string) ([]b
 		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req) //nolint:gosec // G704: request URL is controlled/trusted (not user input)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
 	}
@@ -58,7 +58,7 @@ func (h *HTTPGetter) GetWithChecksumAndContext(ctx context.Context, fileURL stri
 		return nil, fmt.Errorf("failed to create request to load primary repository file from %s: %v", fileURL, err)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req) //nolint:gosec // G704: request URL is controlled/trusted (not user input)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load primary repository file from %s: %v", fileURL, err)
 	}
