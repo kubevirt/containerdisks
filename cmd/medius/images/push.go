@@ -165,7 +165,7 @@ func (b *buildAndPublish) getImageChecksum(description, arch string) (imageCheck
 		imageChecksum = imageInfo.Labels[build.LabelShaSum]
 	}
 
-	return
+	return imageChecksum, err
 }
 
 func (b *buildAndPublish) handleMetadataError(imageName string, err error) error {
