@@ -13,7 +13,7 @@ import (
 	"kubevirt.io/containerdisks/testutil"
 )
 
-var _ = Describe("OpenSUSE Tumbleweed", func() {
+var _ = Describe("openSUSE Tumbleweed", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
 		func(arch, mockFile string, envVariables map[string]string, details *api.ArtifactDetails, metadata *api.Metadata) {
 			c := New(arch, envVariables)
@@ -81,5 +81,5 @@ var _ = Describe("OpenSUSE Tumbleweed", func() {
 
 func TestTumbleweed(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "OpenSUSE Tumbleweed Suite")
+	RunSpecs(t, "openSUSE Tumbleweed Suite")
 }

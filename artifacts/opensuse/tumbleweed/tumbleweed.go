@@ -26,10 +26,10 @@ type tumbleweed struct {
 
 var _ api.Artifact = &tumbleweed{}
 
-const description = `OpenSUSE Tumbleweed images for KubeVirt.
+const description = `openSUSE Tumbleweed images for KubeVirt.
 <br />
 <br />
-Visit [get.opensuse.org/tumbleweed/](https://get.opensuse.org/tumbleweed/) to learn more about OpenSUSE Tumbleweed.`
+Visit [get.opensuse.org/tumbleweed/](https://get.opensuse.org/tumbleweed/) to learn more about openSUSE Tumbleweed.`
 const s390xArch = "s390x"
 
 func (t *tumbleweed) Inspect() (*api.ArtifactDetails, error) {

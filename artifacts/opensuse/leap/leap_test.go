@@ -12,7 +12,7 @@ import (
 	"kubevirt.io/containerdisks/testutil"
 )
 
-var _ = Describe("OpenSUSE Leap", func() {
+var _ = Describe("openSUSE Leap", func() {
 	DescribeTable("Inspect should be able to parse checksum files",
 		func(arch, version, mockFile string, envVariables map[string]string, details *api.ArtifactDetails, metadata *api.Metadata) {
 			c := New(arch, version, envVariables)
@@ -115,5 +115,5 @@ var _ = Describe("OpenSUSE Leap", func() {
 
 func TestLeap(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "OpenSUSE Leap Suite")
+	RunSpecs(t, "openSUSE Leap Suite")
 }

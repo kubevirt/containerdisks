@@ -25,10 +25,10 @@ var _ api.Artifact = &leap{}
 
 const (
 	baseURLFmt  = "https://download.opensuse.org/distribution/leap/%s/appliances/openSUSE-Leap-%s-Minimal-VM.%s-Cloud.qcow2"
-	description = `OpenSUSE Leap images for KubeVirt.
+	description = `openSUSE Leap images for KubeVirt.
 <br />
 <br />
-Visit [get.opensuse.org/leap/](https://get.opensuse.org/leap/) to learn more about OpenSUSE Leap.`
+Visit [get.opensuse.org/leap/](https://get.opensuse.org/leap/) to learn more about openSUSE Leap.`
 )
 
 func (l *leap) Inspect() (*api.ArtifactDetails, error) {
