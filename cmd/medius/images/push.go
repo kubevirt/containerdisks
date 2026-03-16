@@ -201,7 +201,9 @@ func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string
 	}
 
 	checksum := artifactReader.Checksum()
-	if checksum != artifactInfo.Checksum {
+	if artifactInfo.Checksum == "" {
+		artifactInfo.Checksum = checksum
+	} else if checksum != artifactInfo.Checksum {
 		return "", fmt.Errorf("expected checksum %q but got %q", artifactInfo.Checksum, checksum)
 	}
 
