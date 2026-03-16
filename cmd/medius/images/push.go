@@ -201,6 +201,8 @@ func (b *buildAndPublish) getArtifact(artifactInfo *api.ArtifactDetails) (string
 	}
 
 	checksum := artifactReader.Checksum()
+	// When the upstream checksum is empty (e.g. Fedora beta releases),
+	// use the computed checksum so it propagates to the container image label.
 	if artifactInfo.Checksum == "" {
 		artifactInfo.Checksum = checksum
 	} else if checksum != artifactInfo.Checksum {

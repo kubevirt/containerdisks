@@ -172,7 +172,8 @@ var _ = Describe("Fedora", func() {
 					common.DefaultInstancetypeEnv: defaultInstancetype,
 					common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
 				},
-				Arch: "aarch64",
+				Arch:         "aarch64",
+				IsPrerelease: true,
 			},
 		),
 	)

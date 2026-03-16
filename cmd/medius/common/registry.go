@@ -162,7 +162,7 @@ func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 		} else {
 			firstStable := true
 			for i := range artifacts {
-				isStable := fedora.IsStableVersion(artifacts[i][0].Metadata().Version)
+				isStable := !artifacts[i][0].Metadata().IsPrerelease
 				*registry = append(*registry, Entry{
 					Artifacts:    artifacts[i],
 					UseForDocs:   firstStable && isStable,
