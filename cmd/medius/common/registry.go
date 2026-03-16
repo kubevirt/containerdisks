@@ -162,7 +162,7 @@ func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 		} else {
 			firstStable := true
 			for i := range artifacts {
-				isStable := !artifacts[i][0].Metadata().IsPrerelease
+				isStable := artifacts[i][0].Metadata().IsStable
 				*registry = append(*registry, Entry{
 					Artifacts:    artifacts[i],
 					UseForDocs:   firstStable && isStable,

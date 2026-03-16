@@ -76,7 +76,7 @@ func (f *fedora) Metadata() *api.Metadata {
 		},
 		EnvVariables: f.EnvVariables,
 		Arch:         f.Arch,
-		IsPrerelease: !IsStableVersion(f.ReleaseVersion),
+		IsStable: IsStableVersion(f.ReleaseVersion),
 	}
 }
 

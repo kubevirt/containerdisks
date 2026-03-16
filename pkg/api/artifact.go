@@ -60,10 +60,9 @@ type Metadata struct {
 	EnvVariables map[string]string
 	// Image architecture
 	Arch string
-	// IsPrerelease indicates whether this artifact is a prerelease version
-	// (e.g. beta, RC). Prerelease artifacts are never used for the "latest"
-	// tag or documentation.
-	IsPrerelease bool
+	// IsStable indicates whether this artifact is a stable release version.
+	// Only stable artifacts are used for the "latest" tag or documentation.
+	IsStable bool
 }
 
 func (m Metadata) Describe() string {
