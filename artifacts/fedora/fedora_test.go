@@ -154,18 +154,45 @@ var _ = Describe("Fedora", func() {
 				Arch: "s390x",
 			},
 		),
+		Entry("fedora:41-beta aarch64", "41 Beta", "aarch64", "testdata/releases.json",
+			&api.ArtifactDetails{
+				Checksum:             "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+				DownloadURL:          "https://download.fedoraproject.org/pub/fedora/linux/releases/test/41_Beta/Cloud/aarch64/images/Fedora-Cloud-Base-Generic-41_Beta-1.2.aarch64.qcow2", //nolint:lll
+				AdditionalUniqueTags: []string(nil),
+				ImageArchitecture:    "arm64",
+			},
+			&api.Metadata{
+				Name:        "fedora",
+				Version:     "41-beta",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "fedora",
+				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: defaultInstancetype,
+					common.DefaultPreferenceEnv:   defaultPreferenceAarch64,
+				},
+				Arch: "aarch64",
+			},
+		),
 	)
 
 	It("Gather should be able to parse releases files", func() {
+		// Stable versions should come first (sorted descending), followed by
+		// prerelease versions. This ensures stable releases get the "latest" tag.
 		artifacts := [][]api.Artifact{
 			{
-				parsedRelease("40", "x86_64", defaultPreferenceX86_64),
-				parsedRelease("40", "aarch64", defaultPreferenceAarch64),
+				parsedRelease("40", "40", "x86_64", defaultPreferenceX86_64),
+				parsedRelease("40", "40", "aarch64", defaultPreferenceAarch64),
 			},
 			{
-				parsedRelease("39", "x86_64", defaultPreferenceX86_64),
-				parsedRelease("39", "aarch64", defaultPreferenceAarch64),
-				parsedRelease("39", "s390x", defaultPreferenceS390x),
+				parsedRelease("39", "39", "x86_64", defaultPreferenceX86_64),
+				parsedRelease("39", "39", "aarch64", defaultPreferenceAarch64),
+				parsedRelease("39", "39", "s390x", defaultPreferenceS390x),
+			},
+			{
+				parsedRelease("41-beta", "41 Beta", "x86_64", defaultPreferenceX86_64),
+				parsedRelease("41-beta", "41 Beta", "aarch64", defaultPreferenceAarch64),
 			},
 		}
 
@@ -175,14 +202,32 @@ var _ = Describe("Fedora", func() {
 		Expect(err).NotTo(HaveOccurred())
 		Expect(got).To(Equal(artifacts))
 	})
+
+	DescribeTable("IsStableVersion",
+		func(version string, expected bool) {
+			Expect(IsStableVersion(version)).To(Equal(expected))
+		},
+		Entry("stable", "43", true),
+		Entry("beta", "44 Beta", false),
+		Entry("rc", "44 RC1", false),
+	)
+
+	DescribeTable("NormalizeVersion",
+		func(version, expected string) {
+			Expect(NormalizeVersion(version)).To(Equal(expected))
+		},
+		Entry("stable", "43", "43"),
+		Entry("beta", "44 Beta", "44-beta"),
+	)
 })
 
-func parsedRelease(version, arch, defaultPreference string) api.Artifact {
+func parsedRelease(version, releaseVersion, arch, defaultPreference string) api.Artifact {
 	return &fedora{
-		Version: version,
-		Arch:    arch,
-		Variant: "Cloud",
-		getter:  &http.HTTPGetter{},
+		Version:        version,
+		ReleaseVersion: releaseVersion,
+		Arch:           arch,
+		Variant:        "Cloud",
+		getter:         &http.HTTPGetter{},
 		EnvVariables: map[string]string{
 			common.DefaultInstancetypeEnv: defaultInstancetype,
 			common.DefaultPreferenceEnv:   defaultPreference,

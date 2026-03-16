@@ -1325,5 +1325,23 @@
     "subvariant": "Server",
     "sha256": "4403519c1000e6e81be2e51362662e539a0d21011a61a6eb02dc28e235b91454",
     "size": "505616384"
+  },
+  {
+    "version": "41 Beta",
+    "arch": "x86_64",
+    "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/41_Beta/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-41_Beta-1.2.x86_64.qcow2",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "variant": "Cloud",
+    "subvariant": "Cloud_Base",
+    "size": "500000000"
+  },
+  {
+    "version": "41 Beta",
+    "arch": "aarch64",
+    "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/41_Beta/Cloud/aarch64/images/Fedora-Cloud-Base-Generic-41_Beta-1.2.aarch64.qcow2",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "variant": "Cloud",
+    "subvariant": "Cloud_Base",
+    "size": "500000000"
   }
 ]

@@ -160,12 +160,17 @@ func gatherArtifacts(registry *[]Entry, gatherers []api.ArtifactsGatherer) {
 		if err != nil {
 			logrus.Warn("Failed to gather artifacts", err)
 		} else {
+			firstStable := true
 			for i := range artifacts {
+				isStable := fedora.IsStableVersion(artifacts[i][0].Metadata().Version)
 				*registry = append(*registry, Entry{
 					Artifacts:    artifacts[i],
-					UseForDocs:   i == 0,
-					UseForLatest: i == 0,
+					UseForDocs:   firstStable && isStable,
+					UseForLatest: firstStable && isStable,
 				})
+				if isStable {
+					firstStable = false
+				}
 			}
 		}
 	}
