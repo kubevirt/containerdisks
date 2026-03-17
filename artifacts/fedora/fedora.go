@@ -32,11 +32,15 @@ type Release struct {
 }
 
 type fedora struct {
-	Version      string
-	Arch         string
-	Variant      string
-	getter       http.Getter
-	EnvVariables map[string]string
+	// Version is the normalized version used for container image tags (e.g. "44-beta").
+	Version string
+	// ReleaseVersion is the original version from releases.json (e.g. "44 Beta"),
+	// used to match against release entries during Inspect.
+	ReleaseVersion string
+	Arch           string
+	Variant        string
+	getter         http.Getter
+	EnvVariables   map[string]string
 }
 
 type fedoraGatherer struct {
@@ -72,6 +76,7 @@ func (f *fedora) Metadata() *api.Metadata {
 		},
 		EnvVariables: f.EnvVariables,
 		Arch:         f.Arch,
+		IsStable:     IsStableVersion(f.ReleaseVersion),
 	}
 }
 
@@ -148,12 +153,25 @@ func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 		}
 	}
 
-	// Ensure versions are always sorted with the latest first
+	// Ensure versions are always sorted with the latest stable release first.
+	// Prerelease versions (e.g. "44 Beta") are sorted after all stable versions
+	// so that they never become the "latest" tag.
 	versionKeys := make([]string, 0, len(versions))
 	for key := range versions {
 		versionKeys = append(versionKeys, key)
 	}
-	sort.Sort(sort.Reverse(sort.StringSlice(versionKeys)))
+	sort.SliceStable(versionKeys, func(i, j int) bool {
+		iStable := IsStableVersion(versionKeys[i])
+		jStable := IsStableVersion(versionKeys[j])
+		switch {
+		case iStable && !jStable:
+			return true
+		case !iStable && jStable:
+			return false
+		default:
+			return versionKeys[i] > versionKeys[j]
+		}
+	})
 
 	var artifacts [][]api.Artifact
 	for _, key := range versionKeys {
@@ -183,14 +201,33 @@ func getReleases(getter http.Getter) (Releases, error) {
 }
 
 func (f *fedora) releaseMatches(release *Release) bool {
-	return release.Version == f.Version &&
+	return release.Version == f.ReleaseVersion &&
 		release.Arch == f.Arch &&
 		release.Variant == f.Variant &&
 		strings.HasSuffix(release.Link, "qcow2")
 }
 
+// versionNumber extracts the leading numeric portion of a version string.
+// For example "44 Beta" returns 44, and "43" returns 43.
+func versionNumber(version string) (int, error) {
+	return strconv.Atoi(strings.Fields(version)[0])
+}
+
+// IsStableVersion returns true if the version string is a pure integer
+// (i.e. not a prerelease like "44 Beta").
+func IsStableVersion(version string) bool {
+	_, err := strconv.Atoi(version)
+	return err == nil
+}
+
+// NormalizeVersion converts a version string into a valid container image tag
+// by lowercasing and replacing spaces with hyphens (e.g. "44 Beta" -> "44-beta").
+func NormalizeVersion(version string) string {
+	return strings.ToLower(strings.ReplaceAll(version, " ", "-"))
+}
+
 func (f *fedoraGatherer) releaseMatches(release *Release) bool {
-	version, err := strconv.Atoi(release.Version)
+	version, err := versionNumber(release.Version)
 	if err != nil {
 		return false
 	}
@@ -240,10 +277,11 @@ func (f *fedora) setEnvVariables() {
 
 func New(release, arch string) *fedora {
 	f := &fedora{
-		Version: release,
-		Arch:    arch,
-		Variant: "Cloud",
-		getter:  &http.HTTPGetter{},
+		Version:        NormalizeVersion(release),
+		ReleaseVersion: release,
+		Arch:           arch,
+		Variant:        "Cloud",
+		getter:         &http.HTTPGetter{},
 	}
 	f.setEnvVariables()
 	return f
