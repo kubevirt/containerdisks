@@ -834,10 +834,10 @@ k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911 h1:gAXU86Fmbr/ktY17lkHwSj
 k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911/go.mod h1:GLOk5B+hDbRROvt0X2+hqX64v/zO3vXN7J78OUmBSKw=
 k8s.io/utils v0.0.0-20241210054802-24370beab758 h1:sdbE21q2nlQtFh65saZY+rRM6x6aJJI8IUa1AmH/qa0=
 k8s.io/utils v0.0.0-20241210054802-24370beab758/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
-kubevirt.io/api v1.7.1 h1:7MB7TG2FIJmL4CpZ1IBiy1CRR4YDrHAwbXUlE3+rCy8=
-kubevirt.io/api v1.7.1/go.mod h1:PumvcKaNhXxLLoDPQtjwFKkooTr910m3ebSlxUb6b10=
-kubevirt.io/client-go v1.7.1 h1:+0QJ4wt6xYhUiFvyaBPYzyRCXPe5ajfJFwbOdcktiOY=
-kubevirt.io/client-go v1.7.1/go.mod h1:Ox3rl+F8+Z7wwHTckPAfGC6BUxWr2VkcNxWc4MkPbqc=
+kubevirt.io/api v1.7.2 h1:IszmAzSAMygKllWxDJzTDW3ZpTz0Ibe8TjxUY8uD5N0=
+kubevirt.io/api v1.7.2/go.mod h1:PumvcKaNhXxLLoDPQtjwFKkooTr910m3ebSlxUb6b10=
+kubevirt.io/client-go v1.7.2 h1:upYVMngDz8jnCSWkoi9ikv5AauJJtlCX5ottFpBJs4c=
+kubevirt.io/client-go v1.7.2/go.mod h1:kCM9mTzNVhHG0OLpiw//JvCWbDfVcGWoGOOzLF8ZRAw=
 kubevirt.io/containerized-data-importer-api v1.64.0 h1:yBLY6qEogUp8F+XSJvabIkx9uEEDeToYDfRr0mbUxJc=
 kubevirt.io/containerized-data-importer-api v1.64.0/go.mod h1:VGp35wxpLXU18b7cnEpmcThI3AjcZUSfg/Zfql44U4o=
 kubevirt.io/controller-lifecycle-operator-sdk/api v0.2.4 h1:fZYvD3/Vnitfkx6IJxjLAk8ugnZQ7CXVYcRfkSKmuZY=
