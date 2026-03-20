@@ -78,6 +78,7 @@ var staticRegistry = []Entry{
 	{
 		Artifacts: []api.Artifact{
 			tumbleweed.New("x86_64", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
+			tumbleweed.New("aarch64", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
 			tumbleweed.New("s390x", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
 		},
 		UseForDocs: true,
