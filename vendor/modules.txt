@@ -56,7 +56,7 @@ github.com/davecgh/go-spew/spew
 # github.com/distribution/reference v0.6.0
 ## explicit; go 1.20
 github.com/distribution/reference
-# github.com/docker/cli v29.3.0+incompatible
+# github.com/docker/cli v29.3.1+incompatible
 ## explicit
 github.com/docker/cli/cli/config
 github.com/docker/cli/cli/config/configfile
@@ -369,7 +369,7 @@ github.com/openshift/custom-resource-status/conditions/v1
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.90.0
+# github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.90.1
 ## explicit; go 1.25.0
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring
 github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1
@@ -973,8 +973,10 @@ k8s.io/utils/internal/third_party/forked/golang/net
 k8s.io/utils/net
 k8s.io/utils/pointer
 k8s.io/utils/ptr
-# kubevirt.io/api v1.7.2
+# kubevirt.io/api v1.8.0
 ## explicit; go 1.24.0
+kubevirt.io/api/backup
+kubevirt.io/api/backup/v1alpha1
 kubevirt.io/api/clone
 kubevirt.io/api/clone/v1alpha1
 kubevirt.io/api/clone/v1beta1

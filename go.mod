@@ -27,7 +27,7 @@ require (
 	k8s.io/api v0.35.2
 	k8s.io/apimachinery v0.35.2
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2
-	kubevirt.io/api v1.7.2
+	kubevirt.io/api v1.8.0
 	kubevirt.io/client-go v1.7.2
 	sigs.k8s.io/yaml v1.6.0
 )
@@ -47,7 +47,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.5.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v29.3.0+incompatible // indirect
+	github.com/docker/cli v29.3.1+incompatible // indirect
 	github.com/docker/docker v28.5.2+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.5 // indirect
 	github.com/docker/go-connections v0.6.0 // indirect
@@ -106,7 +106,7 @@ require (
 	github.com/openshift/api v0.0.0-20240323003854-2252c7adfb79 // indirect
 	github.com/openshift/client-go v0.0.0-20240312121557-60dd5f9fbf8d // indirect
 	github.com/openshift/custom-resource-status v1.1.2 // indirect
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.90.0 // indirect
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.90.1 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/sylabs/sif/v2 v2.24.0 // indirect
 	github.com/tchap/go-patricia/v2 v2.3.3 // indirect
