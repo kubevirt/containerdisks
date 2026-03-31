@@ -27,7 +27,7 @@ require (
 	k8s.io/api v0.35.2
 	k8s.io/apimachinery v0.35.2
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2
-	kubevirt.io/api v1.8.0
+	kubevirt.io/api v1.8.1
 	kubevirt.io/client-go v1.7.2
 	sigs.k8s.io/yaml v1.6.0
 )
@@ -54,7 +54,7 @@ require (
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
+	github.com/fxamacker/cbor/v2 v2.9.1 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.1 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
