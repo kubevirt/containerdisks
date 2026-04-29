@@ -76,6 +76,30 @@ var _ = Describe("openSUSE Tumbleweed", func() {
 				Arch: "s390x",
 			},
 		),
+		Entry("tumbleweed:1 aarch64", "aarch64", "testdata/openSUSE-Tumbleweed-Minimal-VM.aarch64-1.0.0-Cloud-Snapshot20260207.qcow2.sha256",
+			map[string]string{
+				common.DefaultInstancetypeEnv: "u1.medium",
+				common.DefaultPreferenceEnv:   "opensuse.tumbleweed",
+			},
+			&api.ArtifactDetails{
+				Checksum:          "0041ced2a380b10b6227c5504a28c88c40dcd4a7259511f30024aff22270f189",
+				DownloadURL:       "https://download.opensuse.org/ports/aarch64/tumbleweed/appliances/openSUSE-Tumbleweed-Minimal-VM.aarch64-1.0.0-Cloud-Snapshot20260207.qcow2",
+				ImageArchitecture: "aarch64",
+			},
+			&api.Metadata{
+				Name:        "opensuse-tumbleweed",
+				Version:     "1.0.0",
+				Description: description,
+				ExampleUserData: docs.UserData{
+					Username: "opensuse",
+				},
+				EnvVariables: map[string]string{
+					common.DefaultInstancetypeEnv: "u1.medium",
+					common.DefaultPreferenceEnv:   "opensuse.tumbleweed",
+				},
+				Arch: "aarch64",
+			},
+		),
 	)
 })
 
