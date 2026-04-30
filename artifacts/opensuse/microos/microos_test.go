@@ -43,7 +43,7 @@ var _ = Describe("openSUSE MicroOS", func() {
 				Version:     "16.0.0",
 				Description: description,
 				ExampleUserData: docs.UserData{
-					Username: "opensuse",
+					Username: "root",
 				},
 				EnvVariables: map[string]string{
 					common.DefaultInstancetypeEnv: "u1.medium",
@@ -67,7 +67,7 @@ var _ = Describe("openSUSE MicroOS", func() {
 				Version:     "16.0.0",
 				Description: description,
 				ExampleUserData: docs.UserData{
-					Username: "opensuse",
+					Username: "root",
 				},
 				EnvVariables: map[string]string{
 					common.DefaultInstancetypeEnv: "u1.medium",
