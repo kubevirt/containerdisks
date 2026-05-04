@@ -85,6 +85,7 @@ var staticRegistry = []Entry{
 	{
 		Artifacts: []api.Artifact{
 			microos.New("x86_64", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
+			microos.New("s390x", defaultEnvVariables("u1.medium", "opensuse.tumbleweed")),
 		},
 		UseForDocs: true,
 	},
