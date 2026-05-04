@@ -87,7 +87,7 @@ func (t *microos) Metadata() *api.Metadata {
 		Version:     microOSVersion,
 		Description: description,
 		ExampleUserData: docs.UserData{
-			Username: "opensuse",
+			Username: "root",
 		},
 		EnvVariables: t.envVariables,
 		Arch:         t.Arch,
