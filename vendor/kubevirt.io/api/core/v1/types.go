@@ -302,6 +302,9 @@ type VirtualMachineInstanceStatus struct {
 
 	// VSOCKCID is used to track the allocated VSOCK CID in the VM.
 	// +optional
+	// +kubebuilder:validation:Format:=int64
+	// +kubebuilder:validation:Minimum:=0
+	// +kubebuilder:validation:Maximum:=4294967295
 	VSOCKCID *uint32 `json:"VSOCKCID,omitempty"`
 
 	// SELinuxContext is the actual SELinux context of the virt-launcher pod
@@ -404,12 +407,18 @@ type VolumeStatus struct {
 
 // KernelInfo show info about the kernel image
 type KernelInfo struct {
+	// +kubebuilder:validation:Format:=int64
+	// +kubebuilder:validation:Minimum:=0
+	// +kubebuilder:validation:Maximum:=4294967295
 	// Checksum is the checksum of the kernel image
 	Checksum uint32 `json:"checksum,omitempty"`
 }
 
 // InitrdInfo show info about the initrd file
 type InitrdInfo struct {
+	// +kubebuilder:validation:Format:=int64
+	// +kubebuilder:validation:Minimum:=0
+	// +kubebuilder:validation:Maximum:=4294967295
 	// Checksum is the checksum of the initrd file
 	Checksum uint32 `json:"checksum,omitempty"`
 }
@@ -444,6 +453,9 @@ type HotplugVolumeStatus struct {
 
 // ContainerDiskInfo shows info about the containerdisk
 type ContainerDiskInfo struct {
+	// +kubebuilder:validation:Format:=int64
+	// +kubebuilder:validation:Minimum:=0
+	// +kubebuilder:validation:Maximum:=4294967295
 	// Checksum is the checksum of the rootdisk or kernel artifacts inside the containerdisk
 	Checksum uint32 `json:"checksum,omitempty"`
 }
