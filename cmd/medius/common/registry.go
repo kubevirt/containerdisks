@@ -91,15 +91,22 @@ var staticRegistry = []Entry{
 	},
 	{
 		Artifacts: []api.Artifact{
-			leap.New("x86_64", "15.6", defaultEnvVariables("u1.medium", "opensuse.leap")),
-			leap.New("aarch64", "15.6", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("x86_64", "16.0", "sles", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("aarch64", "16.0", "sles", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("s390x", "16.0", "sles", defaultEnvVariables("u1.medium", "opensuse.leap")),
 		},
 		UseForDocs: true,
 	},
 	{
 		Artifacts: []api.Artifact{
-			leap.New("x86_64", "15.5", defaultEnvVariables("u1.medium", "opensuse.leap")),
-			leap.New("aarch64", "15.5", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("x86_64", "15.6", "opensuse", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("aarch64", "15.6", "opensuse", defaultEnvVariables("u1.medium", "opensuse.leap")),
+		},
+	},
+	{
+		Artifacts: []api.Artifact{
+			leap.New("x86_64", "15.5", "opensuse", defaultEnvVariables("u1.medium", "opensuse.leap")),
+			leap.New("aarch64", "15.5", "opensuse", defaultEnvVariables("u1.medium", "opensuse.leap")),
 		},
 	},
 	{

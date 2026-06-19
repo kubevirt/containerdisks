@@ -3,6 +3,7 @@ package leap
 import (
 	"crypto/sha256"
 	"fmt"
+	"strconv"
 	"strings"
 
 	v1 "kubevirt.io/api/core/v1"
@@ -17,6 +18,7 @@ import (
 type leap struct {
 	Arch         string
 	Version      string
+	Username     string
 	getter       http.Getter
 	envVariables map[string]string
 }
@@ -24,15 +26,17 @@ type leap struct {
 var _ api.Artifact = &leap{}
 
 const (
-	baseURLFmt  = "https://download.opensuse.org/distribution/leap/%s/appliances/openSUSE-Leap-%s-Minimal-VM.%s-Cloud.qcow2"
-	description = `openSUSE Leap images for KubeVirt.
+	versionParts   = 2
+	newURLMinMajor = 16
+)
+
+const description = `openSUSE Leap images for KubeVirt.
 <br />
 <br />
 Visit [get.opensuse.org/leap/](https://get.opensuse.org/leap/) to learn more about openSUSE Leap.`
-)
 
 func (l *leap) Inspect() (*api.ArtifactDetails, error) {
-	baseURL := fmt.Sprintf(baseURLFmt, l.Version, l.Version, l.Arch)
+	baseURL := l.buildBaseURL()
 	checksumBytes, err := l.getter.GetAll(baseURL + ".sha256")
 	if err != nil {
 		return nil, err
@@ -45,13 +49,32 @@ func (l *leap) Inspect() (*api.ArtifactDetails, error) {
 	}, nil
 }
 
+func (l *leap) buildBaseURL() string {
+	parts := strings.SplitN(l.Version, ".", versionParts)
+	major, err := strconv.Atoi(parts[0])
+	if err != nil || major < newURLMinMajor {
+		return fmt.Sprintf(
+			"https://download.opensuse.org/distribution/leap/%s/appliances/openSUSE-Leap-%s-Minimal-VM.%s-Cloud.qcow2",
+			l.Version, l.Version, l.Arch,
+		)
+	}
+	archPart := l.Arch
+	if l.Arch == "s390x" {
+		archPart = "s390x-s390x"
+	}
+	return fmt.Sprintf(
+		"https://download.opensuse.org/distribution/leap/%s/appliances/Leap-%s-Minimal-VM.%s-Cloud.qcow2",
+		l.Version, l.Version, archPart,
+	)
+}
+
 func (l *leap) Metadata() *api.Metadata {
 	return &api.Metadata{
 		Name:        "opensuse-leap",
 		Version:     l.Version,
 		Description: description,
 		ExampleUserData: docs.UserData{
-			Username: "opensuse",
+			Username: l.Username,
 		},
 		EnvVariables: l.envVariables,
 		Arch:         l.Arch,
@@ -77,10 +100,11 @@ func (l *leap) Tests() []api.ArtifactTest {
 	}
 }
 
-func New(arch, version string, envVariables map[string]string) *leap {
+func New(arch, version, username string, envVariables map[string]string) *leap {
 	return &leap{
 		Arch:         arch,
 		Version:      version,
+		Username:     username,
 		getter:       &http.HTTPGetter{},
 		envVariables: envVariables,
 	}
