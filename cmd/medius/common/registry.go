@@ -6,6 +6,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
+	"kubevirt.io/containerdisks/artifacts/almalinux"
 	"kubevirt.io/containerdisks/artifacts/centosstream"
 	"kubevirt.io/containerdisks/artifacts/debian"
 	"kubevirt.io/containerdisks/artifacts/fedora"
@@ -27,6 +28,22 @@ type Entry struct {
 }
 
 var staticRegistry = []Entry{
+	{
+		Artifacts: []api.Artifact{
+			almalinux.New("10", "x86_64", &docs.UserData{Username: "almalinux"}, defaultEnvVariables("u1.medium", "rhel.10")),
+			almalinux.New("10", "aarch64", &docs.UserData{Username: "almalinux"}, defaultEnvVariables("u1.medium", "rhel.10")),
+			almalinux.New("10", "s390x", &docs.UserData{Username: "almalinux"}, defaultEnvVariables("u1.medium", "rhel.10")),
+		},
+		UseForDocs: true,
+	},
+	{
+		Artifacts: []api.Artifact{
+			almalinux.New("9", "x86_64", &docs.UserData{Username: "almalinux"}, defaultEnvVariables("u1.medium", "rhel.9")),
+			almalinux.New("9", "aarch64", &docs.UserData{Username: "almalinux"}, defaultEnvVariables("u1.medium", "rhel.9")),
+			almalinux.New("9", "s390x", &docs.UserData{Username: "almalinux"}, defaultEnvVariables("u1.medium", "rhel.9")),
+		},
+		UseForDocs: true,
+	},
 	{
 		Artifacts: []api.Artifact{
 			centosstream.New("10", "x86_64", &docs.UserData{Username: "cloud-user"}, defaultEnvVariables("u1.medium", "centos.stream10")),
