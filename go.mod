@@ -23,7 +23,7 @@ require (
 	github.com/ulikunitz/xz v0.5.15
 	go.podman.io/image/v5 v5.40.0
 	golang.org/x/crypto v0.53.0
-	golang.org/x/text v0.38.0
+	golang.org/x/text v0.39.0
 	k8s.io/api v0.36.2
 	k8s.io/apimachinery v0.36.2
 	k8s.io/utils v0.0.0-20260507154919-ff6756f316d2
@@ -83,7 +83,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7 // indirect
-	github.com/klauspost/compress v1.18.7 // indirect
+	github.com/klauspost/compress v1.19.0 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/kubernetes-csi/external-snapshotter/client/v4 v4.2.0 // indirect
 	github.com/mistifyio/go-zfs/v4 v4.0.0 // indirect
