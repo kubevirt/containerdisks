@@ -12,7 +12,7 @@
 
 ## Building and publishing containerdisks
 
-The go tool [medius](cmd/medius) is the core of the syncrhonization process. It
+The go tool [medius](cmd/medius) is the core of the synchronization process. It
 understands the origin of all containerdisks and what version is currently
 published in [quay.io/containerdisks](https://quay.io/containerdisks)
 .
