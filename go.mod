@@ -47,7 +47,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.6.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v29.6.1+incompatible // indirect
+	github.com/docker/cli v29.6.2+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.8 // indirect
 	github.com/docker/go-connections v0.7.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -60,17 +60,18 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/jsonpointer v1.0.0 // indirect
 	github.com/go-openapi/jsonreference v1.0.0 // indirect
-	github.com/go-openapi/swag v0.27.0 // indirect
-	github.com/go-openapi/swag/cmdutils v0.27.0 // indirect
-	github.com/go-openapi/swag/conv v0.27.0 // indirect
-	github.com/go-openapi/swag/fileutils v0.27.0 // indirect
-	github.com/go-openapi/swag/jsonutils v0.27.0 // indirect
-	github.com/go-openapi/swag/loading v0.27.0 // indirect
-	github.com/go-openapi/swag/mangling v0.27.0 // indirect
-	github.com/go-openapi/swag/netutils v0.27.0 // indirect
-	github.com/go-openapi/swag/stringutils v0.27.0 // indirect
-	github.com/go-openapi/swag/typeutils v0.27.0 // indirect
-	github.com/go-openapi/swag/yamlutils v0.27.0 // indirect
+	github.com/go-openapi/swag v0.27.1 // indirect
+	github.com/go-openapi/swag/cmdutils v0.27.1 // indirect
+	github.com/go-openapi/swag/conv v0.27.1 // indirect
+	github.com/go-openapi/swag/fileutils v0.27.1 // indirect
+	github.com/go-openapi/swag/jsonutils v0.27.1 // indirect
+	github.com/go-openapi/swag/loading v0.27.1 // indirect
+	github.com/go-openapi/swag/mangling v0.27.1 // indirect
+	github.com/go-openapi/swag/netutils v0.27.1 // indirect
+	github.com/go-openapi/swag/pools v0.27.1 // indirect
+	github.com/go-openapi/swag/stringutils v0.27.1 // indirect
+	github.com/go-openapi/swag/typeutils v0.27.1 // indirect
+	github.com/go-openapi/swag/yamlutils v0.27.1 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/gnostic-models v0.7.1 // indirect
