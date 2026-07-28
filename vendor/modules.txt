@@ -76,7 +76,7 @@ github.com/docker/distribution/registry/api/v2
 ## explicit; go 1.21
 github.com/docker/docker-credential-helpers/client
 github.com/docker/docker-credential-helpers/credentials
-# github.com/docker/go-connections v0.8.0
+# github.com/docker/go-connections v0.8.1
 ## explicit; go 1.23
 github.com/docker/go-connections/sockets
 github.com/docker/go-connections/tlsconfig
@@ -114,43 +114,43 @@ github.com/go-openapi/jsonpointer/jsonname
 ## explicit; go 1.25.0
 github.com/go-openapi/jsonreference
 github.com/go-openapi/jsonreference/internal
-# github.com/go-openapi/swag v0.27.3
+# github.com/go-openapi/swag v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag
-# github.com/go-openapi/swag/cmdutils v0.27.3
+# github.com/go-openapi/swag/cmdutils v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/cmdutils
-# github.com/go-openapi/swag/conv v0.27.3
+# github.com/go-openapi/swag/conv v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/conv
-# github.com/go-openapi/swag/fileutils v0.27.3
+# github.com/go-openapi/swag/fileutils v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/fileutils
-# github.com/go-openapi/swag/jsonutils v0.27.3
+# github.com/go-openapi/swag/jsonutils v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/jsonutils
 github.com/go-openapi/swag/jsonutils/adapters
 github.com/go-openapi/swag/jsonutils/adapters/ifaces
 github.com/go-openapi/swag/jsonutils/adapters/stdlib/json
-# github.com/go-openapi/swag/loading v0.27.3
+# github.com/go-openapi/swag/loading v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/loading
-# github.com/go-openapi/swag/mangling v0.27.3
+# github.com/go-openapi/swag/mangling v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/mangling
-# github.com/go-openapi/swag/netutils v0.27.3
+# github.com/go-openapi/swag/netutils v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/netutils
-# github.com/go-openapi/swag/pools v0.27.3
+# github.com/go-openapi/swag/pools v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/pools
-# github.com/go-openapi/swag/stringutils v0.27.3
+# github.com/go-openapi/swag/stringutils v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/stringutils
-# github.com/go-openapi/swag/typeutils v0.27.3
+# github.com/go-openapi/swag/typeutils v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/typeutils
-# github.com/go-openapi/swag/yamlutils v0.27.3
+# github.com/go-openapi/swag/yamlutils v0.28.0
 ## explicit; go 1.25.0
 github.com/go-openapi/swag/yamlutils
 # github.com/go-task/slim-sprig/v3 v3.0.0
@@ -272,7 +272,7 @@ github.com/moby/moby/api/types/storage
 github.com/moby/moby/api/types/swarm
 github.com/moby/moby/api/types/system
 github.com/moby/moby/api/types/volume
-# github.com/moby/moby/client v0.5.0
+# github.com/moby/moby/client v0.5.1
 ## explicit; go 1.24
 github.com/moby/moby/client
 github.com/moby/moby/client/internal
