@@ -41,7 +41,7 @@ github.com/containers/libtrust
 # github.com/containers/ocicrypt v1.3.2
 ## explicit; go 1.25.0
 github.com/containers/ocicrypt/spec
-# github.com/cyphar/filepath-securejoin v0.6.1
+# github.com/cyphar/filepath-securejoin v0.7.0
 ## explicit; go 1.18
 github.com/cyphar/filepath-securejoin
 github.com/cyphar/filepath-securejoin/internal/consts
@@ -437,8 +437,8 @@ go.opentelemetry.io/otel/trace
 go.opentelemetry.io/otel/trace/embedded
 go.opentelemetry.io/otel/trace/internal/telemetry
 go.opentelemetry.io/otel/trace/noop
-# go.podman.io/image/v5 v5.40.0
-## explicit; go 1.25.6
+# go.podman.io/image/v5 v5.41.0
+## explicit; go 1.25.7
 go.podman.io/image/v5/directory
 go.podman.io/image/v5/directory/explicitfilepath
 go.podman.io/image/v5/docker
@@ -490,7 +490,7 @@ go.podman.io/image/v5/transports
 go.podman.io/image/v5/transports/alltransports
 go.podman.io/image/v5/types
 go.podman.io/image/v5/version
-# go.podman.io/storage v1.63.0
+# go.podman.io/storage v1.64.0
 ## explicit; go 1.25.0
 go.podman.io/storage
 go.podman.io/storage/drivers
@@ -680,9 +680,6 @@ gopkg.in/evanphx/json-patch.v4
 # gopkg.in/inf.v0 v0.9.1
 ## explicit
 gopkg.in/inf.v0
-# gopkg.in/yaml.v3 v3.0.1
-## explicit
-gopkg.in/yaml.v3
 # k8s.io/api v0.36.3 => k8s.io/api v0.33.5
 ## explicit; go 1.24.0
 k8s.io/api/admissionregistration/v1
