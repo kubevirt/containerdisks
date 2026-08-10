@@ -1,4 +1,5 @@
 cluster-up/
+_cluster-up/
 bin/
 .idea
 results.json
