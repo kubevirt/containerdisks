@@ -21,8 +21,8 @@ set -ex
 
 export KUBEVIRT_MEMORY_SIZE="${KUBEVIRT_MEMORY_SIZE:-16G}"
 export KUBEVIRT_DEPLOY_CDI="true"
-export KUBEVIRT_VERSION=${KUBEVIRT_VERSION:-$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/release/kubevirt/kubevirt/stable.txt)}
-export KUBEVIRTCI_TAG=${KUBEVIRTCI_TAG:-$(curl -sfL https://raw.githubusercontent.com/kubevirt/kubevirt/"${KUBEVIRT_VERSION}"/kubevirtci/cluster-up/version.txt)}
+export KUBEVIRT_VERSION=${KUBEVIRT_VERSION:-$(curl -fL https://storage.googleapis.com/kubevirt-prow/devel/release/kubevirt/kubevirt/stable.txt)}
+export KUBEVIRTCI_TAG=${KUBEVIRTCI_TAG:-$(curl -fL https://raw.githubusercontent.com/kubevirt/kubevirt/"${KUBEVIRT_VERSION}"/kubevirtci/cluster-up/version.txt)}
 
 _base_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 _cluster_up_dir="${_base_dir}/_cluster-up"
@@ -33,7 +33,7 @@ _action=$1
 shift
 
 function kubevirtci::fetch_kubevirtci() {
-	if [[ ! -d ${_cluster_up_dir} ]]; then
+	if [[ ! -d "${_cluster_up_dir}" ]]; then
     git clone --depth 1 --branch "${KUBEVIRTCI_TAG}" https://github.com/kubevirt/kubevirtci.git "${_cluster_up_dir}"
   fi
 }
