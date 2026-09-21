@@ -8,7 +8,8 @@
 | [openSUSE Tumbleweed](https://quay.io/repository/containerdisks/opensuse-tumbleweed) | amd64, s390x   |
 | [openSUSE MicroOS](https://quay.io/repository/containerdisks/opensuse-microos)       | amd64          |
 | [openSUSE Leap](https://quay.io/repository/containerdisks/opensuse-leap)             | amd64, arm64   |
-| [Debian](https://quay.io/repository/containerdisks/debian)                    | amd64, arm64   |
+| [Debian](https://quay.io/repository/containerdisks/debian)                           | amd64, arm64   |
+| [AlmaLinux](https://quay.io/repository/containerdisks/almalinux)                     | amd64, arm64, s390x |
 
 ## Building and publishing containerdisks
 
