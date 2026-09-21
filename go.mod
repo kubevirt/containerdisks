@@ -16,12 +16,12 @@ require (
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/google/go-containerregistry v0.22.1
 	github.com/onsi/ginkgo/v2 v2.28.0
-	github.com/onsi/gomega v1.43.0
+	github.com/onsi/gomega v1.43.1
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.10.2
 	github.com/spf13/cobra v1.10.2
 	github.com/ulikunitz/xz v0.5.16
-	go.podman.io/image/v5 v5.41.1
+	go.podman.io/image/v5 v5.41.2
 	golang.org/x/crypto v0.57.0
 	golang.org/x/text v0.42.0
 	k8s.io/api v0.37.0
@@ -47,7 +47,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v29.8.0+incompatible // indirect
+	github.com/docker/cli v29.8.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.9 // indirect
 	github.com/docker/go-connections v0.8.1 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -115,7 +115,7 @@ require (
 	go.opentelemetry.io/otel v1.46.0 // indirect
 	go.opentelemetry.io/otel/metric v1.46.0 // indirect
 	go.opentelemetry.io/otel/trace v1.46.0 // indirect
-	go.podman.io/storage v1.64.0 // indirect
+	go.podman.io/storage v1.64.1 // indirect
 	go.uber.org/mock v0.6.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
