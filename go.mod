@@ -16,11 +16,11 @@ require (
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/google/go-containerregistry v0.22.1
 	github.com/onsi/ginkgo/v2 v2.28.0
-	github.com/onsi/gomega v1.43.1
+	github.com/onsi/gomega v1.44.0
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.10.2
 	github.com/spf13/cobra v1.10.2
-	github.com/ulikunitz/xz v0.5.16
+	github.com/ulikunitz/xz v0.5.17
 	go.podman.io/image/v5 v5.41.2
 	golang.org/x/crypto v0.57.0
 	golang.org/x/text v0.42.0
@@ -58,7 +58,7 @@ require (
 	github.com/go-logfmt/logfmt v0.6.1 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-openapi/jsonpointer v1.0.1 // indirect
+	github.com/go-openapi/jsonpointer v1.0.2 // indirect
 	github.com/go-openapi/jsonreference v1.0.2 // indirect
 	github.com/go-openapi/swag v0.29.2 // indirect
 	github.com/go-openapi/swag/cmdutils v0.29.2 // indirect
@@ -104,7 +104,7 @@ require (
 	github.com/openshift/api v0.0.0-20240323003854-2252c7adfb79 // indirect
 	github.com/openshift/client-go v0.0.0-20240312121557-60dd5f9fbf8d // indirect
 	github.com/openshift/custom-resource-status v1.1.2 // indirect
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.0 // indirect
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.1 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/sylabs/sif/v2 v2.24.1 // indirect
 	github.com/tchap/go-patricia/v2 v2.3.3 // indirect
