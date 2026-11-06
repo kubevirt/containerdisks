@@ -153,6 +153,8 @@ func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 		}
 	}
 
+	removeSupersededPrereleases(versions)
+
 	// Ensure versions are always sorted with the latest stable release first.
 	// Prerelease versions (e.g. "44 Beta") are sorted after all stable versions
 	// so that they never become the "latest" tag.
@@ -184,6 +186,20 @@ func (f *fedoraGatherer) Gather() ([][]api.Artifact, error) {
 		artifacts = append(artifacts, releaseArtifcats)
 	}
 	return artifacts, nil
+}
+
+// removeSupersededPrereleases drops prerelease versions (e.g. "44 Beta") for
+// which a stable release with the same number exists (e.g. "44"). Upstream keeps
+// listing them in releases.json after GA while mirrors already remove the files.
+func removeSupersededPrereleases(versions map[string][]Release) {
+	for version := range versions {
+		if IsStableVersion(version) {
+			continue
+		}
+		if _, ok := versions[strings.Fields(version)[0]]; ok {
+			delete(versions, version)
+		}
+	}
 }
 
 func getReleases(getter http.Getter) (Releases, error) {

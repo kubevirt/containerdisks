@@ -183,31 +183,35 @@ var _ = Describe("Fedora", func() {
 		),
 	)
 
-	It("Gather should be able to parse releases files", func() {
-		// Stable versions should come first (sorted descending), followed by
-		// prerelease versions. This ensures stable releases get the "latest" tag.
-		artifacts := [][]api.Artifact{
-			{
-				parsedRelease("40", "40", "x86_64", defaultPreferenceX86_64),
-				parsedRelease("40", "40", "aarch64", defaultPreferenceAarch64),
-			},
-			{
-				parsedRelease("39", "39", "x86_64", defaultPreferenceX86_64),
-				parsedRelease("39", "39", "aarch64", defaultPreferenceAarch64),
-				parsedRelease("39", "39", "s390x", defaultPreferenceS390x),
-			},
-			{
-				parsedRelease("41-beta", "41 Beta", "x86_64", defaultPreferenceX86_64),
-				parsedRelease("41-beta", "41 Beta", "aarch64", defaultPreferenceAarch64),
-			},
-		}
+	// Stable versions should come first (sorted descending), followed by
+	// prerelease versions. This ensures stable releases get the "latest" tag.
+	DescribeTable("Gather should be able to parse releases files",
+		func(releasesFile string) {
+			artifacts := [][]api.Artifact{
+				{
+					parsedRelease("40", "40", "x86_64", defaultPreferenceX86_64),
+					parsedRelease("40", "40", "aarch64", defaultPreferenceAarch64),
+				},
+				{
+					parsedRelease("39", "39", "x86_64", defaultPreferenceX86_64),
+					parsedRelease("39", "39", "aarch64", defaultPreferenceAarch64),
+					parsedRelease("39", "39", "s390x", defaultPreferenceS390x),
+				},
+				{
+					parsedRelease("41-beta", "41 Beta", "x86_64", defaultPreferenceX86_64),
+					parsedRelease("41-beta", "41 Beta", "aarch64", defaultPreferenceAarch64),
+				},
+			}
 
-		c := NewGatherer()
-		c.getter = testutil.NewMockGetter("testdata/releases.json")
-		got, err := c.Gather()
-		Expect(err).NotTo(HaveOccurred())
-		Expect(got).To(Equal(artifacts))
-	})
+			c := NewGatherer()
+			c.getter = testutil.NewMockGetter(releasesFile)
+			got, err := c.Gather()
+			Expect(err).NotTo(HaveOccurred())
+			Expect(got).To(Equal(artifacts))
+		},
+		Entry("with stable and prerelease versions", "testdata/releases.json"),
+		Entry("skipping prerelease superseded by stable version", "testdata/releases-superseded-prerelease.json"),
+	)
 
 	DescribeTable("IsStableVersion",
 		func(version string, expected bool) {
